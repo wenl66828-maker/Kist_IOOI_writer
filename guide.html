@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>書寫指引 — KIST 成果報告書平台</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+Antique:wght@300;400;500;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F7F4EF; --surface: #FFFFFF; --surface2: #F0EDE7;
+  --ink: #1A1714; --ink-light: #6B6560; --ink-faint: #B0AAA3;
+  --accent: #C4501A; --accent-light: #F5E8E2; --border: #DDD8D0;
+  --kist-blue: #1B3A6B;
+  --input-color: #534AB7; --input-light: #EEEDFE;
+  --output-color: #0F6E56; --output-light: #E1F5EE;
+  --outcome-color: #854F0B; --outcome-light: #FAEEDA;
+  --impact-color: #185FA5; --impact-light: #E6F1FB;
+  --sans: 'Zen Kaku Gothic Antique', sans-serif;
+  --mono: 'DM Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 400; line-height: 1.75; min-height: 100vh; }
+
+/* HEADER */
+header { background: var(--kist-blue); color: white; padding: 0 2.5rem; display: flex; align-items: center; justify-content: space-between; height: 64px; position: sticky; top: 0; z-index: 200; }
+.logo { display: flex; align-items: center; text-decoration: none; }
+.logo-mark { height: 32px; width: auto; display: block; }
+nav { display: flex; align-items: center; gap: .25rem; }
+.nav-link { font-size: .8rem; color: rgba(255,255,255,.5); text-decoration: none; padding: .4rem .75rem; border-radius: 4px; transition: all .15s; letter-spacing: .03em; white-space: nowrap; }
+.nav-link:hover { color: white; background: rgba(255,255,255,.08); }
+.nav-link.active { color: white; background: rgba(255,255,255,.15); font-weight: 500; }
+
+/* HERO */
+.guide-hero { background: var(--kist-blue); padding: 3.5rem 2.5rem 3rem; position: relative; overflow: hidden; }
+.guide-hero::before { content: 'IOOI'; position: absolute; right: 2rem; top: 50%; transform: translateY(-50%); font-size: 9rem; font-weight: 900; color: rgba(255,255,255,.06); letter-spacing: .05em; pointer-events: none; line-height: 1; }
+.guide-hero-inner { max-width: 860px; margin: 0 auto; }
+.guide-hero-eyebrow { font-family: var(--mono); font-size: .7rem; letter-spacing: .15em; text-transform: uppercase; color: rgba(255,255,255,.45); margin-bottom: .875rem; }
+.guide-hero h1 { font-size: 2rem; font-weight: 900; color: white; line-height: 1.2; letter-spacing: .02em; margin-bottom: 1rem; }
+.guide-hero h1 span { color: #7BAFD4; }
+.guide-hero-desc { font-size: .9rem; color: rgba(255,255,255,.65); line-height: 1.85; max-width: 600px; font-weight: 300; }
+
+/* IOOI TAB STRIP */
+.iooi-strip { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 2.5rem; position: sticky; top: 64px; z-index: 100; }
+.iooi-strip-inner { max-width: 860px; margin: 0 auto; display: grid; grid-template-columns: repeat(5, 1fr); }
+.iooi-tab { padding: 1.1rem .5rem; text-align: center; cursor: pointer; border-bottom: 3px solid transparent; transition: all .15s; text-decoration: none; display: block; }
+.iooi-tab:hover { background: var(--surface2); }
+.iooi-tab.active { border-bottom-color: currentColor; background: var(--surface2); }
+.iooi-tab-label { font-family: var(--mono); font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; margin-bottom: .2rem; }
+.iooi-tab-name { font-size: .875rem; font-weight: 700; }
+.iooi-tab.t-overview { color: var(--ink-light); }
+.iooi-tab.t-input { color: var(--input-color); }
+.iooi-tab.t-output { color: var(--output-color); }
+.iooi-tab.t-outcome { color: var(--outcome-color); }
+.iooi-tab.t-impact { color: var(--impact-color); }
+
+/* TAB PANELS */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* MAIN */
+main { max-width: 860px; margin: 0 auto; padding: 2.5rem 2.5rem 6rem; }
+
+/* OVERVIEW (first tab) */
+.intro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem; }
+.analogy-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem 1.5rem; }
+.analogy-icon { font-size: 1.5rem; margin-bottom: .625rem; }
+.analogy-label { font-size: 1rem; font-weight: 700; margin-bottom: .35rem; letter-spacing: .02em; }
+.analogy-label.t-input { color: var(--input-color); }
+.analogy-label.t-output { color: var(--output-color); }
+.analogy-label.t-outcome { color: var(--outcome-color); }
+.analogy-label.t-impact { color: var(--impact-color); }
+.analogy-desc { font-size: .875rem; color: var(--ink-light); line-height: 1.7; font-weight: 300; margin-bottom: .625rem; }
+.analogy-example { font-size: .82rem; color: var(--ink-faint); line-height: 1.65; font-style: italic; border-top: 1px solid var(--border); padding-top: .625rem; margin-top: .25rem; }
+.analogy-example strong { color: var(--ink-light); font-style: normal; font-weight: 500; }
+
+/* KEY NOTE */
+.key-note { border-left: 3px solid; border-radius: 0 8px 8px 0; padding: 1rem 1.25rem; margin-top: 1.25rem; font-size: .875rem; line-height: 1.75; }
+.key-note.accent { background: var(--accent-light); border-color: var(--accent); color: var(--ink); }
+.key-note.accent strong { color: var(--accent); }
+.key-note.input { background: var(--input-light); border-color: var(--input-color); }
+.key-note.output { background: var(--output-light); border-color: var(--output-color); }
+.key-note.outcome { background: var(--outcome-light); border-color: var(--outcome-color); }
+.key-note.impact { background: var(--impact-light); border-color: var(--impact-color); }
+
+/* SECTION LABEL */
+.section-label { font-family: var(--mono); font-size: .65rem; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 1rem; display: flex; align-items: center; gap: .5rem; }
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.section-label.input-l { color: var(--input-color); }
+.section-label.output-l { color: var(--output-color); }
+.section-label.outcome-l { color: var(--outcome-color); }
+.section-label.impact-l { color: var(--impact-color); }
+
+/* CONTENT BLOCKS */
+.content-block { margin-bottom: 2rem; }
+.prose { font-size: .875rem; color: var(--ink-light); line-height: 1.85; font-weight: 300; }
+.prose strong { color: var(--ink); font-weight: 700; }
+.prose + .prose { margin-top: .75rem; }
+
+/* ERROR LIST */
+.error-list { display: flex; flex-direction: column; gap: .6rem; }
+.error-item { display: flex; gap: .75rem; align-items: flex-start; font-size: .85rem; color: var(--ink-light); line-height: 1.65; }
+.error-x { color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: .05rem; }
+
+/* ARROW LIST */
+.arrow-list { display: flex; flex-direction: column; gap: .5rem; margin-top: .75rem; }
+.arrow-item { display: flex; gap: .75rem; align-items: flex-start; font-size: .875rem; color: var(--ink-light); line-height: 1.65; font-weight: 300; }
+.arrow-item strong { color: var(--ink); font-weight: 700; }
+
+/* TABLE */
+.guide-table { width: 100%; border-collapse: collapse; font-size: .835rem; }
+.guide-table th { text-align: left; padding: .6rem .875rem; font-weight: 700; background: var(--surface2); color: var(--ink); font-size: .78rem; letter-spacing: .03em; }
+.guide-table td { padding: .65rem .875rem; border-top: 1px solid var(--surface2); color: var(--ink-light); vertical-align: top; line-height: 1.65; }
+.guide-table tr:hover td { background: #fafaf8; }
+.table-wrap { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+
+/* TAG CELL */
+.tag-cell { display: inline-flex; align-items: center; font-family: var(--mono); font-size: .62rem; padding: .15rem .5rem; border-radius: 3px; text-transform: uppercase; letter-spacing: .06em; white-space: nowrap; }
+.tag-cell.input-t { background: var(--input-light); color: var(--input-color); }
+.tag-cell.output-t { background: var(--output-light); color: var(--output-color); }
+.tag-cell.outcome-t { background: var(--outcome-light); color: var(--outcome-color); }
+.tag-cell.impact-t { background: var(--impact-light); color: var(--impact-color); }
+
+/* EXAMPLE ACCORDION */
+.example-accordion { display: flex; flex-direction: column; gap: .75rem; }
+.example-card { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.example-card-header { padding: 1rem 1.25rem; display: flex; align-items: center; gap: 1rem; cursor: pointer; user-select: none; background: var(--surface); transition: background .15s; }
+.example-card-header:hover { background: var(--surface2); }
+.example-school-tag { font-family: var(--mono); font-size: .65rem; text-transform: uppercase; letter-spacing: .08em; padding: .2rem .6rem; border-radius: 3px; flex-shrink: 0; }
+.example-school-tag.input-s { background: var(--input-light); color: var(--input-color); }
+.example-school-tag.output-s { background: var(--output-light); color: var(--output-color); }
+.example-school-tag.outcome-s { background: var(--outcome-light); color: var(--outcome-color); }
+.example-school-tag.impact-s { background: var(--impact-light); color: var(--impact-color); }
+.example-card-summary { flex: 1; font-size: .85rem; color: var(--ink-light); font-weight: 300; }
+.example-card-chevron { color: var(--ink-faint); font-size: .75rem; transition: transform .2s; flex-shrink: 0; }
+.example-card-header.open .example-card-chevron { transform: rotate(180deg); }
+.example-card-body { display: none; border-top: 1px solid var(--border); }
+.example-card-body.open { display: block; }
+.example-highlight { padding: 1rem 1.25rem; background: var(--surface2); border-bottom: 1px solid var(--border); }
+.example-highlight-label { font-family: var(--mono); font-size: .62rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-faint); margin-bottom: .4rem; }
+.example-highlight-text { font-size: .835rem; color: var(--ink-light); line-height: 1.7; font-weight: 300; }
+.example-quote { padding: 1.25rem; background: var(--surface); }
+.example-quote-label { font-family: var(--mono); font-size: .62rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-faint); margin-bottom: .75rem; }
+.example-quote-text { font-size: .875rem; color: var(--ink); line-height: 1.85; font-weight: 300; border-left: 3px solid var(--border); padding-left: 1rem; }
+.example-placeholder { font-size: .835rem; color: var(--ink-faint); font-style: italic; padding: 1.25rem; }
+
+/* TIPS GRID */
+.tips-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.tip-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem 1.5rem; }
+.tip-num { font-family: var(--mono); font-size: .65rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: .5rem; }
+.tip-title { font-size: .9rem; font-weight: 700; margin-bottom: .5rem; }
+.tip-body { font-size: .835rem; color: var(--ink-light); line-height: 1.7; font-weight: 300; }
+
+/* DIM HERO (top of each tab) */
+.dim-hero { border-radius: 12px; padding: 1.75rem 2rem; margin-bottom: 2rem; display: flex; align-items: flex-start; gap: 1.5rem; }
+.dim-hero.input-h { background: var(--input-color); }
+.dim-hero.output-h { background: var(--output-color); }
+.dim-hero.outcome-h { background: var(--outcome-color); }
+.dim-hero.impact-h { background: var(--impact-color); }
+.dim-hero-num { font-family: var(--mono); font-size: 2.5rem; font-weight: 500; color: rgba(255,255,255,.2); line-height: 1; flex-shrink: 0; margin-top: -.25rem; }
+.dim-hero-en { font-family: var(--mono); font-size: .7rem; color: rgba(255,255,255,.55); letter-spacing: .1em; text-transform: uppercase; margin-bottom: .25rem; }
+.dim-hero-zh { font-size: 1.4rem; font-weight: 900; color: white; letter-spacing: .04em; margin-bottom: .5rem; }
+.dim-hero-q { font-size: .875rem; color: rgba(255,255,255,.75); font-weight: 300; line-height: 1.65; }
+
+/* FOOTER */
+footer { background: var(--kist-blue); color: rgba(255,255,255,.4); padding: 2rem 2.5rem; text-align: center; font-size: .78rem; letter-spacing: .04em; font-weight: 300; }
+footer strong { color: white; font-weight: 500; }
+
+@media (max-width: 680px) {
+  .guide-hero { padding: 2.5rem 1.5rem; }
+  .guide-hero::before { display: none; }
+  .guide-hero h1 { font-size: 1.5rem; }
+  .iooi-strip { padding: 0 1rem; top: 64px; }
+  main { padding: 2rem 1.25rem 4rem; }
+  .intro-grid { grid-template-columns: 1fr; }
+  .tips-grid { grid-template-columns: 1fr; }
+  .dim-hero { padding: 1.25rem; gap: 1rem; }
+  .dim-hero-num { font-size: 1.75rem; }
+  nav { display: none; }
+  header { padding: 0 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="/"><img class="logo-mark" src="/kist_logo.png" alt="KIST"></a>
+  <nav>
+    <a class="nav-link" href="/chatbot.html">素材管理</a>
+    <a class="nav-link active" href="/guide.html">書寫指引</a>
+    <a class="nav-link" href="/checker.html">檢查小幫手</a>
+    <a class="nav-link" href="/">成果報告書</a>
+  </nav>
+</header>
+
+<div class="guide-hero">
+  <div class="guide-hero-inner">
+    <div class="guide-hero-eyebrow">KIST 學年成果報告書撰寫指引</div>
+    <h1>用 <span>IOOI 框架</span>，說出<br>學校真正做到的事</h1>
+    <p class="guide-hero-desc">每一所 KIST 學校都在做很好的事。這份指引幫助你用同一套語言、同一個架構，把努力完整而準確地說出來，讓外部讀者真正看見這些價值。</p>
+  </div>
+</div>
+
+<!-- IOOI Tab Strip -->
+<div class="iooi-strip">
+  <div class="iooi-strip-inner">
+    <div class="iooi-tab t-overview active" onclick="switchTab('overview')">
+      <div class="iooi-tab-label">總覽</div>
+      <div class="iooi-tab-name">IOOI 框架</div>
+    </div>
+    <div class="iooi-tab t-input" onclick="switchTab('input')">
+      <div class="iooi-tab-label">Input</div>
+      <div class="iooi-tab-name">投入</div>
+    </div>
+    <div class="iooi-tab t-output" onclick="switchTab('output')">
+      <div class="iooi-tab-label">Output</div>
+      <div class="iooi-tab-name">產出</div>
+    </div>
+    <div class="iooi-tab t-outcome" onclick="switchTab('outcome')">
+      <div class="iooi-tab-label">Outcome</div>
+      <div class="iooi-tab-name">成果</div>
+    </div>
+    <div class="iooi-tab t-impact" onclick="switchTab('impact')">
+      <div class="iooi-tab-label">Impact</div>
+      <div class="iooi-tab-name">影響力</div>
+    </div>
+  </div>
+</div>
+
+<main>
+
+<!-- ══════════════════════════════════════════
+     TAB: 總覽 (Input + 框架介紹 + 混淆表)
+══════════════════════════════════════════ -->
+<div class="tab-panel active" id="panel-overview">
+
+  <!-- 框架比喻 -->
+  <div class="content-block">
+    <div class="section-label input-l">IOOI 框架總覽</div>
+    <div class="intro-grid">
+      <div class="analogy-card">
+        <div class="analogy-label t-input">Input・投入</div>
+        <div class="analogy-desc">為了讓這一切發生，你準備了什麼——具備了哪些條件，才能支撐後面所有的努力</div>
+        <div class="analogy-example"><strong>比喻：</strong>你播了什麼種子、施了什麼肥、用了多少工</div>
+      </div>
+      <div class="analogy-card">
+        <div class="analogy-label t-output">Output・產出</div>
+        <div class="analogy-desc">你實際做了什麼——重點在可觀察、可量化的執行成果</div>
+        <div class="analogy-example"><strong>比喻：</strong>長出了多少棵苗、開了幾朵花</div>
+      </div>
+      <div class="analogy-card">
+        <div class="analogy-label t-outcome">Outcome・成果</div>
+        <div class="analogy-desc">因為你做了這些事，學生和老師改變了什麼——人的改變才是成果</div>
+        <div class="analogy-example"><strong>比喻：</strong>孩子因為有了花園，學會了照顧生命、學會了等待</div>
+      </div>
+      <div class="analogy-card">
+        <div class="analogy-label t-impact">Impact・影響力</div>
+        <div class="analogy-desc">你的學校改變了更大的世界的什麼——超越校內，指向社區、教育體系</div>
+        <div class="analogy-example"><strong>比喻：</strong>這個班的故事，讓隔壁班也開始種花、讓社區更多人認識這間學校</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 混淆對照表 -->
+  <div class="content-block">
+    <div class="section-label" style="color:var(--ink-faint);">最容易混淆的情境對照表</div>
+    <div class="table-wrap">
+      <table class="guide-table">
+        <thead><tr><th>這件事…</th><th>應該放在</th></tr></thead>
+        <tbody>
+          <tr><td>基金會捐助金額和使用明細</td><td><span class="tag-cell input-t">Input</span></td></tr>
+          <tr><td>加入誠致教師支持系統</td><td><span class="tag-cell input-t">Input</span></td></tr>
+          <tr><td>K Camp / 共識營 / 峰會的機制說明</td><td><span class="tag-cell input-t">Input</span></td></tr>
+          <tr><td>今年共識營辦了幾場、幾人參與</td><td><span class="tag-cell output-t">Output</span></td></tr>
+          <tr><td>今年共備社群運作了幾次</td><td><span class="tag-cell output-t">Output</span></td></tr>
+          <tr><td>開設了幾節品格課、幾節 PBL 課</td><td><span class="tag-cell output-t">Output</span></td></tr>
+          <tr><td>學力測驗各年級通過率數字</td><td><span class="tag-cell output-t">Output</span></td></tr>
+          <tr><td>辦了幾次 KIST Family、幾人次參與</td><td><span class="tag-cell output-t">Output</span></td></tr>
+          <tr><td>學生因為 PBL 課程學會了主動探究</td><td><span class="tag-cell outcome-t">Outcome</span></td></tr>
+          <tr><td>教師教學方法從講述式轉向引導式</td><td><span class="tag-cell outcome-t">Outcome</span></td></tr>
+          <tr><td>學力測驗通過率逐年上升（且有分析原因）</td><td><span class="tag-cell outcome-t">Outcome</span></td></tr>
+          <tr><td>學生人數逐年增加（家長信任的展現）</td><td><span class="tag-cell outcome-t">Outcome</span></td></tr>
+          <tr><td>學生遲到次數下降（品格改變的佐證）</td><td><span class="tag-cell outcome-t">Outcome</span></td></tr>
+          <tr><td>學生榮獲英語朗讀比賽特優</td><td><span class="tag-cell outcome-t">Outcome</span></td></tr>
+          <tr><td>學校榮獲教學卓越金質獎</td><td><span class="tag-cell impact-t">Impact</span></td></tr>
+          <tr><td>教師受邀到其他縣市分享教學模式</td><td><span class="tag-cell impact-t">Impact</span></td></tr>
+          <tr><td>外校教師團隊到校參訪學習</td><td><span class="tag-cell impact-t">Impact</span></td></tr>
+          <tr><td>媒體報導學校的辦學創新</td><td><span class="tag-cell impact-t">Impact</span></td></tr>
+          <tr><td>學校開發的教材被其他學校採用</td><td><span class="tag-cell impact-t">Impact</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="key-note accent" style="margin-top:1rem;">
+      ⚡ <strong>最重要的觀念：</strong>Output 是你做了什麼，Outcome 是因此改變了什麼。這兩個最容易混淆，請特別留意。
+    </div>
+  </div>
+
+</div><!-- end panel-overview -->
+
+<!-- ══════════════════════════════════════════
+     TAB: INPUT
+══════════════════════════════════════════ -->
+<div class="tab-panel" id="panel-input">
+  <div class="dim-hero input-h">
+    <div class="dim-hero-num">01</div>
+    <div>
+      <div class="dim-hero-en">Input</div>
+      <div class="dim-hero-zh">投入</div>
+      <div class="dim-hero-q">為了讓這一切發生，你準備了什麼？具備了哪些條件，才能支撐後面所有的努力？</div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <div class="section-label input-l">怎麼寫</div>
+    <p class="prose"><strong>經費部分</strong>要有明細表，但更重要的是一句話說明「這些錢用在哪裡、為什麼要用在這裡」。很多學校只列表格，讀者看不懂為什麼某個項目的錢特別多或特別少。</p>
+    <p class="prose"><strong>人力與系統部分</strong>常常被忽略。KIST 聯盟提供的師資培訓系統（K Camp、共識營、峰會、領導工坊）、誠致後台的課程支持、外部贊助方的非現金資源（如場地、人才、志工），都是重要的投入，值得清楚說明。</p>
+  </div>
+
+  <div class="content-block">
+    <div class="section-label input-l">常見錯誤</div>
+    <div class="error-list">
+      <div class="error-item"><span class="error-x">✗</span>把「辦了幾次共識營」列在 Input → 辦了多少次是 Output，<em>提供</em>共識營的機制才是 Input</div>
+      <div class="error-item"><span class="error-x">✗</span>Input 只有預算表，沒有說明脈絡 → 讀者不知道這些錢為什麼這樣分配</div>
+      <div class="error-item"><span class="error-x">✗</span>忽略非現金資源（師資培訓支持、聯盟平台、外部合作夥伴）</div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <div class="section-label input-l">可以放入的內容</div>
+    <div class="table-wrap">
+      <table class="guide-table">
+        <thead><tr><th>類型</th><th>舉例</th></tr></thead>
+        <tbody>
+          <tr><td>政府經費</td><td>縣市政府教育補助款金額與用途說明</td></tr>
+          <tr><td>基金會 / 企業捐助</td><td>捐助金額、明細與備注</td></tr>
+          <tr><td>教師人力結構</td><td>現有教師人數、年資分布、新進 vs 熟手比例</td></tr>
+          <tr><td>教師支持系統</td><td>K Camp、共識營、峰會、領導工坊、Mentor 制度、Coach 制度等</td></tr>
+          <tr><td>外部合作資源</td><td>誠致基金會課程支援、外部顧問、志工、學伴計畫</td></tr>
+          <tr><td>課程基礎建設</td><td>已建立的 SPTS 策略工具、非認知能力平台、SEL 課程架構</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <div class="section-label input-l">各校範例</div>
+    <div class="example-accordion">
+      <div class="example-card">
+        <div class="example-card-header" onclick="toggleExample(this)">
+          <span class="example-school-tag input-s">三民國小</span>
+          <span class="example-card-summary">預算 vs 決算明細，並說明每筆增減原因</span>
+          <span class="example-card-chevron">▼</span>
+        </div>
+        <div class="example-card-body">
+          <div class="example-highlight">
+            <div class="example-highlight-label">好在哪裡</div>
+            <div class="example-highlight-text">除了逐項列出基金會捐助的預算 vs 決算差異，還特別說明了超支或節餘的原因（例如蒙特梭利教室整建工程跨學年支應），以及各種教師支持活動的設計邏輯（依年資設計不同的增能路徑）。</div>
+          </div>
+          <div class="example-placeholder">📋 段落內容補充中，敬請期待</div>
+        </div>
+      </div>
+      <div class="example-card">
+        <div class="example-card-header" onclick="toggleExample(this)">
+          <span class="example-school-tag input-s">拯民國小</span>
+          <span class="example-card-summary">政府資金與民間資金分開說明，並列出非現金資源</span>
+          <span class="example-card-chevron">▼</span>
+        </div>
+        <div class="example-card-body">
+          <div class="example-highlight">
+            <div class="example-highlight-label">好在哪裡</div>
+            <div class="example-highlight-text">明確列出政府資金（＿＿元）與民間資金（文曄基金會＿＿元）分開說明，並特別指出非現金資源——玉山黃金種子計畫投注閱讀環境、雲林縣藝術深耕計畫提供在地藝術師資，這些都是讓學校得以運轉的重要「投入」。</div>
+          </div>
+          <div class="example-placeholder">📋 段落內容補充中，敬請期待</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- end panel-input -->
+
+<!-- ══════════════════════════════════════════
+     TAB: OUTPUT
+══════════════════════════════════════════ -->
+<div class="tab-panel" id="panel-output">
+  <div class="dim-hero output-h">
+    <div class="dim-hero-num">02</div>
+    <div>
+      <div class="dim-hero-en">Output</div>
+      <div class="dim-hero-zh">產出</div>
+      <div class="dim-hero-q">如果有人要核實你真的有在做這件事，他可以數到什麼？</div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <div class="section-label output-l">怎麼寫</div>
+    <p class="prose">Output 要盡量量化。「持續辦理共識營」不如「每學期辦理 1 次，全校教師 100% 參與」；「推動 PBL 課程」不如「113 學年度產出 6 個 PBL 專案卡，舉辦 2 次成果發表會，共約 ＿＿ 位家長/專家入校」。</p>
+    <p class="prose">量化之外，也可以加上簡短的質性說明，但不要讓質性說明喧賓奪主——那些「因此產生了什麼改變」的敘述，應該放到 Outcome。</p>
+  </div>
+
+  <div class="content-block">
+    <div class="section-label output-l">Output vs Outcome 最常見的混淆</div>
+    <div class="key-note output">
+      ❌ 「透過品格課程，學生建立了正向的價值觀」→ 這說的是<strong>改變</strong>，不是產出<br><br>
+      ✅ 正確 Output：「品格課程每週 1–2 節，113 學年度共 ＿＿ 堂，每堂留有教學紀錄」<br>
+      ✅ 正確 Outcome：「因此學生建立了正向價值觀」（放到 Outcome 去說）
+    </div>
+  </div>
+
+  <div class="content-block">
+    <div class="section-label output-l">可以放入的內容</div>
+    <div class="table-wrap">
+      <table class="guide-table">
+        <thead><tr><th>類型</th><th>舉例</th></tr></thead>
+        <tbody>
+          <tr><td>課程辦理情形</td><td>品格課每週節數、年度總堂次；PBL 專案卡數量；探究課程場次</td></tr>
+          <tr><td>教師研習次數</td><td>觀議課次數、共備次數、K Camp / 共識營 / 峰會參與情形</td></tr>
+          <tr><td>親師活動場次</td><td>家長日、學校日、KIST Family 活動場次與人次</td></tr>
+          <tr><td>學力測驗數據</td><td>學力檢測通過率、學習扶助測驗通過率（各年級、各科目）</td></tr>
+          <tr><td>學生作品數量</td><td>PBL 成果件數、發表會場次與觀看人次</td></tr>
+          <tr><td>教材開發</td><td>新開發的校本教材、SEL 聯絡簿版本數量</td></tr>
+          <tr><td>外部認證</td><td>加入特定計畫（如媒體素養基地學校）的資格取得</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <div class="section-label output-l">各校範例</div>
+    <div class="example-accordion">
+      <div class="example-card">
+        <div class="example-card-header" onclick="toggleExample(this)">
+          <span class="example-school-tag output-s">拯民國小</span>
+          <span class="example-card-summary">用條列式明確寫出每個系統的年度執行次數</span>
+          <span class="example-card-chevron">▼</span>
+        </div>
+        <div class="example-card-body">
+          <div class="example-highlight">
+            <div class="example-highlight-label">好在哪裡</div>
+            <div class="example-highlight-text">Output 段落直接用列表呈現每個系統每年的執行次數，讀者一眼就能掌握學校一整年具體做了什麼、做了多少。</div>
+          </div>
+          <div class="example-placeholder">📋 段落內容補充中，敬請期待</div>
+        </div>
+      </div>
+      <div class="example-card">
+        <div class="example-card-header" onclick="toggleExample(this)">
+          <span class="example-school-tag output-s">三民國小</span>
+          <span class="example-card-summary">量化說明 vs 質化說明雙欄對照格式</span>
+          <span class="example-card-chevron">▼</span>
+        </div>
+        <div class="example-card-body">
+          <div class="example-highlight">
+            <div class="example-highlight-label">好在哪裡</div>
+            <div class="example-highlight-text">使用「量化說明 vs 質化說明」雙欄對照格式，清楚區分「做了什麼（數字）」和「這些事的意義是什麼（說明）」，兩者各司其職，互不混淆。</div>
+          </div>
+          <div class="example-placeholder">📋 段落內容補充中，敬請期待</div>
+        </div>
+      </div>
+      <div class="example-card">
+        <div class="example-card-header" onclick="toggleExample(this)">
+          <span class="example-school-tag output-s">桃源國小</span>
+          <span class="example-card-summary">測驗數據列出本校 vs 全縣平均並標示差距</span>
+          <span class="example-card-chevron">▼</span>
+        </div>
+        <div class="example-card-body">
+          <div class="example-highlight">
+            <div class="example-highlight-label">好在哪裡</div>
+            <div class="example-highlight-text">測驗數據呈現非常完整：不只列出本校通過率，還同時列出全縣平均，並在每個年級旁標示差距（+/-），讓讀者能立刻看出相對表現，而不只是看到孤立的數字。</div>
+          </div>
+          <div class="example-placeholder">📋 段落內容補充中，敬請期待</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- end panel-output -->
+
+<!-- ══════════════════════════════════════════
+     TAB: OUTCOME
+══════════════════════════════════════════ -->
+<div class="tab-panel" id="panel-outcome">
+  <div class="dim-hero outcome-h">
+    <div class="dim-hero-num">03</div>
+    <div>
+      <div class="dim-hero-en">Outcome</div>
+      <div class="dim-hero-zh">成果</div>
+      <div class="dim-hero-q">如果沒有這些投入和行動，學生/教師會跟現在有什麼不同？</div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <div class="section-label outcome-l">怎麼寫</div>
+    <p class="prose">Outcome 需要「有根據」。如果你說「學生的自主學習能力提升了」，你的根據是什麼？是學力測驗的進步？是 PBL 展演中家長和評審的回饋？是非認知能力平台的紀錄趨勢？請把根據一起寫出來。</p>
+    <p class="prose">數字是很好的工具，但也要解釋數字背後的意義。光說「國語通過率從 ＿＿% 提升到 ＿＿%」是不夠的，要加一句：「這代表這批孩子多了 ＿＿ 位達到基本學力標準，主要原因是導入了差異化教學之後……」</p>
+  </div>
+
+  <div class="content-block">
+    <div class="section-label outcome-l">Output / Outcome / Impact 的界線</div>
+    <div class="key-note outcome" style="font-size:.835rem;line-height:2.1;">
+      「辦了 ＿＿ 次 KIST Family 活動」→ <strong>Output</strong><br>
+      「家長透過 KIST Family 學習 SEL，開始在家中使用正向語言，親子關係改善」→ <strong>Outcome</strong><br>
+      「學校因此獲邀在教育部研討會分享家長培力模式」→ <strong>Impact</strong>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <div class="section-label outcome-l">可以放入的內容</div>
+    <div class="table-wrap">
+      <table class="guide-table">
+        <thead><tr><th>類型</th><th>舉例</th></tr></thead>
+        <tbody>
+          <tr><td>學力改變趨勢</td><td>多學年學力檢測通過率變化（配合分析原因）</td></tr>
+          <tr><td>學生人數變化</td><td>招生人數逐年增加（代表家長信任度改變）；外地學生比例的增加</td></tr>
+          <tr><td>學生態度/行為改變</td><td>遲到次數下降；學生主動提問增加；家長對孩子品格行為的反饋</td></tr>
+          <tr><td>教師教學改變</td><td>新進教師摸索期縮短；教師從被動執行轉為主動共備</td></tr>
+          <tr><td>教學文化改變</td><td>觀議課從制度要求變為主動參與；備觀議課文化的建立</td></tr>
+          <tr><td>非認知能力成長</td><td>NCDP 平台數據顯示的品格分數趨勢；學生反思記錄的質性改變</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <div class="section-label outcome-l">各校範例</div>
+    <div class="example-accordion">
+      <div class="example-card">
+        <div class="example-card-header" onclick="toggleExample(this)">
+          <span class="example-school-tag outcome-s">仙草實小</span>
+          <span class="example-card-summary">學生學習圖像四年轉化前後對照表</span>
+          <span class="example-card-chevron">▼</span>
+        </div>
+        <div class="example-card-body">
+          <div class="example-highlight">
+            <div class="example-highlight-label">好在哪裡</div>
+            <div class="example-highlight-text">有一張「學生學習圖像四年轉化對照表」，清楚列出「傳統學習圖像 vs KIST 後」在學習方式、能力特質、學習目標、角色、社會參與五個面向的對比，說明每項轉化的具體好處。讓讀者清楚看見質的改變。</div>
+          </div>
+          <div class="example-placeholder">📋 段落內容補充中，敬請期待</div>
+        </div>
+      </div>
+      <div class="example-card">
+        <div class="example-card-header" onclick="toggleExample(this)">
+          <span class="example-school-tag outcome-s">三民國小</span>
+          <span class="example-card-summary">學生人數成長解讀為家長信任的展現</span>
+          <span class="example-card-chevron">▼</span>
+        </div>
+        <div class="example-card-body">
+          <div class="example-highlight">
+            <div class="example-highlight-label">好在哪裡</div>
+            <div class="example-highlight-text">說明學生人數從轉型第一年的 ＿＿ 人逐年成長到 113 學年的 ＿＿ 人（增幅 +＿＿%），並將這個增長解讀為「家長用人支持」的成果——用可量化的現象，說明親師生信任關係的改變。</div>
+          </div>
+          <div class="example-placeholder">📋 段落內容補充中，敬請期待</div>
+        </div>
+      </div>
+      <div class="example-card">
+        <div class="example-card-header" onclick="toggleExample(this)">
+          <span class="example-school-tag outcome-s">桃源國小</span>
+          <span class="example-card-summary">成績分析加上歸因分析和因應策略</span>
+          <span class="example-card-chevron">▼</span>
+        </div>
+        <div class="example-card-body">
+          <div class="example-highlight">
+            <div class="example-highlight-label">好在哪裡</div>
+            <div class="example-highlight-text">成績分析不只呈現數字，還用「歸因分析」和「因應策略」說明每個科目的成績為什麼是這樣。這種誠實的分析——包括承認哪些地方仍落後——反而比只寫優點更有說服力。</div>
+          </div>
+          <div class="example-placeholder">📋 段落內容補充中，敬請期待</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- end panel-outcome -->
+
+<!-- ══════════════════════════════════════════
+     TAB: IMPACT
+══════════════════════════════════════════ -->
+<div class="tab-panel" id="panel-impact">
+  <div class="dim-hero impact-h">
+    <div class="dim-hero-num">04</div>
+    <div>
+      <div class="dim-hero-en">Impact</div>
+      <div class="dim-hero-zh">影響力</div>
+      <div class="dim-hero-q">因為這間學校的存在和努力，有什麼原本不存在的事情現在發生了？</div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <div class="section-label impact-l">怎麼寫</div>
+    <p class="prose">Impact 的核心是<strong>外部性</strong>：影響到校外的人和事。以下方向都算 Impact：</p>
+    <div class="arrow-list">
+      <div class="arrow-item"><span style="color:var(--impact-color);font-weight:700;flex-shrink:0;">→</span>其他學校到你這裡<strong>參訪學習</strong>（你成為別人的老師了）</div>
+      <div class="arrow-item"><span style="color:var(--impact-color);font-weight:700;flex-shrink:0;">→</span>你的老師或校長被邀請到外部<strong>分享、演講、擔任講師</strong></div>
+      <div class="arrow-item"><span style="color:var(--impact-color);font-weight:700;flex-shrink:0;">→</span>你的學校獲得<strong>媒體報導</strong>（讓更多人知道你的存在和理念）</div>
+      <div class="arrow-item"><span style="color:var(--impact-color);font-weight:700;flex-shrink:0;">→</span>你的做法被其他單位<strong>引用或複製</strong></div>
+      <div class="arrow-item"><span style="color:var(--impact-color);font-weight:700;flex-shrink:0;">→</span>你的學校獲得<strong>外部獎項或認可</strong></div>
+      <div class="arrow-item"><span style="color:var(--impact-color);font-weight:700;flex-shrink:0;">→</span>你的學校<strong>連結了社區</strong>，改變了地方對教育的想像</div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <div class="section-label impact-l">常見錯誤</div>
+    <div class="error-list">
+      <div class="error-item"><span class="error-x">✗</span>把學生競賽獲獎放在 Impact → 學生得獎是教學成效的展現（Outcome），除非得獎讓更多人認識了你的教育模式</div>
+      <div class="error-item"><span class="error-x">✗</span>Impact 欄位留空或只寫一句話 → 這是最能彰顯學校公共價值的地方，值得花時間整理</div>
+      <div class="error-item"><span class="error-x">✗</span>列了很多場參訪或分享，但沒有說明「來者是誰、去了哪裡、分享了什麼主題」 → 讓讀者無法判斷影響力的範圍和深度</div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <div class="section-label impact-l">可以放入的內容</div>
+    <div class="table-wrap">
+      <table class="guide-table">
+        <thead><tr><th>類型</th><th>舉例</th></tr></thead>
+        <tbody>
+          <tr><td>外校參訪紀錄</td><td>接待參訪場次、來訪學校或機構名稱、來訪目的</td></tr>
+          <tr><td>對外分享 / 演講</td><td>教師或校長受邀演講的場次、機構、主題</td></tr>
+          <tr><td>媒體報導</td><td>新聞報導、雜誌專訪、Podcast 等，含日期、媒體名稱、主題</td></tr>
+          <tr><td>外部獎項 / 認可</td><td>教育部獎項、師鐸獎、創新100、媒體素養基地學校等</td></tr>
+          <tr><td>政策或理念推廣</td><td>你的模式被引用進地方教育政策；你的教材被推廣給其他學校</td></tr>
+          <tr><td>社區影響</td><td>學校改變了社區對教育的態度、帶動地方產業</td></tr>
+          <tr><td>跨校合作</td><td>主導或參與跨校共備；為其他學校提供培訓或資源</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <div class="section-label impact-l">各校範例</div>
+    <div class="example-accordion">
+      <div class="example-card">
+        <div class="example-card-header" onclick="toggleExample(this)">
+          <span class="example-school-tag impact-s">仙草實小</span>
+          <span class="example-card-summary">四頁完整的教育合作與參訪活動列表（＿＿+ 筆紀錄）</span>
+          <span class="example-card-chevron">▼</span>
+        </div>
+        <div class="example-card-body">
+          <div class="example-highlight">
+            <div class="example-highlight-label">好在哪裡</div>
+            <div class="example-highlight-text">從 110 到 113 學年共列出超過 ＿＿ 筆紀錄，每筆包含日期、對象、內容，讀者可以清楚看見這間學校從偏鄉小校逐漸成為教育標竿的歷程。完整記錄讓影響力從模糊的感覺變成可以被驗證的事實。</div>
+          </div>
+          <div class="example-placeholder">📋 段落內容補充中，敬請期待</div>
+        </div>
+      </div>
+      <div class="example-card">
+        <div class="example-card-header" onclick="toggleExample(this)">
+          <span class="example-school-tag impact-s">拯民國小</span>
+          <span class="example-card-summary">＿＿ 場對外分享，每場列出日期、地點、受邀者、主題</span>
+          <span class="example-card-chevron">▼</span>
+        </div>
+        <div class="example-card-body">
+          <div class="example-highlight">
+            <div class="example-highlight-label">好在哪裡</div>
+            <div class="example-highlight-text">113 學年度共 ＿＿ 場對外分享，直接列出每場的日期、地點、受邀者、分享主題。讀者能感受到這所學校的教師已經成為 SEL 教育領域的實踐者和傳播者。</div>
+          </div>
+          <div class="example-placeholder">📋 段落內容補充中，敬請期待</div>
+        </div>
+      </div>
+      <div class="example-card">
+        <div class="example-card-header" onclick="toggleExample(this)">
+          <span class="example-school-tag impact-s">峨眉國中</span>
+          <span class="example-card-summary">「全鄉共教」社區連結模式，學校成為地方創生動能</span>
+          <span class="example-card-chevron">▼</span>
+        </div>
+        <div class="example-card-body">
+          <div class="example-highlight">
+            <div class="example-highlight-label">好在哪裡</div>
+            <div class="example-highlight-text">描述了以「全鄉共教」模式串聯社區，讓學校成為地方創生的動能來源，並建立「回饋學校機制」。這種對地方社區的影響，是 Impact 中很重要但常被忽略的面向。</div>
+          </div>
+          <div class="example-placeholder">📋 段落內容補充中，敬請期待</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- end panel-impact -->
+
+</main>
+
+<footer>
+  <strong>KIST 成果報告書平台</strong>　由誠致教育基金會開發與維護
+  <br><span style="font-size:.7rem;margin-top:.4rem;display:block;">本指引版本：2025年5月 / 適用：113學年度及後續學年成果報告書</span>
+</footer>
+
+<script>
+// Tab switching
+function switchTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.iooi-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  const order = ['overview', 'input', 'output', 'outcome', 'impact'];
+  document.querySelectorAll('.iooi-tab')[order.indexOf(id)].classList.add('active');
+  window.scrollTo({ top: document.querySelector('.iooi-strip').offsetTop - 64, behavior: 'smooth' });
+}
+
+// Example accordion
+function toggleExample(header) {
+  header.classList.toggle('open');
+  header.nextElementSibling.classList.toggle('open');
+}
+
+// Handle URL hash on load (e.g. /guide.html#input)
+window.addEventListener('DOMContentLoaded', () => {
+  const hash = window.location.hash.replace('#','');
+  if (['input','output','outcome','impact'].includes(hash)) switchTab(hash);
+});
+</script>
+</body>
+</html>
