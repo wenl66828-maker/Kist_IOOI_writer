@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>誠致教育基金會・活動成果管理平台</title>
+<title>誠致教育基金會・專案成果管理平台</title>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+Antique:wght@300;400;500;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -24,79 +24,112 @@ body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-
 header {
   background: var(--kist-blue); padding: 0 2.5rem;
   display: flex; align-items: center; justify-content: space-between;
-  height: 64px; position: sticky; top: 0; z-index: 200;
+  height: 56px; position: sticky; top: 0; z-index: 200;
 }
 .logo { display: flex; align-items: center; text-decoration: none; }
-.logo-mark { height: 32px; width: auto; display: block; }
-.header-link { font-size: .8rem; color: rgba(255,255,255,.5); text-decoration: none; transition: color .15s; }
+.logo-mark { height: 28px; width: auto; display: block; }
+.header-right { display: flex; align-items: center; gap: 1.5rem; }
+.header-link { font-size: .78rem; color: rgba(255,255,255,.45); text-decoration: none; transition: color .15s; }
 .header-link:hover { color: white; }
 
-/* ── HERO ── */
-.hero {
-  background: var(--kist-blue); padding: 5rem 2.5rem 4.5rem;
-  position: relative; overflow: hidden;
+/* ── INTRO STRIP ── */
+.intro-strip {
+  background: var(--kist-blue);
+  padding: 1.75rem 2.5rem 2rem;
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 2rem;
 }
-.hero::before {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(ellipse at 80% 50%, rgba(123,175,212,.12) 0%, transparent 60%);
-  pointer-events: none;
+.intro-strip h1 {
+  font-size: 1.5rem; font-weight: 700; color: white;
+  line-height: 1.3; letter-spacing: .02em;
 }
-.hero-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; position: relative; }
-.hero-text h1 { font-size: 2.5rem; font-weight: 900; line-height: 1.2; color: white; margin-bottom: 1rem; letter-spacing: .02em; }
-.hero-text h1 span { color: #7BAFD4; }
-.hero-text p { color: rgba(255,255,255,.6); font-size: .95rem; line-height: 1.85; font-weight: 300; margin-bottom: 1.75rem; }
-.hero-tags { display: flex; flex-wrap: wrap; gap: .5rem; }
-.hero-tag { font-family: var(--mono); font-size: .65rem; padding: .25rem .65rem; border-radius: 2px; letter-spacing: .08em; text-transform: uppercase; border: 1px solid rgba(255,255,255,.2); color: rgba(255,255,255,.45); }
-
-/* Hero right: flow card */
-.hero-flow { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); border-radius: 12px; padding: 1.75rem; display: flex; flex-direction: column; gap: .5rem; }
-.flow-step { display: flex; align-items: flex-start; gap: 1rem; padding: .875rem 1rem; border-radius: 8px; transition: background .15s; }
-.flow-step:hover { background: rgba(255,255,255,.07); }
-.flow-num { width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: .7rem; font-weight: 500; border: 1px solid rgba(255,255,255,.25); color: rgba(255,255,255,.5); margin-top: .1rem; }
-.flow-num.active { background: var(--accent); border-color: var(--accent); color: white; }
-.flow-info { flex: 1; }
-.flow-title { font-size: .875rem; font-weight: 700; color: white; margin-bottom: .15rem; }
-.flow-desc { font-size: .75rem; color: rgba(255,255,255,.5); font-weight: 300; }
-.flow-arrow { text-align: center; color: rgba(255,255,255,.25); font-size: .75rem; padding: .1rem 0; }
+.intro-strip h1 span { color: #7BAFD4; }
+.intro-strip p {
+  font-size: .82rem; color: rgba(255,255,255,.5);
+  font-weight: 300; margin-top: .35rem; max-width: 420px; line-height: 1.7;
+}
+.flow-pills { display: flex; align-items: center; gap: .5rem; flex-shrink: 0; }
+.flow-pill {
+  background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12);
+  border-radius: 20px; padding: .35rem .875rem;
+  font-size: .75rem; color: rgba(255,255,255,.55); font-weight: 300;
+  display: flex; align-items: center; gap: .4rem; white-space: nowrap;
+}
+.flow-pill.active { background: rgba(255,255,255,.15); color: white; font-weight: 500; }
+.flow-arrow { color: rgba(255,255,255,.2); font-size: .7rem; }
 
 /* ── MAIN ── */
-main { max-width: 1100px; margin: 0 auto; padding: 3.5rem 2.5rem 6rem; }
+main { max-width: 1000px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+/* ── SECTION LABEL ── */
+.section-label {
+  font-family: var(--mono); font-size: .65rem; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--ink-faint);
+  margin-bottom: 1.25rem; display: flex; align-items: center; gap: .75rem;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
 /* ── BLOCKS ── */
-.blocks-label { font-family: var(--mono); font-size: .68rem; letter-spacing: .15em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 2rem; display: flex; align-items: center; gap: .75rem; }
-.blocks-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.blocks-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
 
-.blocks-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
-
-.block-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; transition: border-color .2s, transform .15s; cursor: pointer; text-decoration: none; display: flex; flex-direction: column; }
-.block-card:hover { transform: translateY(-3px); }
+.block-card {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: 10px; overflow: hidden;
+  transition: border-color .2s, transform .15s, box-shadow .2s;
+  cursor: pointer; text-decoration: none; display: flex; flex-direction: column;
+}
+.block-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,.06); }
+.block-card.purple { border-top: 3px solid var(--purple); }
 .block-card.purple:hover { border-color: var(--purple); }
+.block-card.teal { border-top: 3px solid var(--teal); }
 .block-card.teal:hover { border-color: var(--teal); }
+.block-card.amber { border-top: 3px solid var(--amber); }
 .block-card.amber:hover { border-color: var(--amber); }
 
-/* accent bar on top */
-.block-card.purple { border-top: 3px solid var(--purple); }
-.block-card.teal { border-top: 3px solid var(--teal); }
-.block-card.amber { border-top: 3px solid var(--amber); }
+/* card header row: icon + step + title */
+.block-header {
+  padding: 1.25rem 1.25rem .875rem;
+  display: flex; align-items: center; gap: .875rem;
+}
+.block-icon {
+  font-size: 1.4rem; flex-shrink: 0; width: 38px; height: 38px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 8px;
+}
+.purple .block-icon { background: var(--purple-light); }
+.teal .block-icon { background: var(--teal-light); }
+.amber .block-icon { background: var(--amber-light); }
+.block-header-text { flex: 1; min-width: 0; }
+.block-step {
+  font-family: var(--mono); font-size: .6rem; letter-spacing: .1em;
+  text-transform: uppercase; margin-bottom: .2rem;
+}
+.purple .block-step { color: var(--purple); }
+.teal .block-step { color: var(--teal); }
+.amber .block-step { color: var(--amber); }
+.block-title { font-size: .95rem; font-weight: 700; color: var(--ink); line-height: 1.25; }
 
-.block-header { padding: 1.75rem 1.75rem 1.25rem; flex: 1; }
-.block-icon { font-size: 1.75rem; margin-bottom: 1rem; }
-.block-tag { font-family: var(--mono); font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; padding: .2rem .55rem; border-radius: 2px; margin-bottom: .75rem; display: inline-block; }
-.purple .block-tag { background: var(--purple-light); color: var(--purple); }
-.teal .block-tag { background: var(--teal-light); color: var(--teal); }
-.amber .block-tag { background: var(--amber-light); color: var(--amber); }
-.block-title { font-size: 1.2rem; font-weight: 900; letter-spacing: .02em; margin-bottom: .625rem; color: var(--ink); line-height: 1.25; }
-.block-desc { font-size: .85rem; color: var(--ink-light); font-weight: 300; line-height: 1.75; }
+.block-desc {
+  padding: 0 1.25rem .875rem;
+  font-size: .8rem; color: var(--ink-light); font-weight: 300; line-height: 1.7;
+  border-bottom: 1px solid var(--surface2);
+}
 
-.block-features { padding: 1.25rem 1.75rem; border-top: 1px solid var(--surface2); display: flex; flex-direction: column; gap: .5rem; }
-.block-feature { display: flex; align-items: flex-start; gap: .625rem; font-size: .8rem; color: var(--ink-light); font-weight: 300; line-height: 1.6; }
-.feature-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: .45rem; }
+.block-features { padding: .875rem 1.25rem; display: flex; flex-direction: column; gap: .45rem; flex: 1; }
+.block-feature {
+  display: flex; align-items: flex-start; gap: .5rem;
+  font-size: .77rem; color: var(--ink-faint); font-weight: 300; line-height: 1.55;
+}
+.feature-dot { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; margin-top: .55rem; }
 .purple .feature-dot { background: var(--purple); }
 .teal .feature-dot { background: var(--teal); }
 .amber .feature-dot { background: var(--amber); }
 
-.block-footer { padding: .875rem 1.75rem 1.25rem; display: flex; align-items: center; justify-content: space-between; }
-.block-cta { font-size: .8rem; font-weight: 700; display: flex; align-items: center; gap: .35rem; }
+.block-footer {
+  padding: .75rem 1.25rem; display: flex; align-items: center; justify-content: space-between;
+  border-top: 1px solid var(--surface2);
+}
+.block-cta { font-size: .78rem; font-weight: 500; }
 .purple .block-cta { color: var(--purple); }
 .teal .block-cta { color: var(--teal); }
 .amber .block-cta { color: var(--amber); }
@@ -104,43 +137,20 @@ main { max-width: 1100px; margin: 0 auto; padding: 3.5rem 2.5rem 6rem; }
 .block-status.live { color: var(--teal); }
 .block-status.wip { color: var(--amber); }
 
-/* ── ORG MODAL ── */
-.modal-overlay { display: none; position: fixed; inset: 0; z-index: 300; background: rgba(26,23,20,.5); backdrop-filter: blur(3px); align-items: center; justify-content: center; }
-.modal-overlay.visible { display: flex; }
-.modal { background: var(--surface); border-radius: 12px; width: min(480px, 92vw); box-shadow: 0 24px 80px rgba(0,0,0,.18); overflow: hidden; }
-.modal-header { background: var(--kist-blue); padding: 1.5rem 1.75rem; }
-.modal-header h2 { font-size: 1rem; font-weight: 700; color: white; margin-bottom: .25rem; }
-.modal-header p { font-size: .8rem; color: rgba(255,255,255,.55); font-weight: 300; }
-.modal-body { padding: 1.75rem; }
-.modal-field { display: flex; flex-direction: column; gap: .4rem; margin-bottom: 1.25rem; }
-.modal-field label { font-size: .78rem; font-weight: 500; color: var(--ink-light); }
-.modal-field input {
-  background: var(--bg); border: 1.5px solid var(--border); border-radius: 6px;
-  padding: .75rem 1rem; font-family: var(--sans); font-size: 1rem; color: var(--ink);
-  outline: none; transition: border-color .15s; letter-spacing: .1em;
-}
-.modal-field input:focus { border-color: var(--kist-blue); }
-.modal-hint { font-size: .75rem; color: var(--ink-faint); margin-top: -.5rem; margin-bottom: 1.25rem; }
-.modal-error { font-size: .8rem; color: var(--accent); margin-bottom: .875rem; display: none; }
-.modal-error.visible { display: block; }
-.modal-btn { width: 100%; background: var(--kist-blue); color: white; border: none; border-radius: 6px; padding: .875rem; font-family: var(--sans); font-size: .95rem; font-weight: 700; cursor: pointer; transition: opacity .15s; }
-.modal-btn:hover { opacity: .88; }
-.modal-close-row { text-align: center; margin-top: 1rem; }
-.modal-cancel { background: none; border: none; font-family: var(--sans); font-size: .8rem; color: var(--ink-faint); cursor: pointer; }
-.modal-cancel:hover { color: var(--ink); }
-
 /* ── FOOTER ── */
-footer { background: var(--kist-blue); color: rgba(255,255,255,.35); padding: 2rem 2.5rem; text-align: center; font-size: .78rem; font-weight: 300; }
+footer {
+  background: var(--kist-blue); color: rgba(255,255,255,.35);
+  padding: 1.5rem 2.5rem; text-align: center;
+  font-size: .75rem; font-weight: 300;
+}
 footer strong { color: white; font-weight: 500; }
 
-@media (max-width: 900px) {
+@media (max-width: 760px) {
   .blocks-grid { grid-template-columns: 1fr; }
-  .hero-inner { grid-template-columns: 1fr; gap: 2rem; }
-  .hero-flow { display: none; }
-  .hero { padding: 3.5rem 1.5rem 3rem; }
-  .hero-text h1 { font-size: 1.8rem; }
-  main { padding: 2.5rem 1.5rem 4rem; }
+  .intro-strip { flex-direction: column; align-items: flex-start; padding: 1.5rem; }
+  .flow-pills { display: none; }
   header { padding: 0 1.5rem; }
+  main { padding: 2rem 1.5rem 4rem; }
 }
 </style>
 </head>
@@ -148,67 +158,43 @@ footer strong { color: white; font-weight: 500; }
 
 <header>
   <a class="logo" href="/"><img class="logo-mark" src="/kist_logo.png" alt="KIST"></a>
-  <a href="#" class="header-link">誠致教育基金會</a>
+  <div class="header-right">
+    <a href="#" class="header-link">誠致教育基金會</a>
+  </div>
 </header>
 
-<!-- Hero -->
-<div class="hero">
-  <div class="hero-inner">
-    <div class="hero-text">
-      <h1>活動做完了，<br><span>成果說清楚</span></h1>
-      <p>上傳活動素材，AI 幫你整理成完整紀錄。想發貼文、寫報告、做勸募說明，從同一份資料一鍵產出。</p>
-      <div class="hero-tags">
-        <span class="hero-tag">IOOI 框架</span>
-        <span class="hero-tag">AI 輔助</span>
-        <span class="hero-tag">多格式輸出</span>
-        <span class="hero-tag">誠致教育基金會內部工具</span>
-      </div>
-    </div>
-    <div class="hero-flow">
-      <div class="flow-step">
-        <div class="flow-num active">1</div>
-        <div class="flow-info">
-          <div class="flow-title">上傳素材</div>
-          <div class="flow-desc">計畫書、回饋表單、支出明細等，AI 自動整理</div>
-        </div>
-      </div>
-      <div class="flow-arrow">↓</div>
-      <div class="flow-step">
-        <div class="flow-num">2</div>
-        <div class="flow-info">
-          <div class="flow-title">建立活動資料庫</div>
-          <div class="flow-desc">AI 依 IOOI 框架整理，並追問補充細節</div>
-        </div>
-      </div>
-      <div class="flow-arrow">↓</div>
-      <div class="flow-step">
-        <div class="flow-num">3</div>
-        <div class="flow-info">
-          <div class="flow-title">選格式，產出內容</div>
-          <div class="flow-desc">貼文、報告書、勸募說明，一份資料多種輸出</div>
-        </div>
-      </div>
-    </div>
+<div class="intro-strip">
+  <div>
+    <h1>專案做完了，<br><span>成果說清楚</span></h1>
+    <p>上傳專案素材，AI 整理成完整紀錄。想發貼文、寫報告、做勸募說明，從同一份資料一鍵產出。</p>
+  </div>
+  <div class="flow-pills">
+    <div class="flow-pill active">📁 記錄專案成果</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-pill">✍️ 產出內容</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-pill">📖 書寫指引</div>
   </div>
 </div>
 
 <main>
-  <div class="blocks-label">功能模組</div>
+  <div class="section-label">功能模組</div>
   <div class="blocks-grid">
 
-    <!-- 記錄活動成果 -->
     <a class="block-card purple" href="/chatbot.html">
       <div class="block-header">
         <div class="block-icon">📁</div>
-        <div class="block-tag">Step 1</div>
-        <div class="block-title">記錄活動成果</div>
-        <div class="block-desc">上傳活動相關素材，AI 幫你把零散的資料整理成有 IOOI 邏輯的完整紀錄，並追問補充細節。</div>
+        <div class="block-header-text">
+          <div class="block-step">Step 1</div>
+          <div class="block-title">記錄專案成果</div>
+        </div>
       </div>
+      <div class="block-desc">上傳專案素材，AI 整理成有 IOOI 邏輯的完整紀錄，並追問補充細節。</div>
       <div class="block-features">
-        <div class="block-feature"><div class="feature-dot"></div>上傳專案計畫書、回饋表單、支出明細等各種格式</div>
+        <div class="block-feature"><div class="feature-dot"></div>上傳計畫書、回饋表單、支出明細等</div>
         <div class="block-feature"><div class="feature-dot"></div>AI 自動解析並整理成 IOOI 結構</div>
-        <div class="block-feature"><div class="feature-dot"></div>AI 追問補充細節，讓紀錄更完整</div>
-        <div class="block-feature"><div class="feature-dot"></div>儲存成活動資料庫，供後續使用</div>
+        <div class="block-feature"><div class="feature-dot"></div>AI 追問補充，讓紀錄更完整</div>
+        <div class="block-feature"><div class="feature-dot"></div>儲存成專案資料庫供後續使用</div>
       </div>
       <div class="block-footer">
         <div class="block-cta">開始記錄 →</div>
@@ -216,18 +202,19 @@ footer strong { color: white; font-weight: 500; }
       </div>
     </a>
 
-    <!-- 產出內容 -->
     <a class="block-card teal" href="/output.html">
       <div class="block-header">
         <div class="block-icon">✍️</div>
-        <div class="block-tag">Step 2</div>
-        <div class="block-title">產出內容</div>
-        <div class="block-desc">從資料庫選取活動紀錄，選擇要產出的格式，AI 根據完整資料生成初稿，你再調整就好。</div>
+        <div class="block-header-text">
+          <div class="block-step">Step 2</div>
+          <div class="block-title">產出內容</div>
+        </div>
       </div>
+      <div class="block-desc">從資料庫選取專案紀錄，選格式，AI 根據完整資料生成初稿。</div>
       <div class="block-features">
-        <div class="block-feature"><div class="feature-dot"></div>從資料庫選擇要使用的活動</div>
-        <div class="block-feature"><div class="feature-dot"></div>選擇格式：貼文、報告書、勸募說明等</div>
-        <div class="block-feature"><div class="feature-dot"></div>AI 產出初稿，可直接編輯調整</div>
+        <div class="block-feature"><div class="feature-dot"></div>選擇要使用的專案紀錄</div>
+        <div class="block-feature"><div class="feature-dot"></div>選格式：貼文、報告、勸募說明等</div>
+        <div class="block-feature"><div class="feature-dot"></div>AI 產出初稿，可直接編輯</div>
         <div class="block-feature"><div class="feature-dot"></div>匯出或複製使用</div>
       </div>
       <div class="block-footer">
@@ -236,16 +223,17 @@ footer strong { color: white; font-weight: 500; }
       </div>
     </a>
 
-    <!-- 書寫指引 -->
     <a class="block-card amber" href="/guide.html">
       <div class="block-header">
         <div class="block-icon">📖</div>
-        <div class="block-tag">參考資源</div>
-        <div class="block-title">書寫指引</div>
-        <div class="block-desc">不確定什麼內容要放哪裡？這裡有 IOOI 各維度的說明、常見錯誤提醒，以及各組織的優秀範例。</div>
+        <div class="block-header-text">
+          <div class="block-step">參考資源</div>
+          <div class="block-title">書寫指引</div>
+        </div>
       </div>
+      <div class="block-desc">不確定 IOOI 怎麼寫？各維度說明、常見錯誤、優秀範例都在這裡。</div>
       <div class="block-features">
-        <div class="block-feature"><div class="feature-dot"></div>Input、Output、Outcome、Impact 各維度說明</div>
+        <div class="block-feature"><div class="feature-dot"></div>Input / Output / Outcome / Impact 說明</div>
         <div class="block-feature"><div class="feature-dot"></div>最容易混淆的情境對照表</div>
         <div class="block-feature"><div class="feature-dot"></div>各組織優秀段落範例（含解析）</div>
         <div class="block-feature"><div class="feature-dot"></div>整體撰寫建議</div>
@@ -260,7 +248,7 @@ footer strong { color: white; font-weight: 500; }
 </main>
 
 <footer>
-  <strong>誠致教育基金會・活動成果管理平台</strong>　內部使用工具
+  <strong>誠致教育基金會・專案成果管理平台</strong>
 </footer>
 
 </body>
