@@ -33,8 +33,8 @@ header{background:var(--kist-blue);padding:0 2rem;display:flex;align-items:cente
 .page-layout{display:grid;grid-template-columns:400px 1fr;flex:1;min-height:0;overflow:hidden;}
 
 /* LEFT */
-.left-panel{display:flex;flex-direction:column;border-right:1px solid var(--border);overflow:hidden;background:var(--surface);}
-.left-scroll{flex:1;overflow-y:auto;padding:1.5rem;}
+.left-panel{display:flex;flex-direction:column;border-right:1px solid var(--border);overflow:hidden;background:var(--surface);height:calc(100vh - 60px);position:sticky;top:60px;}
+.left-scroll{flex:1;overflow-y:auto;padding:1.5rem;min-height:0;}
 
 /* STEP INDICATOR */
 .step-row{display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem;}
@@ -77,11 +77,14 @@ header{background:var(--kist-blue);padding:0 2rem;display:flex;align-items:cente
 
 /* FORMAT CARDS */
 .format-grid{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem;}
-.format-card{background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:.75rem .875rem;cursor:pointer;transition:all .15s;}
+.format-card{background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:.75rem .875rem;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:.75rem;}
 .format-card:hover{border-color:var(--purple);}
 .format-card.selected{border-color:var(--purple);background:var(--purple-light);}
-.format-card-name{font-size:.83rem;font-weight:700;margin-bottom:.15rem;}
-.format-card-desc{font-size:.7rem;color:var(--ink-light);font-weight:300;}
+.format-card-icon{width:28px;height:28px;border-radius:6px;background:var(--surface2);flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:.9rem;}
+.format-card-icon img{width:100%;height:100%;object-fit:cover;}
+.format-card-body{flex:1;min-width:0;}
+.format-card-name{font-size:.83rem;font-weight:700;margin-bottom:.1rem;}
+.format-card-desc{font-size:.68rem;color:var(--ink-light);font-weight:300;}
 .format-card.selected .format-card-desc{color:var(--purple);}
 
 /* CUSTOM FORMAT */
@@ -190,15 +193,22 @@ header{background:var(--kist-blue);padding:0 2rem;display:flex;align-items:cente
   <div class="left-panel">
     <div class="left-scroll">
 
-      <!-- Step 1: 選紀錄 -->
+      <!-- Step 1: 選專案紀錄 -->
       <div id="s1">
         <div class="step-row">
           <div class="step-badge active" id="sb1">1</div>
-          <div class="step-label">選擇活動紀錄</div>
+          <div class="step-label">選擇專案紀錄</div>
         </div>
-        <div class="search-wrap">
-          <span class="search-icon">🔍</span>
-          <input type="text" id="recSearch" placeholder="搜尋活動名稱…" oninput="renderRecords()">
+        <div style="display:flex;gap:.5rem;margin-bottom:1rem;">
+          <div class="search-wrap" style="flex:1;margin-bottom:0;">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="recSearch" placeholder="搜尋專案名稱…" oninput="renderRecords()">
+          </div>
+          <select id="recSort" onchange="renderRecords()" style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:.55rem .75rem;font-family:var(--sans);font-size:.78rem;color:var(--ink);outline:none;cursor:pointer;flex-shrink:0;">
+            <option value="newest">最新</option>
+            <option value="oldest">最早</option>
+            <option value="name">名稱</option>
+          </select>
         </div>
         <div class="record-list" id="recList"></div>
       </div>
@@ -215,24 +225,18 @@ header{background:var(--kist-blue);padding:0 2rem;display:flex;align-items:cente
           <div class="step-label">選擇輸出格式</div>
         </div>
 
-        <!-- Toggle -->
-        <div class="fmt-toggle">
-          <button class="fmt-toggle-btn active" id="togglePreset" onclick="switchFmtTab('preset')">預設格式</button>
-          <button class="fmt-toggle-btn" id="toggleCustom" onclick="switchFmtTab('custom')">自訂 / 自由描述</button>
+        <!-- 我的格式（自訂）放在最上面 -->
+        <div id="customSection">
+          <div id="customList"></div>
+          <button class="add-custom-btn" onclick="openModal()">＋ 新增自訂格式</button>
         </div>
 
         <!-- 預設格式 -->
-        <div id="tabPreset">
-          <div class="format-grid" id="presetGrid"></div>
-        </div>
+        <div class="format-grid" id="presetGrid"></div>
 
-        <!-- 自訂 + 自由 -->
-        <div id="tabCustom" style="display:none;">
-          <div id="customList"></div>
-          <button class="add-custom-btn" onclick="openModal()">＋ 新增自訂格式</button>
-          <div class="free-label">或直接描述需求</div>
-          <textarea class="free-textarea" id="freePrompt" placeholder="例：寫一份給企業贊助方的 300 字成果摘要，語氣正式，強調學生改變…" oninput="updateGenBtn()"></textarea>
-        </div>
+        <!-- 自由描述 -->
+        <div class="free-label" style="margin-top:.5rem;">或直接描述需求</div>
+        <textarea class="free-textarea" id="freePrompt" placeholder="例：寫一份給企業贊助方的 300 字成果摘要，語氣正式，強調學生改變…" oninput="updateGenBtn()"></textarea>
       </div>
 
     </div>
@@ -322,35 +326,22 @@ const RK='kist_records', DK='kist_drafts', CK='kist_custom_formats';
 let records=[], selIdxs=new Set(), selFmt=null, curOutput='', curFmtLabel='', fmtTab='preset';
 
 const PRESETS=[
-  {id:'fb',name:'社群宣傳 FB 貼文',desc:'活動報名、回顧或招募，給粉專追蹤者看',
-   prompt:`你是誠致教育基金會的社群媒體撰稿人。請根據以下活動 IOOI 資料，撰寫一篇適合發布在 Facebook 粉專的貼文。語氣溫暖有人情味，可使用 emoji，約 300-400 字，結尾加 2-3 個 hashtag。讀者是關心教育的粉專追蹤者。`},
-  {id:'line',name:'社群宣傳 LINE 群組',desc:'給曾參與 KIST 活動的學伴、實習生等',
-   prompt:`你是誠致教育基金會的活動推廣撰稿人。請根據以下活動 IOOI 資料，撰寫一則適合發送到 LINE 群組的訊息。語氣像朋友轉傳，簡潔有力，約 150-250 字。讀者是曾參與 KIST 相關活動的人。`},
-  {id:'email',name:'社群宣傳 Email',desc:'給訂閱電子報或參與過活動的讀者',
-   prompt:`你是誠致教育基金會的電子報撰稿人。請根據以下活動 IOOI 資料，撰寫一封活動宣傳 Email 的正文（不含主旨）。語氣專業但不生硬，約 400-500 字，包含活動亮點、主要資訊、行動呼籲。`},
-  {id:'web',name:'官網文章（KIST 大小事）',desc:'給捐款人或對 KIST 有興趣的社會大眾',
-   prompt:`你是誠致教育基金會的官網編輯。請根據以下活動 IOOI 資料，撰寫一篇適合在官網「KIST 大小事」發布的文章。語氣清楚易懂，約 600-800 字，有小標分段。遇到 KIST 術語（SEL、PBL、K Camp 等）第一次出現時加括號說明。讀者是捐款人和社會大眾。`},
-  {id:'newsletter',name:'電子報',desc:'給訂閱電子報的長期支持者',
-   prompt:`你是誠致教育基金會的電子報編輯。請根據以下活動 IOOI 資料，撰寫一則電子報的活動成果報導。語氣有溫度有故事感，約 400-600 字，有導語和數據亮點。`},
-  {id:'impact',name:'公益報告',desc:'給捐款人和合作貴人看的成果報告',
-   prompt:`你是誠致教育基金會的公益報告撰稿人。請根據以下活動 IOOI 資料，撰寫一段適合收錄在公益報告中的成果說明。語氣正式有說服力，約 500-700 字，依 IOOI 邏輯呈現，有數據支撐。遇到術語要加括號說明。讀者是捐款人和合作貴人。`},
-  {id:'donor',name:'捐款人報告',desc:'給大額捐款人的專案進展報告',
-   prompt:`你是誠致教育基金會的捐款人關係撰稿人。請根據以下活動 IOOI 資料，撰寫一份給指定捐款人的專案進展報告段落。語氣正式感謝有責信感，約 600-800 字，說明資金用途、執行成果、對受益者的改變、後續計畫。遇到術語要解釋。讀者是大額捐款人，重視透明度和具體影響力。`},
-  {id:'school',name:'學校成果報告書',desc:'依 IOOI 框架，給贊助方的年度成果報告',
-   prompt:`你是一位資深的 KIST 學年成果報告書撰稿顧問，精通 IOOI 評估框架。請根據以下活動資料，撰寫一份完整的 KIST 學校成果報告書段落。
-
-語氣：正式、有說服力、誠懇
-格式：依 Input（投入）、Output（產出）、Outcome（成果）、Impact（影響力）四段呈現，各段 200-400 字
-
-IOOI 框架：
-- Input：資源和條件（經費、人力、培訓系統、外部合作）
-- Output：可量化的執行成果（場次、堂次、人次）
-- Outcome：學生、教師、家長產生的改變（需有數據或具體佐證）
-- Impact：對外部世界的影響（外校參訪、媒體報導、社區改變）
-
-遇到以下術語第一次出現時加括號說明：KIST→KIST（KIPP Inspired Schools in Taiwan）、SEL→SEL（Social Emotional Learning，社會情緒學習）、PBL→PBL（Project-Based Learning，專題式學習）、K Camp→K Camp（KIST 聯盟為新進教師舉辦的暑期研習）、GBF→GBF（Get Better Faster，嚴謹教學架構）、KIST Family→KIST Family（學校定期為家長辦理的成長社群）
-
-讀者：贊助方、教育主管機關、政策倡議者——不一定熟悉教育現場術語`}
+  {id:'fb',icon:'📘',name:'社群宣傳 FB 貼文',desc:'活動報名、回顧或招募，給粉專追蹤者看',
+   prompt:`你是誠致教育基金會的社群媒體撰稿人。請根據以下專案 IOOI 資料，撰寫一篇適合發布在 Facebook 粉專的貼文。語氣溫暖有人情味，可使用 emoji，約 300-400 字，結尾加 2-3 個 hashtag。讀者是關心教育的粉專追蹤者。`},
+  {id:'line',icon:'💬',name:'社群宣傳 LINE 群組',desc:'給曾參與 KIST 活動的學伴、實習生等',
+   prompt:`你是誠致教育基金會的活動推廣撰稿人。請根據以下專案 IOOI 資料，撰寫一則適合發送到 LINE 群組的訊息。語氣像朋友轉傳，簡潔有力，約 150-250 字。讀者是曾參與 KIST 相關活動的人。`},
+  {id:'email',icon:'📧',name:'社群宣傳 Email',desc:'給訂閱電子報或參與過活動的讀者',
+   prompt:`你是誠致教育基金會的電子報撰稿人。請根據以下專案 IOOI 資料，撰寫一封活動宣傳 Email 的正文（不含主旨）。語氣專業但不生硬，約 400-500 字，包含活動亮點、主要資訊、行動呼籲。`},
+  {id:'web',icon:'🌐',name:'官網文章（KIST 大小事）',desc:'給捐款人或對 KIST 有興趣的社會大眾',
+   prompt:`你是誠致教育基金會的官網編輯。請根據以下專案 IOOI 資料，撰寫一篇適合在官網「KIST 大小事」發布的文章。語氣清楚易懂，約 600-800 字，有小標分段。遇到 KIST 術語（SEL、PBL、K Camp 等）第一次出現時加括號說明。讀者是捐款人和社會大眾。`},
+  {id:'newsletter',icon:'📰',name:'電子報',desc:'給訂閱電子報的長期支持者',
+   prompt:`你是誠致教育基金會的電子報編輯。請根據以下專案 IOOI 資料，撰寫一則電子報的專案成果報導。語氣有溫度有故事感，約 400-600 字，有導語和數據亮點。`},
+  {id:'impact',icon:'📊',name:'公益報告',desc:'給捐款人和合作貴人看的成果報告',
+   prompt:`你是誠致教育基金會的公益報告撰稿人。請根據以下專案 IOOI 資料，撰寫一段適合收錄在公益報告中的成果說明。語氣正式有說服力，約 500-700 字，依 IOOI 邏輯呈現，有數據支撐。遇到術語要加括號說明。讀者是捐款人和合作貴人。`},
+  {id:'donor',icon:'🤝',name:'捐款人報告',desc:'給大額捐款人的專案進展報告',
+   prompt:`你是誠致教育基金會的捐款人關係撰稿人。請根據以下專案 IOOI 資料，撰寫一份給指定捐款人的專案進展報告段落。語氣正式感謝有責信感，約 600-800 字，說明資金用途、執行成果、對受益者的改變、後續計畫。遇到術語要解釋。讀者是大額捐款人，重視透明度和具體影響力。`},
+  {id:'school',icon:'🏫',name:'學校成果報告書',desc:'依 IOOI 框架，給贊助方的年度成果報告',
+   prompt:`你是一位資深的 KIST 學年成果報告書撰稿顧問，精通 IOOI 評估框架。請根據以下專案資料，撰寫一份完整的 KIST 學校成果報告書段落。語氣正式有說服力，依 Input（投入）、Output（產出）、Outcome（成果）、Impact（影響力）四段呈現，各段 200-400 字。遇到術語第一次出現時加括號說明：KIST→KIST（KIPP Inspired Schools in Taiwan）、SEL→SEL（Social Emotional Learning，社會情緒學習）、PBL→PBL（Project-Based Learning，專題式學習）。讀者是贊助方、教育主管機關、政策倡議者。`}
 ];
 
 function init(){
@@ -364,10 +355,13 @@ function init(){
 // ── Step 1 ──
 function renderRecords(){
   const q=document.getElementById('recSearch').value.toLowerCase();
-  const filtered=records.filter(r=>!q||(r.name||'').toLowerCase().includes(q));
+  const sort=document.getElementById('recSort').value;
+  let filtered=records.filter(r=>!q||(r.name||'').toLowerCase().includes(q));
+  if(sort==='name') filtered=[...filtered].sort((a,b)=>(a.name||'').localeCompare(b.name||''));
+  else if(sort==='oldest') filtered=[...records.filter(r=>!q||(r.name||'').toLowerCase().includes(q))].reverse();
   const list=document.getElementById('recList');
   if(!filtered.length){
-    list.innerHTML=`<div style="text-align:center;padding:1.5rem;color:var(--ink-faint);font-size:.78rem;">${q?'找不到符合的紀錄':'還沒有任何活動紀錄。<a href="/chatbot.html" style="color:var(--purple);">先去記錄活動成果</a>'}</div>`;
+    list.innerHTML=`<div style="text-align:center;padding:1.5rem;color:var(--ink-faint);font-size:.78rem;">${q?'找不到符合的專案':'還沒有任何專案紀錄。<a href="/chatbot.html" style="color:var(--purple);">先去記錄專案成果</a>'}</div>`;
     return;
   }
   list.innerHTML=filtered.map(r=>{
@@ -375,7 +369,7 @@ function renderRecords(){
     return `<div class="record-item ${sel?'selected':''}" onclick="toggleRec(${i})">
       <div class="rec-check">${sel?'✓':''}</div>
       <div class="rec-info">
-        <div class="rec-name">${r.name||'未命名活動'}</div>
+        <div class="rec-name">${r.name||'未命名專案'}</div>
         <div class="rec-meta">${[r.date,r.location,r.owner].filter(Boolean).join('・')}</div>
       </div>
     </div>`;
@@ -386,7 +380,7 @@ function toggleRec(i){ selIdxs.has(i)?selIdxs.delete(i):selIdxs.add(i); renderRe
 
 function updateS1Footer(){
   const n=selIdxs.size;
-  document.getElementById('selCount').textContent=n?`已選取 ${n} 筆紀錄`:'';
+  document.getElementById('selCount').textContent=n?`已選取 ${n} 筆專案紀錄`:'';
   document.getElementById('nextBtn').disabled=n===0;
 }
 
@@ -409,20 +403,14 @@ function backToS1(){
 }
 
 // ── Step 2 ──
-function switchFmtTab(tab){
-  fmtTab=tab;
-  document.getElementById('togglePreset').classList.toggle('active',tab==='preset');
-  document.getElementById('toggleCustom').classList.toggle('active',tab==='custom');
-  document.getElementById('tabPreset').style.display=tab==='preset'?'block':'none';
-  document.getElementById('tabCustom').style.display=tab==='custom'?'block':'none';
-  updateGenBtn();
-}
-
 function renderPresets(){
   document.getElementById('presetGrid').innerHTML=PRESETS.map(f=>`
     <div class="format-card ${selFmt?.id===f.id?'selected':''}" onclick="pickFmt('preset','${f.id}')">
-      <div class="format-card-name">${f.name}</div>
-      <div class="format-card-desc">${f.desc}</div>
+      <div class="format-card-icon">${f.icon}</div>
+      <div class="format-card-body">
+        <div class="format-card-name">${f.name}</div>
+        <div class="format-card-desc">${f.desc}</div>
+      </div>
     </div>`).join('');
 }
 
@@ -444,7 +432,7 @@ function pickFmt(type,id){
 
 function updateGenBtn(){
   const free=document.getElementById('freePrompt')?.value.trim();
-  document.getElementById('genBtn').disabled=!(selFmt||(fmtTab==='custom'&&free));
+  document.getElementById('genBtn').disabled=!(selFmt||free);
 }
 
 // ── Generate ──
@@ -466,7 +454,7 @@ Impact 影響力：${d.impact?.content||'（無資料）'}`;
   const fmtPrompt=selFmt?.prompt||'';
   const example=selFmt?.example?`\n\n以下是一個寫得好的參考範例，請參考它的風格和語氣：\n\n${selFmt.example}`:'';
   const freeInstr=free?`\n\n用戶額外指示：${free}`:'';
-  const full=`${fmtPrompt}${example}${freeInstr}\n\n以下是活動 IOOI 資料：\n\n${data}\n\n請直接產出內容，不要加前言。使用繁體中文。`;
+  const full=`${fmtPrompt}${example}${freeInstr}\n\n以下是專案 IOOI 資料：\n\n${data}\n\n請直接產出內容，不要加前言。使用繁體中文。`;
 
   document.getElementById('outPlaceholder').style.display='none';
   document.getElementById('outEditor').style.display='none';
