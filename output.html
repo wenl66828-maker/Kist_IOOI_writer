@@ -225,18 +225,24 @@ header{background:var(--kist-blue);padding:0 2rem;display:flex;align-items:cente
           <div class="step-label">選擇輸出格式</div>
         </div>
 
-        <!-- 我的格式（自訂）放在最上面 -->
-        <div id="customSection">
-          <div id="customList"></div>
-          <button class="add-custom-btn" onclick="openModal()">＋ 新增自訂格式</button>
+        <!-- Toggle -->
+        <div class="fmt-toggle">
+          <button class="fmt-toggle-btn active" id="togglePreset" onclick="switchFmtTab('preset')">預設格式</button>
+          <button class="fmt-toggle-btn" id="toggleFree" onclick="switchFmtTab('free')">直接描述需求</button>
         </div>
 
-        <!-- 預設格式 -->
-        <div class="format-grid" id="presetGrid"></div>
+        <!-- Tab A: 自訂 + 預設 -->
+        <div id="tabPreset">
+          <div id="customList"></div>
+          <button class="add-custom-btn" onclick="openModal()">＋ 新增自訂格式</button>
+          <div class="format-grid" id="presetGrid"></div>
+        </div>
 
-        <!-- 自由描述 -->
-        <div class="free-label" style="margin-top:.5rem;">或直接描述需求</div>
-        <textarea class="free-textarea" id="freePrompt" placeholder="例：寫一份給企業贊助方的 300 字成果摘要，語氣正式，強調學生改變…" oninput="updateGenBtn()"></textarea>
+        <!-- Tab B: 自由描述 -->
+        <div id="tabFree" style="display:none;">
+          <div class="free-label">描述你想要的輸出</div>
+          <textarea class="free-textarea" id="freePrompt" placeholder="例：寫一份給企業贊助方的 300 字成果摘要，語氣正式，強調學生改變…" oninput="updateGenBtn()"></textarea>
+        </div>
       </div>
 
     </div>
@@ -403,6 +409,15 @@ function backToS1(){
 }
 
 // ── Step 2 ──
+function switchFmtTab(tab){
+  document.getElementById('togglePreset').classList.toggle('active', tab==='preset');
+  document.getElementById('toggleFree').classList.toggle('active', tab==='free');
+  document.getElementById('tabPreset').style.display = tab==='preset' ? 'block' : 'none';
+  document.getElementById('tabFree').style.display = tab==='free' ? 'block' : 'none';
+  if(tab==='preset') document.getElementById('freePrompt').value='';
+  if(tab==='free') selFmt=null;
+  renderPresets(); renderCustoms(); updateGenBtn();
+}
 function renderPresets(){
   document.getElementById('presetGrid').innerHTML=PRESETS.map(f=>`
     <div class="format-card ${selFmt?.id===f.id?'selected':''}" onclick="pickFmt('preset','${f.id}')">
@@ -432,7 +447,8 @@ function pickFmt(type,id){
 
 function updateGenBtn(){
   const free=document.getElementById('freePrompt')?.value.trim();
-  document.getElementById('genBtn').disabled=!(selFmt||free);
+  const presetTabActive=document.getElementById('tabPreset')?.style.display!=='none';
+  document.getElementById('genBtn').disabled = presetTabActive ? !selFmt : !free;
 }
 
 // ── Generate ──
