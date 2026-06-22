@@ -25,17 +25,20 @@ body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-
 header { background: var(--kist-blue); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px; flex-shrink: 0; }
 .logo { display: flex; align-items: center; text-decoration: none; }
 .logo-mark { height: 28px; width: auto; }
-nav { display: flex; gap: .25rem; }
+nav { display: flex; gap: .25rem; margin-left: auto; }
 .nav-link { font-size: .78rem; color: rgba(255,255,255,.5); text-decoration: none; padding: .375rem .7rem; border-radius: 4px; transition: all .15s; white-space: nowrap; }
 .nav-link:hover { color: white; background: rgba(255,255,255,.08); }
 .nav-link.active { color: white; background: rgba(255,255,255,.15); font-weight: 500; }
 
-/* step indicator 移到 header 裡 */
-.header-steps { display: flex; align-items: center; gap: .4rem; }
-.step-dot { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: .62rem; font-weight: 500; border: 1.5px solid rgba(255,255,255,.25); color: rgba(255,255,255,.45); transition: all .3s; }
+/* 頁面標題 + 步驟（在左側基本資訊上方） */
+.page-intro { padding: 1.25rem 1.5rem 0; border-bottom: 1px solid var(--border); margin-bottom: 0; }
+.page-intro h2 { font-size: 1rem; font-weight: 700; margin-bottom: .15rem; }
+.page-intro p { font-size: .75rem; color: var(--ink-faint); font-weight: 300; margin-bottom: .875rem; }
+.step-indicator { display: flex; align-items: center; gap: .5rem; margin-bottom: 1rem; }
+.step-dot { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: .62rem; font-weight: 500; border: 1.5px solid var(--border); color: var(--ink-faint); transition: all .3s; }
 .step-dot.active { background: var(--purple); border-color: var(--purple); color: white; }
 .step-dot.done { background: var(--teal); border-color: var(--teal); color: white; }
-.step-line { width: 20px; height: 1.5px; background: rgba(255,255,255,.2); transition: background .3s; }
+.step-line { width: 20px; height: 1.5px; background: var(--border); transition: background .3s; }
 .step-line.done { background: var(--teal); }
 
 .workspace { flex: 1; display: flex; overflow: hidden; min-height: 0; }
@@ -193,11 +196,6 @@ nav { display: flex; gap: .25rem; }
     <a class="nav-link active" href="/chatbot.html">紀錄專案成果</a>
     <a class="nav-link" href="/records.html">紀錄庫</a>
   </nav>
-  <div class="header-steps">
-    <div class="step-dot active" id="sdot1">1</div>
-    <div class="step-line" id="sline1"></div>
-    <div class="step-dot" id="sdot2">2</div>
-  </div>
 </header>
 
 <div class="workspace">
@@ -206,6 +204,16 @@ nav { display: flex; gap: .25rem; }
   <div class="split-view" id="splitView">
 
     <div class="info-panel">
+      <!-- 標題 + 步驟指示 -->
+      <div class="page-intro">
+        <h2>紀錄專案成果</h2>
+        <p>上傳素材，AI 幫你整理成 IOOI 資料庫</p>
+        <div class="step-indicator">
+          <div class="step-dot active" id="sdot1">1</div>
+          <div class="step-line" id="sline1"></div>
+          <div class="step-dot" id="sdot2">2</div>
+        </div>
+      </div>
       <div class="info-panel-scroll">
         <div class="panel-label">基本資訊</div>
         <div class="two-col">
@@ -403,10 +411,14 @@ function renderFiles() {
 }
 
 function checkBtn() {
-  const name = document.getElementById('projName').value.trim();
-  document.getElementById('analyzeBtn').disabled = !(name && files.some(f => f.status === 'ready'));
+  const name = document.getElementById('projName')?.value.trim();
+  const hasFile = files.some(f => f.status === 'ready');
+  document.getElementById('analyzeBtn').disabled = !(name && hasFile);
 }
-document.getElementById('projName').addEventListener('input', checkBtn);
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('projName').addEventListener('input', checkBtn);
+});
 
 // ── 分析 ──────────────────────────────────────────
 const SYS = `你是誠致教育基金會的活動成果記錄助理，專精 IOOI 框架（Input 投入、Output 產出、Outcome 成果、Impact 影響力）。根據使用者上傳的素材，整理出一份完整的活動成果紀錄。只輸出純 JSON，不包含任何 markdown 語法。語言使用繁體中文。每個維度的內容要具體、有數字支撐。若素材中沒有某維度的資料，content 留空字串，completeness 設為 0。`;
