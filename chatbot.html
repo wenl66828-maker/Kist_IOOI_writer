@@ -205,22 +205,26 @@ nav { display: flex; gap: .25rem; }
   <div class="step-indicator">
     <div class="step-dot active" id="sdot1" title="填寫資訊 & 上傳素材">1</div>
     <div class="step-line" id="sline1"></div>
-    <div class="step-dot" id="sdot2" title="AI 分析中">2</div>
-    <div class="step-line" id="sline2"></div>
-    <div class="step-dot" id="sdot3" title="補充細節">3</div>
+    <div class="step-dot" id="sdot2" title="分析結果 & 補充細節">2</div>
   </div>
 </div>
 
 <div class="workspace">
 
-  <!-- Step 1+2: 左基本資訊 / 右上傳 -->
+  <!-- Step 1: 左基本資訊 / 右上傳 -->
   <div class="split-view" id="splitView">
 
     <div class="info-panel">
       <div class="panel-label">基本資訊</div>
-      <div class="field">
-        <label>專案名稱 <span class="field-req">*</span></label>
-        <input type="text" id="projName" placeholder="例：113 學年度家長日">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;">
+        <div class="field">
+          <label>專案名稱 <span class="field-req">*</span></label>
+          <input type="text" id="projName" placeholder="例：113 學年度家長日">
+        </div>
+        <div class="field">
+          <label>負責人</label>
+          <input type="text" id="projOwner" placeholder="例：王小明">
+        </div>
       </div>
       <div class="field">
         <label>日期</label>
@@ -236,26 +240,8 @@ nav { display: flex; gap: .25rem; }
         <input type="text" id="projLocation" placeholder="例：新北市致理科技大學">
       </div>
       <div class="field">
-        <label>負責人</label>
-        <input type="text" id="projOwner" placeholder="例：王小明">
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;">
-        <div class="field">
-          <label>參與人數</label>
-          <input type="text" id="projParticipants" placeholder="例：240 人">
-        </div>
-        <div class="field">
-          <label>參與學校數</label>
-          <input type="text" id="projSchools" placeholder="例：13 所">
-        </div>
-      </div>
-      <div class="field">
-        <label>照片雲端連結</label>
-        <input type="url" id="projPhotoUrl" placeholder="Google Drive 連結">
-      </div>
-      <div class="field">
-        <label>重要資料連結</label>
-        <input type="url" id="projDocsUrl" placeholder="計畫書、課表等連結">
+        <label>雲端資料連結</label>
+        <input type="url" id="projDocsUrl" placeholder="計畫書、課表、照片等 Google Drive 連結">
       </div>
       <div class="field">
         <label>給 AI 的備注</label>
@@ -440,9 +426,6 @@ async function startAnalysis() {
   const owner = document.getElementById('projOwner').value.trim();
   const note = document.getElementById('projNote').value.trim();
   const location = document.getElementById('projLocation').value.trim();
-  const participants = document.getElementById('projParticipants').value.trim();
-  const schools = document.getElementById('projSchools').value.trim();
-  const photoUrl = document.getElementById('projPhotoUrl').value.trim();
   const docsUrl = document.getElementById('projDocsUrl').value.trim();
   const ready = files.filter(f => f.status === 'ready');
   if (!name || !ready.length) return;
@@ -457,9 +440,6 @@ async function startAnalysis() {
 - 日期：${date || '未提供'}
 - 地點：${location || '未提供'}
 - 負責人：${owner || '未提供'}
-- 參與人數：${participants || '未提供'}
-- 參與學校數：${schools || '未提供'}
-${photoUrl ? `- 照片連結：${photoUrl}` : ''}
 ${docsUrl ? `- 資料連結：${docsUrl}` : ''}
 ${note ? `- 使用者備注：${note}` : ''}
 
@@ -490,7 +470,7 @@ ${combined}
     if (!resp.ok) throw new Error(data?.error?.message || '連線錯誤');
     const text = data.content?.[0]?.text || '';
     ioiResult = JSON.parse(text.replace(/```json\n?|\n?```/g,'').trim());
-    record = { name, date, owner, location, participants, schools, photoUrl, docsUrl, note, files: ready.map(f => f.name) };
+    record = { name, date, owner, location, docsUrl, note, files: ready.map(f => f.name) };
     renderResult(ioiResult, { name, date, owner });
     initChat(ioiResult, name);
     showStep3();
@@ -633,17 +613,17 @@ ${JSON.stringify(ioiResult?.missing_info, null, 2)}
 function showStep3() {
   document.getElementById('splitView').style.display = 'none';
   document.getElementById('analysisView').classList.add('visible');
-  ['sdot1','sdot2'].forEach(id => document.getElementById(id).className = 'step-dot done');
-  ['sline1','sline2'].forEach(id => document.getElementById(id).className = 'step-line done');
-  document.getElementById('sdot3').className = 'step-dot active';
+  document.getElementById('sdot1').className = 'step-dot done';
+  document.getElementById('sline1').className = 'step-line done';
+  document.getElementById('sdot2').className = 'step-dot active';
 }
 
 function backToUpload() {
   document.getElementById('splitView').style.display = '';
   document.getElementById('analysisView').classList.remove('visible');
   document.getElementById('sdot1').className = 'step-dot active';
-  ['sdot2','sdot3'].forEach(id => document.getElementById(id).className = 'step-dot');
-  ['sline1','sline2'].forEach(id => document.getElementById(id).className = 'step-line');
+  document.getElementById('sdot2').className = 'step-dot';
+  document.getElementById('sline1').className = 'step-line';
 }
 
 // ── Loading ────────────────────────────────────────

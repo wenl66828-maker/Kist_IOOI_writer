@@ -28,128 +28,122 @@ nav { display: flex; gap: .25rem; }
 .nav-link:hover { color: white; background: rgba(255,255,255,.08); }
 .nav-link.active { color: white; background: rgba(255,255,255,.15); font-weight: 500; }
 
-main { max-width: 1000px; margin: 0 auto; padding: 2.5rem 2rem 6rem; }
+main { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem 6rem; }
 
-/* ── PAGE HEADER ── */
-.page-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; gap: 1rem; flex-wrap: wrap; }
+.page-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.75rem; gap: 1rem; flex-wrap: wrap; }
 .page-top h1 { font-size: 1.4rem; font-weight: 700; }
-.page-top p { font-size: .82rem; color: var(--ink-faint); margin-top: .2rem; font-weight: 300; }
-.new-btn { background: var(--purple); color: white; border: none; border-radius: 6px; padding: .65rem 1.25rem; font-family: var(--sans); font-size: .85rem; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: .4rem; transition: opacity .15s; white-space: nowrap; }
+.new-btn { background: var(--purple); color: white; border: none; border-radius: 6px; padding: .6rem 1.1rem; font-family: var(--sans); font-size: .82rem; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: .35rem; transition: opacity .15s; }
 .new-btn:hover { opacity: .88; }
 
-/* ── SEARCH & FILTER ── */
-.toolbar { display: flex; gap: .75rem; margin-bottom: 1.75rem; flex-wrap: wrap; }
-.search-wrap { flex: 1; min-width: 200px; position: relative; }
-.search-wrap input { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: .65rem 1rem .65rem 2.25rem; font-family: var(--sans); font-size: .875rem; color: var(--ink); outline: none; transition: border-color .15s; }
+.toolbar { display: flex; gap: .75rem; margin-bottom: 1.5rem; }
+.search-wrap { flex: 1; position: relative; }
+.search-wrap input { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: .6rem 1rem .6rem 2.2rem; font-family: var(--sans); font-size: .875rem; color: var(--ink); outline: none; transition: border-color .15s; }
 .search-wrap input:focus { border-color: var(--purple); }
-.search-icon { position: absolute; left: .75rem; top: 50%; transform: translateY(-50%); color: var(--ink-faint); font-size: .85rem; pointer-events: none; }
-.sort-select { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: .65rem 1rem; font-family: var(--sans); font-size: .875rem; color: var(--ink); outline: none; cursor: pointer; }
+.search-icon { position: absolute; left: .7rem; top: 50%; transform: translateY(-50%); color: var(--ink-faint); font-size: .8rem; pointer-events: none; }
+.sort-select { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: .6rem .875rem; font-family: var(--sans); font-size: .82rem; color: var(--ink); outline: none; cursor: pointer; }
 
-/* ── STATS ── */
-.stats-row { display: flex; gap: 1rem; margin-bottom: 1.75rem; flex-wrap: wrap; }
-.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: .875rem 1.25rem; flex: 1; min-width: 120px; }
-.stat-num { font-size: 1.5rem; font-weight: 900; color: var(--purple); font-family: var(--mono); line-height: 1; margin-bottom: .2rem; }
-.stat-label { font-size: .72rem; color: var(--ink-faint); font-weight: 300; }
+/* ── GRID ── */
+.records-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
 
-/* ── EMPTY STATE ── */
-.empty-state { text-align: center; padding: 5rem 2rem; }
-.empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: .4; }
-.empty-title { font-size: 1rem; font-weight: 700; margin-bottom: .5rem; color: var(--ink-light); }
-.empty-desc { font-size: .85rem; color: var(--ink-faint); font-weight: 300; margin-bottom: 1.5rem; line-height: 1.7; }
+.record-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem; cursor: pointer; transition: border-color .2s, transform .15s; display: flex; flex-direction: column; gap: .75rem; }
+.record-card:hover { border-color: var(--purple); transform: translateY(-2px); }
+.record-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: .5rem; }
+.record-name { font-size: .9rem; font-weight: 700; line-height: 1.35; flex: 1; }
+.record-date { font-family: var(--mono); font-size: .65rem; color: var(--ink-faint); white-space: nowrap; flex-shrink: 0; }
+.record-meta { display: flex; flex-wrap: wrap; gap: .35rem; }
+.record-tag { font-size: .72rem; color: var(--ink-faint); display: flex; align-items: center; gap: .2rem; }
+.record-summary { font-size: .8rem; color: var(--ink-light); line-height: 1.6; font-weight: 300; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.record-footer { display: flex; gap: .4rem; margin-top: auto; padding-top: .25rem; }
+.record-btn-sm { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: .4rem .5rem; font-family: var(--sans); font-size: .72rem; color: var(--ink-light); cursor: pointer; transition: all .15s; text-align: center; }
+.record-btn-sm:hover { background: var(--surface2); color: var(--ink); }
+.record-btn-sm.purple { background: var(--purple-light); color: var(--purple); border-color: transparent; font-weight: 500; }
+.record-btn-sm.purple:hover { opacity: .88; }
 
-/* ── RECORD CARDS ── */
-.records-grid { display: flex; flex-direction: column; gap: .875rem; }
-.record-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; transition: border-color .2s; cursor: pointer; }
-.record-card:hover { border-color: var(--purple); }
-.record-card-main { padding: 1.25rem 1.5rem; display: flex; align-items: flex-start; gap: 1.25rem; }
-.record-completeness-ring { width: 44px; height: 44px; flex-shrink: 0; position: relative; }
-.record-completeness-ring svg { transform: rotate(-90deg); }
-.ring-bg { fill: none; stroke: var(--surface2); stroke-width: 3; }
-.ring-fill { fill: none; stroke-width: 3; stroke-linecap: round; transition: stroke-dasharray .5s; }
-.ring-pct { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: .6rem; font-weight: 500; }
-.record-info { flex: 1; min-width: 0; }
-.record-name { font-size: .975rem; font-weight: 700; margin-bottom: .35rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.record-meta { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: .625rem; }
-.record-meta-item { font-family: var(--mono); font-size: .65rem; color: var(--ink-faint); display: flex; align-items: center; gap: .25rem; }
-.record-summary { font-size: .82rem; color: var(--ink-light); line-height: 1.65; font-weight: 300; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.record-actions { display: flex; flex-direction: column; gap: .4rem; flex-shrink: 0; }
-.record-btn { background: none; border: 1px solid var(--border); border-radius: 4px; padding: .4rem .75rem; font-family: var(--sans); font-size: .75rem; color: var(--ink-light); cursor: pointer; transition: all .15s; white-space: nowrap; }
-.record-btn:hover { background: var(--surface2); color: var(--ink); }
-.record-btn.danger:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+.empty-state { grid-column: 1/-1; text-align: center; padding: 5rem 2rem; }
+.empty-icon { font-size: 2.5rem; margin-bottom: 1rem; opacity: .35; }
+.empty-title { font-size: .95rem; font-weight: 700; color: var(--ink-light); margin-bottom: .5rem; }
+.empty-desc { font-size: .82rem; color: var(--ink-faint); font-weight: 300; margin-bottom: 1.5rem; }
 
-/* ── IOOI MINI BARS ── */
-.record-iooi { padding: .75rem 1.5rem; border-top: 1px solid var(--surface2); display: flex; gap: .875rem; }
-.iooi-mini { flex: 1; }
-.iooi-mini-label { font-family: var(--mono); font-size: .58rem; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-faint); margin-bottom: .3rem; }
-.iooi-mini-bar-wrap { height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
-.iooi-mini-bar { height: 100%; border-radius: 2px; transition: width .5s; }
-.bar-input { background: var(--purple); }
-.bar-output { background: var(--teal); }
-.bar-outcome { background: var(--amber); }
-.bar-impact { background: #185FA5; }
-.iooi-mini-pct { font-family: var(--mono); font-size: .6rem; color: var(--ink-faint); margin-top: .25rem; }
-
-/* ── DETAIL MODAL ── */
-.modal-overlay { display: none; position: fixed; inset: 0; z-index: 300; background: rgba(26,23,20,.5); backdrop-filter: blur(3px); align-items: flex-start; justify-content: center; padding: 2rem 1rem; overflow-y: auto; }
+/* ── MODAL ── */
+.modal-overlay { display: none; position: fixed; inset: 0; z-index: 300; background: rgba(26,23,20,.5); backdrop-filter: blur(3px); align-items: center; justify-content: center; padding: 1.5rem; }
 .modal-overlay.visible { display: flex; }
-.modal { background: var(--surface); border-radius: 12px; width: min(720px, 100%); margin: auto; }
-.modal-header { background: var(--kist-blue); padding: 1.5rem 1.75rem; border-radius: 12px 12px 0 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
-.modal-header h2 { font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: .25rem; }
-.modal-header-meta { font-size: .75rem; color: rgba(255,255,255,.5); font-family: var(--mono); }
-.modal-close { background: none; border: none; color: rgba(255,255,255,.5); cursor: pointer; font-size: 1.1rem; flex-shrink: 0; transition: color .15s; }
+.modal { background: var(--surface); border-radius: 12px; width: min(900px, 100%); max-height: 90vh; display: flex; flex-direction: column; }
+.modal-header { background: var(--kist-blue); padding: 1.25rem 1.5rem; border-radius: 12px 12px 0 0; display: flex; align-items: center; gap: 1rem; flex-shrink: 0; }
+.modal-title-wrap { flex: 1; min-width: 0; }
+.modal-title-input { background: transparent; border: none; border-bottom: 1.5px solid rgba(255,255,255,.2); color: white; font-family: var(--sans); font-size: 1.1rem; font-weight: 700; width: 100%; outline: none; padding-bottom: .25rem; transition: border-color .15s; }
+.modal-title-input:focus { border-bottom-color: rgba(255,255,255,.6); }
+.modal-header-meta { font-size: .72rem; color: rgba(255,255,255,.45); font-family: var(--mono); margin-top: .25rem; }
+.modal-close { background: none; border: none; color: rgba(255,255,255,.5); cursor: pointer; font-size: 1.1rem; transition: color .15s; flex-shrink: 0; }
 .modal-close:hover { color: white; }
-.modal-body { padding: 1.75rem; }
 
-.modal-section { margin-bottom: 1.5rem; }
-.modal-section-label { font-family: var(--mono); font-size: .62rem; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-faint); margin-bottom: .875rem; display: flex; align-items: center; gap: .5rem; }
+.modal-body { overflow-y: auto; flex: 1; }
+.modal-cols { display: grid; grid-template-columns: 260px 1fr; min-height: 0; }
+
+/* Left col: basic info */
+.modal-left { padding: 1.25rem; border-right: 1px solid var(--border); overflow-y: auto; }
+.modal-section-label { font-family: var(--mono); font-size: .6rem; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-faint); margin-bottom: .875rem; display: flex; align-items: center; gap: .4rem; }
 .modal-section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.edit-field { display: flex; flex-direction: column; gap: .3rem; margin-bottom: .875rem; }
+.edit-field label { font-size: .72rem; color: var(--ink-faint); font-weight: 400; }
+.edit-field input, .edit-field textarea {
+  background: var(--bg); border: 1px solid var(--border); border-radius: 4px;
+  padding: .5rem .75rem; font-family: var(--sans); font-size: .82rem; color: var(--ink);
+  outline: none; transition: border-color .15s; width: 100%;
+}
+.edit-field input:focus, .edit-field textarea:focus { border-color: var(--purple); }
+.edit-field textarea { resize: vertical; min-height: 60px; line-height: 1.6; }
+.docs-link { display: inline-flex; align-items: center; gap: .35rem; font-size: .78rem; color: var(--purple); text-decoration: none; margin-top: .25rem; }
+.docs-link:hover { text-decoration: underline; }
 
-.meta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; }
-.meta-item { background: var(--bg); border-radius: 6px; padding: .625rem .875rem; }
-.meta-item-label { font-size: .68rem; color: var(--ink-faint); margin-bottom: .15rem; font-family: var(--mono); }
-.meta-item-value { font-size: .82rem; color: var(--ink); font-weight: 500; }
-
-.iooi-detail-cards { display: flex; flex-direction: column; gap: .75rem; }
-.iooi-detail-card { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-.iooi-detail-header { padding: .75rem 1rem; display: flex; align-items: center; gap: .75rem; cursor: pointer; transition: background .15s; }
-.iooi-detail-header:hover { background: var(--surface2); }
-.iooi-dim-tag { font-family: var(--mono); font-size: .6rem; text-transform: uppercase; letter-spacing: .08em; padding: .18rem .5rem; border-radius: 3px; flex-shrink: 0; }
-.dim-input .iooi-dim-tag { background: var(--purple-light); color: var(--purple); }
-.dim-output .iooi-dim-tag { background: var(--teal-light); color: var(--teal); }
-.dim-outcome .iooi-dim-tag { background: var(--amber-light); color: var(--amber); }
-.dim-impact .iooi-dim-tag { background: #E6F1FB; color: #185FA5; }
-.iooi-detail-title { flex: 1; font-size: .875rem; font-weight: 700; }
-.iooi-detail-pct { font-family: var(--mono); font-size: .65rem; }
-.iooi-detail-pct.high { color: var(--teal); }
-.iooi-detail-pct.mid { color: var(--amber); }
-.iooi-detail-pct.low { color: var(--accent); }
+/* Right col: IOOI */
+.modal-right { padding: 1.25rem; overflow-y: auto; }
+.iooi-edit-cards { display: flex; flex-direction: column; gap: .75rem; }
+.iooi-edit-card { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.iooi-edit-header { padding: .75rem 1rem; display: flex; align-items: center; gap: .75rem; cursor: pointer; user-select: none; transition: background .15s; }
+.iooi-edit-header:hover { background: var(--surface2); }
+.dim-tag { font-family: var(--mono); font-size: .6rem; text-transform: uppercase; letter-spacing: .08em; padding: .18rem .5rem; border-radius: 3px; flex-shrink: 0; }
+.dim-input .dim-tag { background: var(--purple-light); color: var(--purple); }
+.dim-output .dim-tag { background: var(--teal-light); color: var(--teal); }
+.dim-outcome .dim-tag { background: var(--amber-light); color: var(--amber); }
+.dim-impact .dim-tag { background: #E6F1FB; color: #185FA5; }
+.dim-title { font-size: .875rem; font-weight: 700; flex: 1; }
 .iooi-chevron { color: var(--ink-faint); font-size: .72rem; transition: transform .2s; }
-.iooi-detail-header.open .iooi-chevron { transform: rotate(180deg); }
-.iooi-detail-body { display: none; padding: 1rem; border-top: 1px solid var(--border); font-size: .875rem; color: var(--ink-light); line-height: 1.85; font-weight: 300; white-space: pre-wrap; }
-.iooi-detail-body.open { display: block; }
+.iooi-edit-header.open .iooi-chevron { transform: rotate(180deg); }
+.iooi-edit-body { display: none; border-top: 1px solid var(--border); }
+.iooi-edit-body.open { display: block; }
+.iooi-textarea {
+  width: 100%; background: var(--surface); border: none; padding: 1rem;
+  font-family: var(--sans); font-size: .875rem; color: var(--ink);
+  line-height: 1.85; resize: vertical; min-height: 120px; outline: none;
+  font-weight: 300;
+}
+.iooi-textarea:focus { background: #FAFAF8; }
 
-.modal-footer { padding: 1.25rem 1.75rem; border-top: 1px solid var(--border); display: flex; gap: .75rem; justify-content: flex-end; }
-.btn { font-family: var(--sans); font-size: .85rem; padding: .6rem 1.25rem; border-radius: 5px; cursor: pointer; transition: all .15s; border: 1px solid var(--border); background: var(--surface); color: var(--ink); }
+.modal-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--border); display: flex; gap: .625rem; justify-content: flex-end; flex-shrink: 0; }
+.btn { font-family: var(--sans); font-size: .82rem; padding: .55rem 1.1rem; border-radius: 5px; cursor: pointer; transition: all .15s; border: 1px solid var(--border); background: var(--surface); color: var(--ink); }
 .btn:hover { background: var(--surface2); }
 .btn.primary { background: var(--teal); color: white; border-color: var(--teal); font-weight: 500; }
 .btn.primary:hover { opacity: .88; }
-.btn.danger { color: var(--accent); }
+.btn.purple { background: var(--purple); color: white; border-color: var(--purple); font-weight: 500; }
+.btn.purple:hover { opacity: .88; }
+.btn.danger { color: var(--accent); border-color: transparent; }
 .btn.danger:hover { background: var(--accent-light); border-color: var(--accent); }
 
-.toast { display: none; position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); padding: .75rem 1.25rem; border-radius: 6px; font-size: .82rem; z-index: 400; }
+.toast { display: none; position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); padding: .7rem 1.25rem; border-radius: 6px; font-size: .82rem; z-index: 400; white-space: nowrap; }
 .toast.visible { display: block; }
 .toast.ok { background: var(--teal); color: white; }
 .toast.err { background: var(--accent); color: white; }
 
-@media (max-width: 680px) {
+@media (max-width: 900px) {
+  .records-grid { grid-template-columns: 1fr 1fr; }
+  .modal-cols { grid-template-columns: 1fr; }
+  .modal-left { border-right: none; border-bottom: 1px solid var(--border); }
+}
+@media (max-width: 600px) {
+  .records-grid { grid-template-columns: 1fr; }
   nav { display: none; }
   header { padding: 0 1.25rem; }
   main { padding: 2rem 1.25rem 4rem; }
-  .stats-row { flex-wrap: wrap; }
-  .stat-card { min-width: calc(50% - .5rem); }
-  .record-iooi { display: none; }
-  .meta-grid { grid-template-columns: 1fr 1fr; }
-  .modal-body { padding: 1.25rem; }
 }
 </style>
 </head>
@@ -167,17 +161,10 @@ main { max-width: 1000px; margin: 0 auto; padding: 2.5rem 2rem 6rem; }
 
 <main>
   <div class="page-top">
-    <div>
-      <h1>紀錄庫</h1>
-      <p>所有已儲存的活動成果紀錄</p>
-    </div>
+    <h1>紀錄庫</h1>
     <a class="new-btn" href="/chatbot.html">＋ 新增活動紀錄</a>
   </div>
 
-  <!-- 統計列 -->
-  <div class="stats-row" id="statsRow"></div>
-
-  <!-- 搜尋 & 排序 -->
   <div class="toolbar">
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
@@ -187,29 +174,64 @@ main { max-width: 1000px; margin: 0 auto; padding: 2.5rem 2rem 6rem; }
       <option value="newest">最新儲存</option>
       <option value="oldest">最早儲存</option>
       <option value="name">名稱排序</option>
-      <option value="completeness">完整度排序</option>
     </select>
   </div>
 
-  <!-- 紀錄列表 -->
   <div class="records-grid" id="recordsGrid"></div>
 </main>
 
-<!-- 詳情 Modal -->
+<!-- Modal -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
   <div class="modal" id="modal">
     <div class="modal-header">
-      <div>
-        <h2 id="modalTitle"></h2>
+      <div class="modal-title-wrap">
+        <input class="modal-title-input" id="modalTitleInput" type="text" placeholder="活動名稱">
         <div class="modal-header-meta" id="modalMeta"></div>
       </div>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
-    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-body">
+      <div class="modal-cols">
+        <!-- Left: basic info edit -->
+        <div class="modal-left">
+          <div class="modal-section-label">基本資訊</div>
+          <div class="edit-field">
+            <label>日期</label>
+            <input type="text" id="editDate" placeholder="例：2025/8/6 - 8/8">
+          </div>
+          <div class="edit-field">
+            <label>地點</label>
+            <input type="text" id="editLocation" placeholder="地點">
+          </div>
+          <div class="edit-field">
+            <label>負責人</label>
+            <input type="text" id="editOwner" placeholder="負責人">
+          </div>
+          <div class="edit-field">
+            <label>雲端資料連結</label>
+            <input type="url" id="editDocsUrl" placeholder="Google Drive 連結">
+            <a id="editDocsLink" class="docs-link" href="#" target="_blank" style="display:none">↗ 開啟連結</a>
+          </div>
+          <div class="edit-field">
+            <label>整體摘要</label>
+            <textarea id="editSummary" placeholder="活動的整體摘要…"></textarea>
+          </div>
+          <div class="modal-section-label" style="margin-top:1rem;">上傳的素材</div>
+          <div id="modalFiles" style="display:flex;flex-wrap:wrap;gap:.35rem;"></div>
+        </div>
+
+        <!-- Right: IOOI edit -->
+        <div class="modal-right">
+          <div class="modal-section-label">IOOI 內容</div>
+          <div class="iooi-edit-cards" id="ioiEditCards"></div>
+        </div>
+      </div>
+    </div>
     <div class="modal-footer">
-      <button class="btn danger" id="modalDeleteBtn">刪除這筆紀錄</button>
-      <button class="btn" onclick="closeModal()">關閉</button>
-      <button class="btn primary" onclick="goToOutput()">用這筆產出內容 →</button>
+      <button class="btn danger" onclick="deleteCurrentRecord()">刪除</button>
+      <button class="btn" onclick="closeModal()">取消</button>
+      <button class="btn purple" onclick="goToOutputCurrent()">產出內容 →</button>
+      <button class="btn primary" onclick="saveEdits()">儲存修改</button>
     </div>
   </div>
 </div>
@@ -217,224 +239,153 @@ main { max-width: 1000px; margin: 0 auto; padding: 2.5rem 2rem 6rem; }
 <div class="toast" id="toast"></div>
 
 <script>
-const STORAGE_KEY = 'kist_records';
+const KEY = 'kist_records';
 let records = [];
 let currentIdx = null;
 
 const DIMS = [
-  { key: 'input',   label: 'Input 投入',    cls: 'dim-input',   barCls: 'bar-input' },
-  { key: 'output',  label: 'Output 產出',   cls: 'dim-output',  barCls: 'bar-output' },
-  { key: 'outcome', label: 'Outcome 成果',  cls: 'dim-outcome', barCls: 'bar-outcome' },
-  { key: 'impact',  label: 'Impact 影響力', cls: 'dim-impact',  barCls: 'bar-impact' },
+  { key: 'input',   label: 'Input 投入',    cls: 'dim-input' },
+  { key: 'output',  label: 'Output 產出',   cls: 'dim-output' },
+  { key: 'outcome', label: 'Outcome 成果',  cls: 'dim-outcome' },
+  { key: 'impact',  label: 'Impact 影響力', cls: 'dim-impact' },
 ];
 
-// ── 初始化 ──────────────────────────────────────
 function init() {
-  records = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-  renderStats();
+  records = JSON.parse(localStorage.getItem(KEY) || '[]');
   renderList();
 }
 
-// ── 統計 ──────────────────────────────────────
-function renderStats() {
-  const total = records.length;
-  const avgComp = total === 0 ? 0 : Math.round(
-    records.reduce((sum, r) => sum + getAvgCompleteness(r), 0) / total
-  );
-  const thisMonth = records.filter(r => {
-    if (!r.savedAt) return false;
-    const now = new Date();
-    const saved = new Date(r.savedAt);
-    return saved.getMonth() === now.getMonth() && saved.getFullYear() === now.getFullYear();
-  }).length;
-
-  document.getElementById('statsRow').innerHTML = `
-    <div class="stat-card">
-      <div class="stat-num">${total}</div>
-      <div class="stat-label">活動紀錄總數</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num">${avgComp}%</div>
-      <div class="stat-label">平均 IOOI 完整度</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num">${thisMonth}</div>
-      <div class="stat-label">本月新增紀錄</div>
-    </div>`;
-}
-
-function getAvgCompleteness(r) {
-  const dims = r.ioiResult?.dimensions;
-  if (!dims) return 0;
-  const vals = DIMS.map(d => dims[d.key]?.completeness || 0);
-  return Math.round(vals.reduce((a, b) => a + b, 0) / vals.length);
-}
-
-// ── 列表 ──────────────────────────────────────
 function renderList() {
-  const query = document.getElementById('searchInput').value.toLowerCase();
+  const q = document.getElementById('searchInput').value.toLowerCase();
   const sort = document.getElementById('sortSelect').value;
 
-  let filtered = records.filter(r =>
-    !query || (r.name || '').toLowerCase().includes(query)
-  );
-
-  filtered = [...filtered].sort((a, b) => {
-    if (sort === 'name') return (a.name || '').localeCompare(b.name || '');
-    if (sort === 'completeness') return getAvgCompleteness(b) - getAvgCompleteness(a);
-    if (sort === 'oldest') return records.indexOf(b) - records.indexOf(a);
-    return records.indexOf(a) - records.indexOf(b); // newest = original order (newest first)
-  });
+  let filtered = records.filter(r => !q || (r.name||'').toLowerCase().includes(q));
+  if (sort === 'name') filtered.sort((a,b) => (a.name||'').localeCompare(b.name||''));
+  else if (sort === 'oldest') filtered = [...filtered].reverse();
 
   const grid = document.getElementById('recordsGrid');
 
   if (filtered.length === 0) {
-    grid.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">📂</div>
-        <div class="empty-title">${query ? '找不到符合的紀錄' : '還沒有任何活動紀錄'}</div>
-        <div class="empty-desc">${query ? '試試不同的關鍵字' : '上傳活動素材，AI 幫你整理成完整的 IOOI 資料庫'}</div>
-        ${!query ? `<a class="new-btn" href="/chatbot.html">＋ 新增第一筆活動紀錄</a>` : ''}
-      </div>`;
+    grid.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">📂</div>
+      <div class="empty-title">${q ? '找不到符合的紀錄' : '還沒有任何活動紀錄'}</div>
+      <div class="empty-desc">${q ? '試試不同的關鍵字' : '上傳活動素材，AI 幫你整理成完整的 IOOI 資料庫'}</div>
+      ${!q ? `<a class="new-btn" href="/chatbot.html">＋ 新增第一筆</a>` : ''}
+    </div>`;
     return;
   }
 
   grid.innerHTML = filtered.map(r => {
     const idx = records.indexOf(r);
-    const avg = getAvgCompleteness(r);
-    const dims = r.ioiResult?.dimensions || {};
-    const circumference = 2 * Math.PI * 16;
-    const dashArr = `${(avg / 100) * circumference} ${circumference}`;
-    const ringColor = avg >= 70 ? 'var(--teal)' : avg >= 40 ? 'var(--amber)' : 'var(--accent)';
-
     const metaParts = [
-      r.date && `📅 ${r.date}`,
       r.location && `📍 ${r.location}`,
       r.owner && `👤 ${r.owner}`,
-      r.participants && `👥 ${r.participants}`,
-      r.files?.length && `📎 ${r.files.length} 份素材`,
+      r.files?.length && `📎 ${r.files.length} 份`,
     ].filter(Boolean);
 
-    return `
-      <div class="record-card" onclick="openModal(${idx})">
-        <div class="record-card-main">
-          <div class="record-completeness-ring">
-            <svg width="44" height="44" viewBox="0 0 44 44">
-              <circle class="ring-bg" cx="22" cy="22" r="16"/>
-              <circle class="ring-fill" cx="22" cy="22" r="16"
-                stroke="${ringColor}"
-                stroke-dasharray="${dashArr}"
-                stroke-dashoffset="0"/>
-            </svg>
-            <div class="ring-pct" style="color:${ringColor}">${avg}%</div>
-          </div>
-          <div class="record-info">
-            <div class="record-name">${r.name || '未命名活動'}</div>
-            <div class="record-meta">
-              ${metaParts.map(p => `<span class="record-meta-item">${p}</span>`).join('')}
-              ${r.savedAt ? `<span class="record-meta-item">💾 ${r.savedAt}</span>` : ''}
-            </div>
-            <div class="record-summary">${r.ioiResult?.summary || '（無摘要）'}</div>
-          </div>
-          <div class="record-actions" onclick="event.stopPropagation()">
-            <button class="record-btn" onclick="openModal(${idx})">查看詳情</button>
-            <button class="record-btn" onclick="goToOutputWith(${idx})">產出內容</button>
-            <button class="record-btn danger" onclick="deleteRecord(${idx})">刪除</button>
-          </div>
-        </div>
-        <div class="record-iooi">
-          ${DIMS.map(d => {
-            const pct = dims[d.key]?.completeness || 0;
-            return `<div class="iooi-mini">
-              <div class="iooi-mini-label">${d.key}</div>
-              <div class="iooi-mini-bar-wrap"><div class="iooi-mini-bar ${d.barCls}" style="width:${pct}%"></div></div>
-              <div class="iooi-mini-pct">${pct}%</div>
-            </div>`;
-          }).join('')}
-        </div>
-      </div>`;
+    return `<div class="record-card" onclick="openModal(${idx})">
+      <div class="record-card-top">
+        <div class="record-name">${r.name || '未命名活動'}</div>
+        <div class="record-date">${r.date || ''}</div>
+      </div>
+      ${metaParts.length ? `<div class="record-meta">${metaParts.map(p=>`<span class="record-tag">${p}</span>`).join('')}</div>` : ''}
+      <div class="record-summary">${r.ioiResult?.summary || '（無摘要）'}</div>
+      <div class="record-footer" onclick="event.stopPropagation()">
+        <button class="record-btn-sm purple" onclick="openModal(${idx})">查看 / 編輯</button>
+        <button class="record-btn-sm" onclick="goToOutputWith(${idx})">產出內容</button>
+      </div>
+    </div>`;
   }).join('');
 }
 
-// ── Modal ──────────────────────────────────────
 function openModal(idx) {
   currentIdx = idx;
   const r = records[idx];
   if (!r) return;
 
-  document.getElementById('modalTitle').textContent = r.name || '未命名活動';
-  document.getElementById('modalMeta').textContent = [r.date, r.location, r.owner].filter(Boolean).join('　·　');
+  // 填入基本資訊
+  document.getElementById('modalTitleInput').value = r.name || '';
+  document.getElementById('modalMeta').textContent = r.savedAt ? `儲存於 ${r.savedAt}` : '';
+  document.getElementById('editDate').value = r.date || '';
+  document.getElementById('editLocation').value = r.location || '';
+  document.getElementById('editOwner').value = r.owner || '';
+  document.getElementById('editDocsUrl').value = r.docsUrl || '';
+  document.getElementById('editSummary').value = r.ioiResult?.summary || '';
 
+  // 連結
+  const link = document.getElementById('editDocsLink');
+  if (r.docsUrl) { link.href = r.docsUrl; link.style.display = 'inline-flex'; }
+  else { link.style.display = 'none'; }
+  document.getElementById('editDocsUrl').addEventListener('input', function() {
+    if (this.value) { link.href = this.value; link.style.display = 'inline-flex'; }
+    else { link.style.display = 'none'; }
+  });
+
+  // 素材清單
+  const filesEl = document.getElementById('modalFiles');
+  filesEl.innerHTML = r.files?.length
+    ? r.files.map(f => `<span style="font-family:var(--mono);font-size:.68rem;padding:.2rem .5rem;background:var(--surface2);border-radius:3px;color:var(--ink-light);">${f}</span>`).join('')
+    : '<span style="font-size:.78rem;color:var(--ink-faint);">（無素材）</span>';
+
+  // IOOI 可編輯卡片
   const dims = r.ioiResult?.dimensions || {};
-  const metaFields = [
-    { label: '日期', value: r.date },
-    { label: '地點', value: r.location },
-    { label: '負責人', value: r.owner },
-    { label: '參與人數', value: r.participants },
-    { label: '參與學校數', value: r.schools },
-    { label: '儲存時間', value: r.savedAt },
-  ].filter(f => f.value);
-
-  const photoLink = r.photoUrl ? `<a href="${r.photoUrl}" target="_blank" style="color:var(--purple);font-size:.82rem;">📷 查看照片</a>` : '';
-  const docsLink = r.docsUrl ? `<a href="${r.docsUrl}" target="_blank" style="color:var(--purple);font-size:.82rem;">📄 查看資料</a>` : '';
-
-  document.getElementById('modalBody').innerHTML = `
-    ${r.ioiResult?.summary ? `
-      <div class="modal-section">
-        <div class="modal-section-label">整體摘要</div>
-        <div style="font-size:.875rem;color:var(--ink-light);line-height:1.85;font-weight:300;">${r.ioiResult.summary}</div>
-      </div>` : ''}
-
-    <div class="modal-section">
-      <div class="modal-section-label">基本資訊</div>
-      <div class="meta-grid">
-        ${metaFields.map(f => `
-          <div class="meta-item">
-            <div class="meta-item-label">${f.label}</div>
-            <div class="meta-item-value">${f.value}</div>
-          </div>`).join('')}
+  const cards = document.getElementById('ioiEditCards');
+  cards.innerHTML = DIMS.map(d => {
+    const content = dims[d.key]?.content || '';
+    return `<div class="iooi-edit-card ${d.cls}">
+      <div class="iooi-edit-header open" onclick="toggleIooi(this)">
+        <span class="dim-tag">${d.label}</span>
+        <span class="dim-title"></span>
+        <span class="iooi-chevron">▼</span>
       </div>
-      ${photoLink || docsLink ? `<div style="display:flex;gap:1rem;margin-top:.875rem;">${photoLink}${docsLink}</div>` : ''}
-    </div>
-
-    <div class="modal-section">
-      <div class="modal-section-label">IOOI 內容</div>
-      <div class="iooi-detail-cards">
-        ${DIMS.map(d => {
-          const dim = dims[d.key] || { content: '', completeness: 0 };
-          const pctCls = dim.completeness >= 70 ? 'high' : dim.completeness >= 40 ? 'mid' : 'low';
-          const pctLabel = dim.completeness >= 70 ? '充足' : dim.completeness >= 40 ? '部分' : '不足';
-          return `
-            <div class="iooi-detail-card ${d.cls}">
-              <div class="iooi-detail-header open" onclick="toggleDetail(this)">
-                <span class="iooi-dim-tag">${d.label}</span>
-                <span class="iooi-detail-title"></span>
-                <span class="iooi-detail-pct ${pctCls}">${dim.completeness}% ${pctLabel}</span>
-                <span class="iooi-chevron">▼</span>
-              </div>
-              <div class="iooi-detail-body open">${dim.content || '（尚無資料）'}</div>
-            </div>`;
-        }).join('')}
+      <div class="iooi-edit-body open">
+        <textarea class="iooi-textarea" id="edit-dim-${d.key}" placeholder="（尚無資料，可直接輸入或補充）">${content}</textarea>
       </div>
-    </div>
+    </div>`;
+  }).join('');
 
-    ${r.files?.length ? `
-      <div class="modal-section">
-        <div class="modal-section-label">上傳的素材（${r.files.length} 份）</div>
-        <div style="display:flex;flex-wrap:wrap;gap:.4rem;">
-          ${r.files.map(f => `<span style="font-family:var(--mono);font-size:.7rem;padding:.2rem .55rem;background:var(--surface2);border-radius:3px;color:var(--ink-light);">${f}</span>`).join('')}
-        </div>
-      </div>` : ''}
-  `;
-
-  document.getElementById('modalDeleteBtn').onclick = () => { deleteRecord(idx); closeModal(); };
   document.getElementById('modalOverlay').classList.add('visible');
   document.body.style.overflow = 'hidden';
 }
 
-function toggleDetail(header) {
+function toggleIooi(header) {
   header.classList.toggle('open');
   header.nextElementSibling.classList.toggle('open');
+}
+
+function saveEdits() {
+  if (currentIdx === null) return;
+  const r = records[currentIdx];
+
+  r.name = document.getElementById('modalTitleInput').value.trim() || r.name;
+  r.date = document.getElementById('editDate').value.trim();
+  r.location = document.getElementById('editLocation').value.trim();
+  r.owner = document.getElementById('editOwner').value.trim();
+  r.docsUrl = document.getElementById('editDocsUrl').value.trim();
+
+  if (!r.ioiResult) r.ioiResult = { dimensions: {} };
+  if (!r.ioiResult.dimensions) r.ioiResult.dimensions = {};
+  r.ioiResult.summary = document.getElementById('editSummary').value.trim();
+
+  DIMS.forEach(d => {
+    const val = document.getElementById(`edit-dim-${d.key}`)?.value || '';
+    if (!r.ioiResult.dimensions[d.key]) r.ioiResult.dimensions[d.key] = { content: '', completeness: 0 };
+    r.ioiResult.dimensions[d.key].content = val;
+  });
+
+  localStorage.setItem(KEY, JSON.stringify(records));
+  renderList();
+  showToast('✓ 已儲存修改', 'ok');
+}
+
+function deleteCurrentRecord() {
+  if (currentIdx === null) return;
+  if (!confirm('確定要刪除這筆紀錄嗎？')) return;
+  records.splice(currentIdx, 1);
+  localStorage.setItem(KEY, JSON.stringify(records));
+  closeModal();
+  renderList();
+  showToast('已刪除', 'ok');
 }
 
 function closeModal() {
@@ -447,18 +398,7 @@ function closeModalOutside(e) {
   if (e.target === document.getElementById('modalOverlay')) closeModal();
 }
 
-// ── 刪除 ──────────────────────────────────────
-function deleteRecord(idx) {
-  if (!confirm('確定要刪除這筆紀錄嗎？')) return;
-  records.splice(idx, 1);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
-  renderStats();
-  renderList();
-  showToast('已刪除', 'ok');
-}
-
-// ── 產出內容 ──────────────────────────────────
-function goToOutput() {
+function goToOutputCurrent() {
   if (currentIdx !== null) goToOutputWith(currentIdx);
 }
 
@@ -467,7 +407,6 @@ function goToOutputWith(idx) {
   window.location.href = '/output.html';
 }
 
-// ── Toast ──────────────────────────────────────
 function showToast(msg, type = 'ok') {
   const el = document.getElementById('toast');
   el.textContent = msg;
