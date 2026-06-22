@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>產出內容 — 誠致教育基金會</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+Antique:wght@300;400;500;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F7F4EF; --surface: #FFFFFF; --surface2: #F0EDE7;
+  --ink: #1A1714; --ink-light: #6B6560; --ink-faint: #B0AAA3;
+  --accent: #C4501A; --accent-light: #F5E8E2;
+  --border: #DDD8D0; --kist-blue: #1B3A6B;
+  --purple: #534AB7; --purple-light: #EEEDFE;
+  --teal: #0F6E56; --teal-light: #E1F5EE;
+  --amber: #854F0B; --amber-light: #FAEEDA;
+  --sans: 'Zen Kaku Gothic Antique', sans-serif;
+  --mono: 'DM Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 400; line-height: 1.7; min-height: 100vh; }
+
+header { background: var(--kist-blue); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px; position: sticky; top: 0; z-index: 200; }
+.logo { display: flex; align-items: center; text-decoration: none; }
+.logo-mark { height: 28px; width: auto; }
+nav { display: flex; gap: .25rem; }
+.nav-link { font-size: .78rem; color: rgba(255,255,255,.5); text-decoration: none; padding: .375rem .7rem; border-radius: 4px; transition: all .15s; white-space: nowrap; }
+.nav-link:hover { color: white; background: rgba(255,255,255,.08); }
+.nav-link.active { color: white; background: rgba(255,255,255,.15); font-weight: 500; }
+
+/* ── LAYOUT ── */
+.page-layout { display: grid; grid-template-columns: 1fr 400px; min-height: calc(100vh - 60px); }
+
+/* ── LEFT PANEL ── */
+.left-panel { padding: 2rem; overflow-y: auto; border-right: 1px solid var(--border); }
+
+.section-label { font-family: var(--mono); font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 1rem; display: flex; align-items: center; gap: .5rem; }
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* ── STEP HEADER ── */
+.step-header { display: flex; align-items: center; gap: .875rem; margin-bottom: 1.5rem; }
+.step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--purple); color: white; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: .7rem; font-weight: 500; flex-shrink: 0; }
+.step-num.done { background: var(--teal); }
+.step-title { font-size: 1rem; font-weight: 700; }
+.step-change { font-size: .75rem; color: var(--purple); cursor: pointer; margin-left: auto; }
+.step-change:hover { text-decoration: underline; }
+
+/* ── RECORD SELECTION ── */
+.records-select-list { display: flex; flex-direction: column; gap: .625rem; margin-bottom: 1.25rem; }
+.record-select-item { background: var(--surface); border: 1.5px solid var(--border); border-radius: 8px; padding: .875rem 1rem; display: flex; align-items: flex-start; gap: .875rem; cursor: pointer; transition: all .15s; }
+.record-select-item:hover { border-color: var(--purple); }
+.record-select-item.selected { border-color: var(--purple); background: var(--purple-light); }
+.record-checkbox { width: 18px; height: 18px; border: 1.5px solid var(--border); border-radius: 4px; flex-shrink: 0; margin-top: .15rem; display: flex; align-items: center; justify-content: center; font-size: .7rem; transition: all .15s; }
+.record-select-item.selected .record-checkbox { background: var(--purple); border-color: var(--purple); color: white; }
+.record-select-info { flex: 1; min-width: 0; }
+.record-select-name { font-size: .875rem; font-weight: 700; margin-bottom: .15rem; }
+.record-select-meta { font-size: .72rem; color: var(--ink-faint); font-family: var(--mono); }
+.record-select-summary { font-size: .78rem; color: var(--ink-light); font-weight: 300; margin-top: .25rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+.selected-count { font-size: .8rem; color: var(--purple); font-weight: 500; margin-bottom: .875rem; }
+.btn-next { background: var(--purple); color: white; border: none; border-radius: 6px; padding: .7rem 1.5rem; font-family: var(--sans); font-size: .875rem; font-weight: 700; cursor: pointer; transition: opacity .15s; }
+.btn-next:hover { opacity: .88; }
+.btn-next:disabled { opacity: .35; cursor: not-allowed; }
+
+/* ── FORMAT SELECTION ── */
+.format-section { margin-bottom: 1.5rem; }
+.format-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .625rem; margin-bottom: 1rem; }
+.format-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 8px; padding: .875rem 1rem; cursor: pointer; transition: all .15s; }
+.format-card:hover { border-color: var(--purple); }
+.format-card.selected { border-color: var(--purple); background: var(--purple-light); }
+.format-card-name { font-size: .875rem; font-weight: 700; margin-bottom: .2rem; }
+.format-card-desc { font-size: .72rem; color: var(--ink-light); font-weight: 300; line-height: 1.5; }
+.format-card.selected .format-card-desc { color: var(--purple); }
+
+/* 自訂格式 */
+.custom-format-section { margin-bottom: 1.25rem; }
+.custom-format-list { display: flex; flex-direction: column; gap: .5rem; margin-bottom: .875rem; }
+.custom-format-item { background: var(--surface); border: 1.5px solid var(--border); border-radius: 8px; padding: .75rem 1rem; display: flex; align-items: center; gap: .75rem; cursor: pointer; transition: all .15s; }
+.custom-format-item:hover { border-color: var(--purple); }
+.custom-format-item.selected { border-color: var(--purple); background: var(--purple-light); }
+.custom-format-name { font-size: .875rem; font-weight: 500; flex: 1; }
+.custom-format-del { background: none; border: none; color: var(--ink-faint); cursor: pointer; font-size: .8rem; padding: .2rem; }
+.custom-format-del:hover { color: var(--accent); }
+
+.add-custom-btn { background: none; border: 1.5px dashed var(--border); border-radius: 8px; padding: .75rem 1rem; font-family: var(--sans); font-size: .82rem; color: var(--ink-faint); cursor: pointer; width: 100%; transition: all .15s; text-align: center; }
+.add-custom-btn:hover { border-color: var(--purple); color: var(--purple); }
+
+/* 自由輸入 */
+.free-input-wrap { margin-bottom: 1.25rem; }
+.free-input-wrap label { font-size: .78rem; font-weight: 500; color: var(--ink-light); display: block; margin-bottom: .4rem; }
+.free-input-wrap textarea { width: 100%; background: var(--surface); border: 1.5px solid var(--border); border-radius: 8px; padding: .75rem 1rem; font-family: var(--sans); font-size: .875rem; color: var(--ink); resize: vertical; min-height: 80px; outline: none; transition: border-color .15s; line-height: 1.65; }
+.free-input-wrap textarea:focus { border-color: var(--purple); }
+
+/* ── GENERATE BUTTON ── */
+.generate-btn { width: 100%; background: var(--teal); color: white; border: none; border-radius: 6px; padding: .875rem; font-family: var(--sans); font-size: .95rem; font-weight: 700; cursor: pointer; transition: opacity .15s; display: flex; align-items: center; justify-content: center; gap: .5rem; }
+.generate-btn:hover { opacity: .88; }
+.generate-btn:disabled { opacity: .35; cursor: not-allowed; }
+
+/* ── DRAFTS SECTION ── */
+.drafts-section { margin-top: 2.5rem; }
+.draft-list { display: flex; flex-direction: column; gap: .625rem; }
+.draft-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.25rem; }
+.draft-item-header { display: flex; align-items: flex-start; justify-content: space-between; gap: .75rem; margin-bottom: .5rem; }
+.draft-format-tag { font-family: var(--mono); font-size: .62rem; text-transform: uppercase; letter-spacing: .06em; padding: .15rem .5rem; border-radius: 3px; background: var(--purple-light); color: var(--purple); flex-shrink: 0; }
+.draft-title { font-size: .875rem; font-weight: 700; flex: 1; }
+.draft-meta { font-size: .7rem; color: var(--ink-faint); font-family: var(--mono); }
+.draft-preview { font-size: .8rem; color: var(--ink-light); line-height: 1.6; font-weight: 300; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: .75rem; }
+.draft-actions { display: flex; gap: .5rem; }
+.draft-btn { font-family: var(--sans); font-size: .75rem; padding: .35rem .75rem; border-radius: 4px; cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--ink-light); transition: all .15s; }
+.draft-btn:hover { background: var(--surface2); color: var(--ink); }
+.draft-btn.primary { background: var(--purple-light); color: var(--purple); border-color: transparent; font-weight: 500; }
+.draft-btn.danger:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+.drafts-empty { font-size: .82rem; color: var(--ink-faint); text-align: center; padding: 2rem; font-weight: 300; }
+
+/* ── RIGHT PANEL: OUTPUT ── */
+.right-panel { display: flex; flex-direction: column; background: var(--surface); }
+.output-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.output-header h2 { font-size: .9rem; font-weight: 700; }
+.output-actions { display: flex; gap: .5rem; }
+.btn-sm { font-family: var(--sans); font-size: .75rem; padding: .4rem .875rem; border-radius: 4px; cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--ink); transition: all .15s; }
+.btn-sm:hover { background: var(--surface2); }
+.btn-sm.teal { background: var(--teal); color: white; border-color: var(--teal); font-weight: 500; }
+.btn-sm.teal:hover { opacity: .88; }
+.btn-sm.coming { opacity: .45; cursor: not-allowed; }
+
+.output-body { flex: 1; overflow-y: auto; }
+.output-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 3rem; text-align: center; color: var(--ink-faint); }
+.output-placeholder-icon { font-size: 2.5rem; margin-bottom: 1rem; opacity: .3; }
+.output-placeholder-text { font-size: .875rem; font-weight: 300; line-height: 1.7; }
+
+.output-editor { width: 100%; height: 100%; min-height: 400px; padding: 1.5rem; font-family: var(--sans); font-size: .9rem; color: var(--ink); line-height: 1.85; border: none; outline: none; resize: none; background: var(--surface); font-weight: 300; }
+
+/* Loading */
+.output-loading { display: none; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 3rem; gap: 1rem; }
+.output-loading.visible { display: flex; }
+.spinner { width: 32px; height: 32px; border: 2px solid var(--border); border-top-color: var(--teal); border-radius: 50%; animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { font-size: .82rem; color: var(--ink-faint); font-family: var(--mono); }
+
+/* ── ADD CUSTOM FORMAT MODAL ── */
+.modal-overlay { display: none; position: fixed; inset: 0; z-index: 300; background: rgba(26,23,20,.5); backdrop-filter: blur(3px); align-items: center; justify-content: center; padding: 1.5rem; }
+.modal-overlay.visible { display: flex; }
+.modal { background: var(--surface); border-radius: 12px; width: min(520px, 100%); padding: 1.75rem; }
+.modal h3 { font-size: 1rem; font-weight: 700; margin-bottom: 1.25rem; }
+.modal-field { display: flex; flex-direction: column; gap: .35rem; margin-bottom: 1rem; }
+.modal-field label { font-size: .78rem; font-weight: 500; color: var(--ink-light); }
+.modal-field input, .modal-field textarea, .modal-field select { background: var(--bg); border: 1px solid var(--border); border-radius: 5px; padding: .6rem .875rem; font-family: var(--sans); font-size: .875rem; color: var(--ink); outline: none; transition: border-color .15s; width: 100%; }
+.modal-field input:focus, .modal-field textarea:focus { border-color: var(--purple); }
+.modal-field textarea { resize: vertical; min-height: 100px; line-height: 1.65; }
+.modal-hint { font-size: .72rem; color: var(--ink-faint); }
+.modal-footer { display: flex; gap: .625rem; justify-content: flex-end; margin-top: 1.25rem; }
+.btn-cancel { font-family: var(--sans); font-size: .82rem; padding: .6rem 1.1rem; border-radius: 5px; cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--ink); }
+.btn-save { font-family: var(--sans); font-size: .82rem; padding: .6rem 1.25rem; border-radius: 5px; cursor: pointer; border: none; background: var(--purple); color: white; font-weight: 700; }
+
+.toast { display: none; position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); padding: .7rem 1.25rem; border-radius: 6px; font-size: .82rem; z-index: 400; white-space: nowrap; }
+.toast.visible { display: block; }
+.toast.ok { background: var(--teal); color: white; }
+.toast.err { background: var(--accent); color: white; }
+
+@media (max-width: 900px) {
+  .page-layout { grid-template-columns: 1fr; }
+  .right-panel { min-height: 400px; border-top: 1px solid var(--border); }
+  nav { display: none; }
+  header { padding: 0 1.25rem; }
+  .format-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="/"><img class="logo-mark" src="/kist_logo.png" alt="KIST"></a>
+  <nav>
+    <a class="nav-link" href="/chatbot.html">記錄活動成果</a>
+    <a class="nav-link" href="/records.html">紀錄庫</a>
+    <a class="nav-link active" href="/output.html">產出內容</a>
+    <a class="nav-link" href="/guide.html">書寫指引</a>
+  </nav>
+</header>
+
+<div class="page-layout">
+
+  <!-- LEFT: 操作區 -->
+  <div class="left-panel">
+
+    <!-- Step 1: 選取紀錄 -->
+    <div id="step1Section">
+      <div class="step-header">
+        <div class="step-num" id="step1Num">1</div>
+        <div class="step-title">選擇要使用的活動紀錄</div>
+      </div>
+      <div id="selectedCountLabel" class="selected-count" style="display:none;"></div>
+      <div class="records-select-list" id="recordsSelectList"></div>
+      <button class="btn-next" id="toStep2Btn" onclick="goToStep2()" disabled>選好了，選擇輸出格式 →</button>
+    </div>
+
+    <!-- Step 2: 選擇格式（初始隱藏） -->
+    <div id="step2Section" style="display:none;">
+      <div class="step-header">
+        <div class="step-num done">1</div>
+        <div class="step-title" id="step1Summary" style="font-size:.82rem;color:var(--ink-light);font-weight:400;"></div>
+        <span class="step-change" onclick="backToStep1()">重新選擇</span>
+      </div>
+      <div class="step-header" style="margin-top:1rem;">
+        <div class="step-num">2</div>
+        <div class="step-title">選擇輸出格式</div>
+      </div>
+
+      <!-- 預設格式 -->
+      <div class="format-section">
+        <div class="section-label">預設格式</div>
+        <div class="format-grid" id="presetFormatGrid"></div>
+      </div>
+
+      <!-- 自訂格式 -->
+      <div class="custom-format-section">
+        <div class="section-label">我的自訂格式</div>
+        <div class="custom-format-list" id="customFormatList"></div>
+        <button class="add-custom-btn" onclick="openAddCustom()">＋ 新增自訂格式</button>
+      </div>
+
+      <!-- 自由輸入 -->
+      <div class="free-input-wrap">
+        <label>或是直接描述需求（選填）</label>
+        <textarea id="freePrompt" placeholder="例：寫一份給企業贊助方看的 300 字成果摘要，語氣正式，強調學生人數成長…"></textarea>
+      </div>
+
+      <button class="generate-btn" id="generateBtn" onclick="generate()" disabled>
+        <span>產出內容</span><span>→</span>
+      </button>
+    </div>
+
+    <!-- 草稿區 -->
+    <div class="drafts-section">
+      <div class="section-label">我的草稿</div>
+      <div id="draftsList"></div>
+    </div>
+  </div>
+
+  <!-- RIGHT: 輸出區 -->
+  <div class="right-panel">
+    <div class="output-header">
+      <h2 id="outputTitle">產出結果</h2>
+      <div class="output-actions">
+        <button class="btn-sm" id="copyBtn" onclick="copyOutput()" style="display:none;">複製文字</button>
+        <button class="btn-sm" id="downloadBtn" onclick="downloadTxt()" style="display:none;">下載 .txt</button>
+        <button class="btn-sm coming" title="即將推出">存成 Google Doc</button>
+        <button class="btn-sm teal" id="saveDraftBtn" onclick="saveDraft()" style="display:none;">儲存草稿</button>
+      </div>
+    </div>
+    <div class="output-loading" id="outputLoading">
+      <div class="spinner"></div>
+      <div class="loading-text">AI 正在產出內容…</div>
+    </div>
+    <div id="outputPlaceholder" class="output-placeholder">
+      <div class="output-placeholder-icon">✍️</div>
+      <div class="output-placeholder-text">選擇活動紀錄和輸出格式後<br>AI 產出的內容會出現在這裡</div>
+    </div>
+    <textarea class="output-editor" id="outputEditor" style="display:none;" placeholder="產出的內容會出現在這裡，可以直接編輯…"></textarea>
+  </div>
+</div>
+
+<!-- 新增自訂格式 Modal -->
+<div class="modal-overlay" id="addCustomModal" onclick="closeAddCustomOutside(event)">
+  <div class="modal">
+    <h3>新增自訂格式</h3>
+    <div class="modal-field">
+      <label>格式名稱 *</label>
+      <input type="text" id="customName" placeholder="例：學校粉專貼文">
+    </div>
+    <div class="modal-field">
+      <label>用途說明</label>
+      <input type="text" id="customDesc" placeholder="例：發在學校臉書粉專，給家長和社區看">
+    </div>
+    <div class="modal-field">
+      <label>給 AI 的指示 *</label>
+      <textarea id="customPrompt" placeholder="例：請根據這次活動的成果，寫一篇適合在學校臉書粉專發布的貼文。語氣溫暖親切，約 200 字，結尾加上適合的 hashtag。讀者是學生家長和在地社區居民。"></textarea>
+      <span class="modal-hint">越具體越好，說明讀者、語氣、字數、必要包含的元素等</span>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeAddCustom()">取消</button>
+      <button class="btn-save" onclick="saveCustomFormat()">儲存格式</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const RECORDS_KEY = 'kist_records';
+const DRAFTS_KEY = 'kist_drafts';
+const CUSTOM_FORMATS_KEY = 'kist_custom_formats';
+
+let records = [];
+let selectedRecordIdxs = new Set();
+let selectedFormat = null;
+let currentOutput = '';
+let currentFormatLabel = '';
+
+// ── 預設格式 ──────────────────────────────────
+const PRESET_FORMATS = [
+  {
+    id: 'fb_post',
+    name: '社群宣傳 FB 貼文',
+    desc: '活動報名、回顧或招募，給粉專追蹤者看',
+    prompt: `你是誠致教育基金會的社群媒體撰稿人。請根據以下活動 IOOI 資料，撰寫一篇適合發布在 Facebook 粉專的貼文。
+語氣：溫暖、有人情味，讓讀者感受到這件事的意義
+格式：段落分明，可以使用 emoji 增加可讀性
+長度：300-400 字
+結尾：加上 2-3 個適合的 hashtag
+讀者：有追蹤粉專的教育關心者，或符合活動受眾的潛在參與者`
+  },
+  {
+    id: 'line_msg',
+    name: '社群宣傳 LINE 群組',
+    desc: '活動報名、回顧或招募，給曾參與 KIST 活動的人',
+    prompt: `你是誠致教育基金會的活動推廣撰稿人。請根據以下活動 IOOI 資料，撰寫一則適合發送到 LINE 群組的訊息。
+語氣：簡潔有力，像是朋友轉傳的訊息，不要太商業化
+格式：重點用換行分開，易讀好懂
+長度：150-250 字
+讀者：曾參與過 KIST 相關活動的學伴、實習生或合作夥伴`
+  },
+  {
+    id: 'email',
+    name: '社群宣傳 Email',
+    desc: '活動報名、回顧或招募，給訂閱電子報的讀者',
+    prompt: `你是誠致教育基金會的電子報撰稿人。請根據以下活動 IOOI 資料，撰寫一封活動宣傳 Email 的正文內容（不含主旨行）。
+語氣：專業但不生硬，讓讀者感受到活動的價值
+格式：有明確的段落，包含活動亮點、主要資訊、行動呼籲
+長度：400-500 字
+讀者：曾報名參與 KIST 活動、或訂閱電子報的支持者`
+  },
+  {
+    id: 'website_article',
+    name: '官網文章（KIST 大小事）',
+    desc: '給對 KIST 有興趣的捐款人或社會大眾看',
+    prompt: `你是誠致教育基金會的官網編輯。請根據以下活動 IOOI 資料，撰寫一篇適合在官網「KIST 大小事」欄目發布的文章。
+語氣：清楚易懂，讓不熟悉教育圈的讀者也能理解
+格式：有標題、小標、段落，結構清晰
+長度：600-800 字
+重要：遇到 KIST 內部術語（如 SEL、PBL、K Camp、SPTS 等），第一次出現時要加上括號說明，例如：SEL（Social Emotional Learning，社會情緒學習）
+讀者：捐款人、對 KIST 有興趣的社會大眾、媒體記者`
+  },
+  {
+    id: 'newsletter',
+    name: '電子報',
+    desc: '給訂閱電子報的讀者，活動成果分享',
+    prompt: `你是誠致教育基金會的電子報編輯。請根據以下活動 IOOI 資料，撰寫一則適合放入電子報的活動成果報導。
+語氣：有溫度、有故事感，讓讀者感受到教育的力量
+格式：有導語、主體段落、數據亮點
+長度：400-600 字
+讀者：長期關注誠致和 KIST 的支持者，曾報名活動或訂閱電子報的人`
+  },
+  {
+    id: 'impact_report',
+    name: '公益報告',
+    desc: '給捐款人和合作貴人看的成果報告',
+    prompt: `你是誠致教育基金會的公益報告撰稿人。請根據以下活動 IOOI 資料，撰寫一段適合收錄在公益報告中的成果說明。
+語氣：正式、有說服力，展現清楚的社會影響力
+格式：依 IOOI 邏輯呈現（投入→產出→成果→影響力），有數據支撐
+長度：500-700 字
+重要：遇到 KIST 內部術語要加上括號說明；強調具體的數字和改變
+讀者：捐款人、合作貴人，需要清楚看見捐款的使用方式和成效`
+  },
+  {
+    id: 'donor_report',
+    name: '捐款人報告',
+    desc: '給大額捐款人的專案進展報告',
+    prompt: `你是誠致教育基金會的捐款人關係撰稿人。請根據以下活動 IOOI 資料，撰寫一份給指定捐款人的專案進展報告段落。
+語氣：正式、感謝、有責信感，讓捐款人清楚看見他們的投入如何發揮作用
+格式：清楚說明資金用途、執行成果、對受益者的改變、後續計畫
+長度：600-800 字
+重要：強調捐款與成果之間的直接連結；遇到術語要解釋；誠實說明挑戰和改善方向
+讀者：大額捐款人（6萬到300萬不等），重視透明度和具體影響力`
+  },
+  {
+    id: 'school_report',
+    name: '學校成果報告書',
+    desc: '依 IOOI 框架撰寫，給贊助方的年度成果報告',
+    prompt: `你是一位資深的 KIST 學年成果報告書撰稿顧問，精通 IOOI 評估框架。請根據以下活動資料，撰寫一份完整的 KIST 學校成果報告書段落，供學校向贊助方、縣市政府及社會大眾報告辦學成效。
+
+語氣：正式、有說服力、誠懇，先說明做了什麼，再說明改變了什麼
+格式：依 Input（投入）、Output（產出）、Outcome（成果）、Impact（影響力）四個段落呈現
+長度：各段落 200-400 字，總計 800-1600 字
+
+IOOI 框架說明：
+- Input：學校具備了哪些資源和條件（經費、人力、培訓系統、外部合作）
+- Output：學校實際做了什麼（場次、堂次、人次等可量化成果）
+- Outcome：學生、教師、家長產生了什麼改變（需有數據或具體佐證）
+- Impact：對外部世界的影響（外校參訪、媒體報導、社區改變等）
+
+重要：遇到以下 KIST 專有名詞，第一次出現時請加上括號說明：
+- KIST → KIST（KIPP Inspired Schools in Taiwan，以美國 KIPP 理念為基礎的台灣實驗教育學校聯盟）
+- SEL → SEL（Social Emotional Learning，社會情緒學習）
+- PBL → PBL（Project-Based Learning，專題式學習）
+- SPTS → SPTS（學校策略規劃工具）
+- K Camp → K Camp（KIST 聯盟為新進教師舉辦的暑期研習）
+- GBF → GBF（Get Better Faster，嚴謹教學架構）
+- NCDP → NCDP（非認知能力追蹤平台）
+- KIST Family → KIST Family（學校定期為家長辦理的成長社群）
+- O3 → O3（One-on-One，校長與教師的一對一定期對話）
+
+讀者：贊助方（企業基金會）、教育主管機關、政策倡議者——這些人不一定熟悉教育現場術語`
+  }
+];
+
+// ── 初始化 ──────────────────────────────────
+function init() {
+  records = JSON.parse(localStorage.getItem(RECORDS_KEY) || '[]');
+
+  // 從紀錄庫跳過來時預先選取
+  const preSelected = localStorage.getItem('kist_output_record');
+  if (preSelected) {
+    try {
+      const r = JSON.parse(preSelected);
+      const idx = records.findIndex(rec => rec.name === r.name && rec.savedAt === r.savedAt);
+      if (idx >= 0) selectedRecordIdxs.add(idx);
+    } catch(e) {}
+    localStorage.removeItem('kist_output_record');
+  }
+
+  renderRecordsList();
+  renderPresetFormats();
+  renderCustomFormats();
+  renderDrafts();
+  updateStep1Btn();
+}
+
+// ── Step 1: 紀錄選取 ──────────────────────────
+function renderRecordsList() {
+  const list = document.getElementById('recordsSelectList');
+  if (records.length === 0) {
+    list.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--ink-faint);font-size:.82rem;">
+      還沒有活動紀錄，<a href="/chatbot.html" style="color:var(--purple);">先去記錄活動成果</a>
+    </div>`;
+    return;
+  }
+  list.innerHTML = records.map((r, i) => {
+    const sel = selectedRecordIdxs.has(i);
+    return `<div class="record-select-item ${sel?'selected':''}" onclick="toggleRecord(${i})">
+      <div class="record-checkbox">${sel ? '✓' : ''}</div>
+      <div class="record-select-info">
+        <div class="record-select-name">${r.name || '未命名活動'}</div>
+        <div class="record-select-meta">${[r.date, r.location, r.owner].filter(Boolean).join('・')}</div>
+        <div class="record-select-summary">${r.ioiResult?.summary || ''}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleRecord(idx) {
+  if (selectedRecordIdxs.has(idx)) selectedRecordIdxs.delete(idx);
+  else selectedRecordIdxs.add(idx);
+  renderRecordsList();
+  updateStep1Btn();
+}
+
+function updateStep1Btn() {
+  const count = selectedRecordIdxs.size;
+  const btn = document.getElementById('toStep2Btn');
+  const label = document.getElementById('selectedCountLabel');
+  btn.disabled = count === 0;
+  if (count > 0) {
+    label.style.display = 'block';
+    label.textContent = `已選取 ${count} 筆紀錄`;
+  } else {
+    label.style.display = 'none';
+  }
+}
+
+function goToStep2() {
+  document.getElementById('step1Section').style.display = 'none';
+  document.getElementById('step2Section').style.display = 'block';
+  const names = Array.from(selectedRecordIdxs).map(i => records[i]?.name || '未命名').join('、');
+  document.getElementById('step1Summary').textContent = `已選：${names}`;
+}
+
+function backToStep1() {
+  document.getElementById('step1Section').style.display = 'block';
+  document.getElementById('step2Section').style.display = 'none';
+  renderRecordsList();
+}
+
+// ── Step 2: 格式選取 ──────────────────────────
+function renderPresetFormats() {
+  document.getElementById('presetFormatGrid').innerHTML = PRESET_FORMATS.map(f => `
+    <div class="format-card ${selectedFormat?.id === f.id ? 'selected' : ''}" onclick="selectFormat('preset', '${f.id}')">
+      <div class="format-card-name">${f.name}</div>
+      <div class="format-card-desc">${f.desc}</div>
+    </div>`).join('');
+  updateGenerateBtn();
+}
+
+function renderCustomFormats() {
+  const customs = JSON.parse(localStorage.getItem(CUSTOM_FORMATS_KEY) || '[]');
+  const list = document.getElementById('customFormatList');
+  list.innerHTML = customs.map((f, i) => `
+    <div class="custom-format-item ${selectedFormat?.id === 'custom_'+i ? 'selected' : ''}" onclick="selectFormat('custom', ${i})">
+      <div class="record-checkbox">${selectedFormat?.id === 'custom_'+i ? '✓' : ''}</div>
+      <div class="custom-format-name">${f.name}</div>
+      <button class="custom-format-del" onclick="event.stopPropagation();deleteCustomFormat(${i})" title="刪除">✕</button>
+    </div>`).join('');
+}
+
+function selectFormat(type, id) {
+  if (type === 'preset') {
+    selectedFormat = PRESET_FORMATS.find(f => f.id === id) || null;
+  } else {
+    const customs = JSON.parse(localStorage.getItem(CUSTOM_FORMATS_KEY) || '[]');
+    const f = customs[id];
+    if (f) selectedFormat = { id: 'custom_'+id, name: f.name, prompt: f.prompt };
+  }
+  renderPresetFormats();
+  renderCustomFormats();
+  updateGenerateBtn();
+}
+
+function updateGenerateBtn() {
+  const freePrompt = document.getElementById('freePrompt')?.value.trim();
+  document.getElementById('generateBtn').disabled = !selectedFormat && !freePrompt;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('freePrompt')?.addEventListener('input', updateGenerateBtn);
+});
+
+// ── 產出 ──────────────────────────────────────
+async function generate() {
+  const freePrompt = document.getElementById('freePrompt').value.trim();
+  if (!selectedFormat && !freePrompt) return;
+
+  // 組合選取的紀錄資料
+  const selectedRecords = Array.from(selectedRecordIdxs).map(i => records[i]).filter(Boolean);
+  const combinedData = selectedRecords.map(r => {
+    const dims = r.ioiResult?.dimensions || {};
+    return `【活動：${r.name}】
+日期：${r.date || '未提供'}　地點：${r.location || '未提供'}　負責人：${r.owner || '未提供'}
+整體摘要：${r.ioiResult?.summary || ''}
+Input 投入：${dims.input?.content || '（無資料）'}
+Output 產出：${dims.output?.content || '（無資料）'}
+Outcome 成果：${dims.outcome?.content || '（無資料）'}
+Impact 影響力：${dims.impact?.content || '（無資料）'}`;
+  }).join('\n\n---\n\n');
+
+  const formatPrompt = selectedFormat?.prompt || '';
+  const userInstruction = freePrompt ? `\n\n用戶額外指示：${freePrompt}` : '';
+  const fullPrompt = `${formatPrompt}${userInstruction}
+
+以下是活動 IOOI 資料：
+
+${combinedData}
+
+請根據以上資料和格式要求，直接產出內容（不要加前言或說明，直接給我可以用的文字）。使用繁體中文。`;
+
+  // 顯示 loading
+  document.getElementById('outputPlaceholder').style.display = 'none';
+  document.getElementById('outputEditor').style.display = 'none';
+  document.getElementById('outputLoading').classList.add('visible');
+  document.getElementById('generateBtn').disabled = true;
+
+  try {
+    const resp = await fetch('/api/check', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages: [{ role: 'user', content: fullPrompt }]
+      })
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data?.error?.message || '連線錯誤');
+    currentOutput = data.content?.[0]?.text || '';
+    currentFormatLabel = selectedFormat?.name || '自訂格式';
+
+    document.getElementById('outputLoading').classList.remove('visible');
+    const editor = document.getElementById('outputEditor');
+    editor.value = currentOutput;
+    editor.style.display = 'block';
+    document.getElementById('outputTitle').textContent = currentFormatLabel;
+    document.getElementById('copyBtn').style.display = 'inline-block';
+    document.getElementById('downloadBtn').style.display = 'inline-block';
+    document.getElementById('saveDraftBtn').style.display = 'inline-block';
+
+  } catch(err) {
+    document.getElementById('outputLoading').classList.remove('visible');
+    document.getElementById('outputPlaceholder').style.display = 'flex';
+    showToast('產出失敗：' + err.message, 'err');
+  } finally {
+    document.getElementById('generateBtn').disabled = false;
+  }
+}
+
+// ── 輸出操作 ──────────────────────────────────
+function copyOutput() {
+  const text = document.getElementById('outputEditor').value;
+  navigator.clipboard.writeText(text).then(() => showToast('✓ 已複製到剪貼簿', 'ok'));
+}
+
+function downloadTxt() {
+  const text = document.getElementById('outputEditor').value;
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  const a = Object.assign(document.createElement('a'), {
+    href: URL.createObjectURL(blob),
+    download: `${currentFormatLabel}_${new Date().toLocaleDateString('zh-TW')}.txt`
+  });
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function saveDraft() {
+  const text = document.getElementById('outputEditor').value;
+  if (!text.trim()) return;
+  const drafts = JSON.parse(localStorage.getItem(DRAFTS_KEY) || '[]');
+  const selectedNames = Array.from(selectedRecordIdxs).map(i => records[i]?.name || '未命名').join('、');
+  drafts.unshift({
+    format: currentFormatLabel,
+    records: selectedNames,
+    content: text,
+    savedAt: new Date().toLocaleString('zh-TW', { month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' })
+  });
+  localStorage.setItem(DRAFTS_KEY, JSON.stringify(drafts));
+  renderDrafts();
+  showToast('✓ 草稿已儲存', 'ok');
+}
+
+// ── 草稿 ──────────────────────────────────────
+function renderDrafts() {
+  const drafts = JSON.parse(localStorage.getItem(DRAFTS_KEY) || '[]');
+  const el = document.getElementById('draftsList');
+  if (drafts.length === 0) {
+    el.innerHTML = '<div class="drafts-empty">尚無草稿。產出內容後可以儲存在這裡。</div>';
+    return;
+  }
+  el.innerHTML = drafts.map((d, i) => `
+    <div class="draft-item">
+      <div class="draft-item-header">
+        <span class="draft-format-tag">${d.format}</span>
+        <div style="flex:1;min-width:0;">
+          <div class="draft-title">${d.records}</div>
+          <div class="draft-meta">${d.savedAt}</div>
+        </div>
+      </div>
+      <div class="draft-preview">${d.content}</div>
+      <div class="draft-actions">
+        <button class="draft-btn primary" onclick="loadDraft(${i})">載入編輯</button>
+        <button class="draft-btn" onclick="copyDraft(${i})">複製</button>
+        <button class="draft-btn" onclick="downloadDraft(${i})">下載</button>
+        <button class="draft-btn danger" onclick="deleteDraft(${i})">刪除</button>
+      </div>
+    </div>`).join('');
+}
+
+function loadDraft(i) {
+  const drafts = JSON.parse(localStorage.getItem(DRAFTS_KEY) || '[]');
+  const d = drafts[i];
+  if (!d) return;
+  currentOutput = d.content;
+  currentFormatLabel = d.format;
+  const editor = document.getElementById('outputEditor');
+  editor.value = d.content;
+  editor.style.display = 'block';
+  document.getElementById('outputPlaceholder').style.display = 'none';
+  document.getElementById('outputTitle').textContent = d.format;
+  document.getElementById('copyBtn').style.display = 'inline-block';
+  document.getElementById('downloadBtn').style.display = 'inline-block';
+  document.getElementById('saveDraftBtn').style.display = 'inline-block';
+  editor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function copyDraft(i) {
+  const drafts = JSON.parse(localStorage.getItem(DRAFTS_KEY) || '[]');
+  navigator.clipboard.writeText(drafts[i]?.content || '').then(() => showToast('✓ 已複製', 'ok'));
+}
+
+function downloadDraft(i) {
+  const drafts = JSON.parse(localStorage.getItem(DRAFTS_KEY) || '[]');
+  const d = drafts[i];
+  if (!d) return;
+  const blob = new Blob([d.content], { type: 'text/plain;charset=utf-8' });
+  const a = Object.assign(document.createElement('a'), {
+    href: URL.createObjectURL(blob),
+    download: `${d.format}_${d.savedAt.replace(/[/:]/g,'')}.txt`
+  });
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function deleteDraft(i) {
+  if (!confirm('確定要刪除這份草稿嗎？')) return;
+  const drafts = JSON.parse(localStorage.getItem(DRAFTS_KEY) || '[]');
+  drafts.splice(i, 1);
+  localStorage.setItem(DRAFTS_KEY, JSON.stringify(drafts));
+  renderDrafts();
+}
+
+// ── 自訂格式 Modal ────────────────────────────
+function openAddCustom() {
+  document.getElementById('addCustomModal').classList.add('visible');
+  document.getElementById('customName').value = '';
+  document.getElementById('customDesc').value = '';
+  document.getElementById('customPrompt').value = '';
+}
+
+function closeAddCustom() {
+  document.getElementById('addCustomModal').classList.remove('visible');
+}
+
+function closeAddCustomOutside(e) {
+  if (e.target === document.getElementById('addCustomModal')) closeAddCustom();
+}
+
+function saveCustomFormat() {
+  const name = document.getElementById('customName').value.trim();
+  const desc = document.getElementById('customDesc').value.trim();
+  const prompt = document.getElementById('customPrompt').value.trim();
+  if (!name || !prompt) { showToast('請填寫格式名稱和給 AI 的指示', 'err'); return; }
+  const customs = JSON.parse(localStorage.getItem(CUSTOM_FORMATS_KEY) || '[]');
+  customs.push({ name, desc, prompt });
+  localStorage.setItem(CUSTOM_FORMATS_KEY, JSON.stringify(customs));
+  closeAddCustom();
+  renderCustomFormats();
+  showToast('✓ 自訂格式已儲存', 'ok');
+}
+
+function deleteCustomFormat(i) {
+  if (!confirm('確定要刪除這個自訂格式嗎？')) return;
+  const customs = JSON.parse(localStorage.getItem(CUSTOM_FORMATS_KEY) || '[]');
+  customs.splice(i, 1);
+  localStorage.setItem(CUSTOM_FORMATS_KEY, JSON.stringify(customs));
+  if (selectedFormat?.id === 'custom_'+i) selectedFormat = null;
+  renderCustomFormats();
+  updateGenerateBtn();
+}
+
+function showToast(msg, type = 'ok') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `toast visible ${type}`;
+  setTimeout(() => el.classList.remove('visible'), 2500);
+}
+
+init();
+</script>
+</body>
+</html>
