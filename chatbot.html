@@ -43,7 +43,7 @@ nav { display: flex; gap: .25rem; }
 .workspace { flex: 1; display: flex; overflow: hidden; min-height: 0; }
 
 /* ── SPLIT VIEW (Step 1+2) ── */
-.split-view { display: grid; grid-template-columns: 320px 1fr; width: 100%; }
+.split-view { display: grid; grid-template-columns: 1fr 1fr; width: 100%; }
 
 .info-panel { background: var(--surface); border-right: 1px solid var(--border); padding: 1.75rem; overflow-y: auto; display: flex; flex-direction: column; }
 .panel-label { font-family: var(--mono); font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 1.25rem; display: flex; align-items: center; gap: .5rem; }
@@ -223,7 +223,12 @@ nav { display: flex; gap: .25rem; }
       </div>
       <div class="field">
         <label>日期</label>
-        <input type="date" id="projDate">
+        <div style="display:flex;align-items:center;gap:.5rem;">
+          <input type="date" id="projDateStart" style="flex:1;">
+          <span style="color:var(--ink-faint);font-size:.8rem;flex-shrink:0;">至</span>
+          <input type="date" id="projDateEnd" style="flex:1;">
+        </div>
+        <span class="field-hint">單日活動只填開始日期即可</span>
       </div>
       <div class="field">
         <label>負責人</label>
@@ -406,7 +411,9 @@ const SYS = `你是誠致教育基金會的活動成果記錄助理，專精 IOO
 
 async function startAnalysis() {
   const name = document.getElementById('projName').value.trim();
-  const date = document.getElementById('projDate').value;
+  const dateStart = document.getElementById('projDateStart').value;
+  const dateEnd = document.getElementById('projDateEnd').value;
+  const date = dateStart && dateEnd && dateStart !== dateEnd ? `${dateStart} 至 ${dateEnd}` : dateStart || dateEnd || '';
   const owner = document.getElementById('projOwner').value.trim();
   const note = document.getElementById('projNote').value.trim();
   const ready = files.filter(f => f.status === 'ready');
@@ -553,7 +560,7 @@ function setTyping(on) {
   } else if (!on && ex) { ex.remove(); }
 }
 
-function onChatKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); } }
+function onChatKey(e) { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); sendChat(); } }
 
 async function sendChat() {
   const input = document.getElementById('chatInput');
