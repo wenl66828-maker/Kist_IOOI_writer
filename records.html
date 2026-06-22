@@ -131,6 +131,24 @@ main { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem 6rem; }
 
 .toast { display: none; position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); padding: .7rem 1.25rem; border-radius: 6px; font-size: .82rem; z-index: 400; white-space: nowrap; }
 .toast.visible { display: block; }
+.select-mode-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: .6rem 1.1rem; font-family: var(--sans); font-size: .82rem; color: var(--ink-light); cursor: pointer; transition: all .15s; }
+.select-mode-btn:hover { border-color: var(--purple); color: var(--purple); }
+.select-mode-btn.active { background: var(--purple-light); border-color: var(--purple); color: var(--purple); font-weight: 500; }
+
+.select-bar { background: var(--purple-light); border: 1px solid var(--purple); border-radius: 8px; padding: .75rem 1.25rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.select-bar-count { font-size: .85rem; font-weight: 500; color: var(--purple); }
+.select-all-btn { background: var(--purple-light); color: var(--purple); border-color: var(--purple); }
+
+/* 選取框 overlay on card */
+.record-card.select-mode { cursor: default; }
+.record-card.select-mode:hover { transform: none; border-color: var(--border); }
+.record-card.select-mode.checked { border-color: var(--purple); background: var(--purple-light); }
+.record-checkbox-wrap { display: none; width: 20px; height: 20px; border: 1.5px solid var(--border); border-radius: 4px; flex-shrink: 0; align-items: center; justify-content: center; font-size: .72rem; background: white; transition: all .15s; cursor: pointer; }
+.record-card.select-mode .record-checkbox-wrap { display: flex; }
+.record-card.select-mode.checked .record-checkbox-wrap { background: var(--purple); border-color: var(--purple); color: white; }
+
+.toast { display: none; position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); padding: .7rem 1.25rem; border-radius: 6px; font-size: .82rem; z-index: 400; white-space: nowrap; }
+.toast.visible { display: block; }
 .toast.ok { background: var(--teal); color: white; }
 .toast.err { background: var(--accent); color: white; }
 
@@ -152,7 +170,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem 6rem; }
 <header>
   <a class="logo" href="/"><img class="logo-mark" src="/kist_logo.png" alt="KIST"></a>
   <nav>
-    <a class="nav-link" href="/chatbot.html">記錄活動成果</a>
+    <a class="nav-link" href="/chatbot.html">紀錄專案成果</a>
     <a class="nav-link active" href="/records.html">紀錄庫</a>
     <a class="nav-link" href="/output.html">產出內容</a>
     <a class="nav-link" href="/guide.html">書寫指引</a>
@@ -162,13 +180,26 @@ main { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem 6rem; }
 <main>
   <div class="page-top">
     <h1>紀錄庫</h1>
-    <a class="new-btn" href="/chatbot.html">＋ 新增活動紀錄</a>
+    <div style="display:flex;gap:.625rem;">
+      <button class="select-mode-btn" id="selectModeBtn" onclick="toggleSelectMode()">選取專案</button>
+      <a class="new-btn" href="/chatbot.html">＋ 新增專案紀錄</a>
+    </div>
+  </div>
+
+  <!-- 選取模式操作列（平時隱藏） -->
+  <div class="select-bar" id="selectBar" style="display:none;">
+    <span class="select-bar-count" id="selectBarCount">已選取 0 筆</span>
+    <div style="display:flex;gap:.5rem;">
+      <button class="btn select-all-btn" onclick="selectAll()">全選</button>
+      <button class="btn" onclick="clearSelection()">取消選取</button>
+      <button class="btn primary" onclick="goOutputSelected()">產出內容 →</button>
+    </div>
   </div>
 
   <div class="toolbar">
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
-      <input type="text" id="searchInput" placeholder="搜尋活動名稱…" oninput="renderList()">
+      <input type="text" id="searchInput" placeholder="搜尋專案名稱…" oninput="renderList()">
     </div>
     <select class="sort-select" id="sortSelect" onchange="renderList()">
       <option value="newest">最新儲存</option>
@@ -283,19 +314,65 @@ function renderList() {
       r.files?.length && `📎 ${r.files.length} 份`,
     ].filter(Boolean);
 
-    return `<div class="record-card" onclick="openModal(${idx})">
+    const isChecked = selectedIdxs.has(idx);
+    return `<div class="record-card ${selectMode?'select-mode':''} ${isChecked?'checked':''}"
+      onclick="${selectMode ? `toggleCheck(${idx})` : `openModal(${idx})`}">
       <div class="record-card-top">
-        <div class="record-name">${r.name || '未命名活動'}</div>
+        <div class="record-checkbox-wrap" onclick="event.stopPropagation();toggleCheck(${idx})">${isChecked?'✓':''}</div>
+        <div class="record-name">${r.name || '未命名專案'}</div>
         <div class="record-date">${r.date || ''}</div>
       </div>
       ${metaParts.length ? `<div class="record-meta">${metaParts.map(p=>`<span class="record-tag">${p}</span>`).join('')}</div>` : ''}
       <div class="record-summary">${r.ioiResult?.summary || '（無摘要）'}</div>
-      <div class="record-footer" onclick="event.stopPropagation()">
+      ${!selectMode ? `<div class="record-footer" onclick="event.stopPropagation()">
         <button class="record-btn-sm purple" onclick="openModal(${idx})">查看 / 編輯</button>
         <button class="record-btn-sm" onclick="goToOutputWith(${idx})">產出內容</button>
-      </div>
+      </div>` : ''}
     </div>`;
   }).join('');
+}
+
+// ── 選取模式 ──────────────────────────────────
+let selectMode = false;
+let selectedIdxs = new Set();
+
+function toggleSelectMode() {
+  selectMode = !selectMode;
+  selectedIdxs.clear();
+  document.getElementById('selectModeBtn').classList.toggle('active', selectMode);
+  document.getElementById('selectBar').style.display = selectMode ? 'flex' : 'none';
+  updateSelectBar();
+  renderList();
+}
+
+function toggleCheck(idx) {
+  if (!selectMode) return;
+  selectedIdxs.has(idx) ? selectedIdxs.delete(idx) : selectedIdxs.add(idx);
+  updateSelectBar();
+  renderList();
+}
+
+function selectAll() {
+  records.forEach((_, i) => selectedIdxs.add(i));
+  updateSelectBar();
+  renderList();
+}
+
+function clearSelection() {
+  selectedIdxs.clear();
+  updateSelectBar();
+  renderList();
+}
+
+function updateSelectBar() {
+  document.getElementById('selectBarCount').textContent = `已選取 ${selectedIdxs.size} 筆`;
+}
+
+function goOutputSelected() {
+  if (selectedIdxs.size === 0) { showToast('請先選取至少一筆紀錄', 'err'); return; }
+  const selected = Array.from(selectedIdxs).map(i => records[i]).filter(Boolean);
+  localStorage.setItem('kist_output_records', JSON.stringify(selected));
+  window.location.href = '/output.html?mode=step2';
 }
 
 function openModal(idx) {

@@ -30,14 +30,12 @@ nav { display: flex; gap: .25rem; }
 .nav-link:hover { color: white; background: rgba(255,255,255,.08); }
 .nav-link.active { color: white; background: rgba(255,255,255,.15); font-weight: 500; }
 
-.page-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1.25rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
-.page-header-left h1 { font-size: 1.1rem; font-weight: 700; margin-bottom: .15rem; }
-.page-header-left p { font-size: .78rem; color: var(--ink-faint); font-weight: 300; }
-.step-indicator { display: flex; align-items: center; gap: .5rem; }
-.step-dot { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: .65rem; font-weight: 500; border: 1.5px solid var(--border); color: var(--ink-faint); transition: all .3s; }
+/* step indicator 移到 header 裡 */
+.header-steps { display: flex; align-items: center; gap: .4rem; }
+.step-dot { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: .62rem; font-weight: 500; border: 1.5px solid rgba(255,255,255,.25); color: rgba(255,255,255,.45); transition: all .3s; }
 .step-dot.active { background: var(--purple); border-color: var(--purple); color: white; }
 .step-dot.done { background: var(--teal); border-color: var(--teal); color: white; }
-.step-line { width: 28px; height: 1.5px; background: var(--border); transition: background .3s; }
+.step-line { width: 20px; height: 1.5px; background: rgba(255,255,255,.2); transition: background .3s; }
 .step-line.done { background: var(--teal); }
 
 .workspace { flex: 1; display: flex; overflow: hidden; min-height: 0; }
@@ -45,20 +43,22 @@ nav { display: flex; gap: .25rem; }
 /* ── SPLIT VIEW (Step 1+2) ── */
 .split-view { display: grid; grid-template-columns: 1fr 1fr; width: 100%; }
 
-.info-panel { background: var(--surface); border-right: 1px solid var(--border); padding: 1.75rem; overflow-y: auto; display: flex; flex-direction: column; }
-.panel-label { font-family: var(--mono); font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 1.25rem; display: flex; align-items: center; gap: .5rem; }
+.info-panel { background: var(--surface); border-right: 1px solid var(--border); overflow-y: auto; display: flex; flex-direction: column; height: 100%; }
+.info-panel-scroll { flex: 1; overflow-y: auto; padding: 1.5rem; }
+.panel-label { font-family: var(--mono); font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 1.1rem; display: flex; align-items: center; gap: .5rem; }
 .panel-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-.field { display: flex; flex-direction: column; gap: .35rem; margin-bottom: 1.1rem; }
-.field label { font-size: .78rem; font-weight: 500; color: var(--ink-light); }
+.field { display: flex; flex-direction: column; gap: .3rem; margin-bottom: .875rem; }
+.field label { font-size: .75rem; font-weight: 500; color: var(--ink-light); }
 .field-req { color: var(--accent); }
-.field input, .field textarea { background: var(--bg); border: 1px solid var(--border); border-radius: 5px; padding: .6rem .875rem; font-family: var(--sans); font-size: .875rem; color: var(--ink); outline: none; transition: border-color .15s; }
+.field input, .field textarea { background: var(--bg); border: 1px solid var(--border); border-radius: 5px; padding: .55rem .825rem; font-family: var(--sans); font-size: .855rem; color: var(--ink); outline: none; transition: border-color .15s; width: 100%; }
 .field input:focus, .field textarea:focus { border-color: var(--purple); }
-.field textarea { resize: vertical; min-height: 90px; line-height: 1.65; }
-.field-hint { font-size: .72rem; color: var(--ink-faint); }
+.field textarea { resize: vertical; min-height: 80px; line-height: 1.65; }
+.field-hint { font-size: .7rem; color: var(--ink-faint); }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
 
-.info-panel-footer { margin-top: auto; padding-top: 1.5rem; }
-.start-btn { width: 100%; background: var(--purple); color: white; border: none; border-radius: 6px; padding: .8rem; font-family: var(--sans); font-size: .9rem; font-weight: 700; cursor: pointer; transition: opacity .15s; display: flex; align-items: center; justify-content: center; gap: .5rem; }
+.info-panel-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--border); flex-shrink: 0; }
+.start-btn { width: 100%; background: var(--purple); color: white; border: none; border-radius: 6px; padding: .75rem; font-family: var(--sans); font-size: .875rem; font-weight: 700; cursor: pointer; transition: opacity .15s; }
 .start-btn:hover { opacity: .88; }
 .start-btn:disabled { opacity: .4; cursor: not-allowed; }
 
@@ -190,24 +190,15 @@ nav { display: flex; gap: .25rem; }
 <header>
   <a class="logo" href="/"><img class="logo-mark" src="/kist_logo.png" alt="KIST"></a>
   <nav>
-    <a class="nav-link active" href="/chatbot.html">記錄活動成果</a>
+    <a class="nav-link active" href="/chatbot.html">紀錄專案成果</a>
     <a class="nav-link" href="/records.html">紀錄庫</a>
-    <a class="nav-link" href="/output.html">產出內容</a>
-    <a class="nav-link" href="/guide.html">書寫指引</a>
   </nav>
-</header>
-
-<div class="page-header">
-  <div class="page-header-left">
-    <h1>記錄活動成果</h1>
-    <p>上傳素材，AI 幫你整理成 IOOI 資料庫</p>
-  </div>
-  <div class="step-indicator">
-    <div class="step-dot active" id="sdot1" title="填寫資訊 & 上傳素材">1</div>
+  <div class="header-steps">
+    <div class="step-dot active" id="sdot1">1</div>
     <div class="step-line" id="sline1"></div>
-    <div class="step-dot" id="sdot2" title="分析結果 & 補充細節">2</div>
+    <div class="step-dot" id="sdot2">2</div>
   </div>
-</div>
+</header>
 
 <div class="workspace">
 
@@ -215,38 +206,40 @@ nav { display: flex; gap: .25rem; }
   <div class="split-view" id="splitView">
 
     <div class="info-panel">
-      <div class="panel-label">基本資訊</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;">
-        <div class="field">
-          <label>專案名稱 <span class="field-req">*</span></label>
-          <input type="text" id="projName" placeholder="例：113 學年度家長日">
+      <div class="info-panel-scroll">
+        <div class="panel-label">基本資訊</div>
+        <div class="two-col">
+          <div class="field">
+            <label>專案名稱 <span class="field-req">*</span></label>
+            <input type="text" id="projName" placeholder="例：2025 共識營">
+          </div>
+          <div class="field">
+            <label>負責人</label>
+            <input type="text" id="projOwner" placeholder="例：王小明">
+          </div>
         </div>
         <div class="field">
-          <label>負責人</label>
-          <input type="text" id="projOwner" placeholder="例：王小明">
+          <label>日期</label>
+          <div style="display:flex;align-items:center;gap:.5rem;">
+            <input type="date" id="projDateStart" style="flex:1;">
+            <span style="color:var(--ink-faint);font-size:.78rem;flex-shrink:0;">至</span>
+            <input type="date" id="projDateEnd" style="flex:1;">
+          </div>
+          <span class="field-hint">單日專案只填開始日期即可</span>
         </div>
-      </div>
-      <div class="field">
-        <label>日期</label>
-        <div style="display:flex;align-items:center;gap:.5rem;">
-          <input type="date" id="projDateStart" style="flex:1;">
-          <span style="color:var(--ink-faint);font-size:.8rem;flex-shrink:0;">至</span>
-          <input type="date" id="projDateEnd" style="flex:1;">
+        <div class="field">
+          <label>地點</label>
+          <input type="text" id="projLocation" placeholder="例：新北市致理科技大學">
         </div>
-        <span class="field-hint">單日活動只填開始日期即可</span>
-      </div>
-      <div class="field">
-        <label>地點</label>
-        <input type="text" id="projLocation" placeholder="例：新北市致理科技大學">
-      </div>
-      <div class="field">
-        <label>雲端資料連結</label>
-        <input type="url" id="projDocsUrl" placeholder="計畫書、課表、照片等 Google Drive 連結">
-      </div>
-      <div class="field">
-        <label>給 AI 的備注</label>
-        <textarea id="projNote" placeholder="想讓 AI 特別注意的重點，或這個活動的特殊背景…"></textarea>
-        <span class="field-hint">AI 會參考這段說明來調整分析方向</span>
+        <div class="field">
+          <label>雲端資料連結</label>
+          <input type="url" id="projDocsUrl" placeholder="計畫書、課表、照片等 Google Drive 連結">
+        </div>
+        <div class="field">
+          <label>給 AI 的備注</label>
+          <textarea id="projNote" placeholder="想讓 AI 特別注意的重點，或這個專案的特殊背景…"></textarea>
+          <span class="field-hint">AI 會參考這段說明來調整分析方向</span>
+        </div>
       </div>
       <div class="info-panel-footer">
         <button class="start-btn" id="analyzeBtn" onclick="startAnalysis()" disabled>
@@ -655,6 +648,52 @@ function showToast(msg, type = 'ok') {
   el.textContent = msg; el.className = `error-toast visible ${type}`;
   setTimeout(() => el.classList.remove('visible'), 3500);
 }
+
+// ── 預載範例紀錄 ──────────────────────────────────────────
+function seedDemoIfEmpty() {
+  const existing = JSON.parse(localStorage.getItem('kist_records') || '[]');
+  if (existing.length > 0) return;
+  const demo = {
+    name: '2025 KIST 暑期共識營',
+    date: '2025-08-06 至 2025-08-08',
+    location: '新北市致理科技大學',
+    owner: '誠致教育基金會',
+    docsUrl: '',
+    note: '',
+    files: ['共識營計畫書.pdf', '回饋表統計.xlsx'],
+    ioiResult: {
+      summary: '2025 年 KIST 暑期共識營以「串連學校與聯盟、展望未來」為主軸，聚焦嚴謹教學、PBL 與 SEL 三大發展軸線，共 13 所學校、超過 240 位教師參與三天密集研習，是 KIST 聯盟自 2017 年以來規模最大的一次。',
+      dimensions: {
+        input: {
+          content: '誠致教育基金會提供場地、師資與課程規劃支援；邀請外部專家講師主持工作坊；各校自行負責交通與住宿安排。聯盟後台提供三條主軸的共備素材與觀議課影片供各校提前預習。',
+          completeness: 72
+        },
+        output: {
+          content: '三天共識營開設三大軸線工作坊共 18 堂課、4 個跨校共備場次，以聯盟運動會串聯各校情感。共 13 所學校、240 位教師參與，出席率達 98%。產出跨校共備記錄 12 份、各校學期行動計畫 13 份。',
+          completeness: 88
+        },
+        outcome: {
+          content: '老師們反映將三天共識營的養分帶回教學場域，作為新學期持續互動與深化合作的起點。課後問卷顯示 87% 的教師表示對下學期跨校合作有更高的信心；76% 表示對 PBL 設計有更清楚的方向。',
+          completeness: 65
+        },
+        impact: {
+          content: '本次共識營獲邀兩位外部教育研究者觀察記錄，預計將發表於教育期刊。活動期間有三家媒體記者到場採訪，後續報導觸及逾 5,000 人次。另有兩所非 KIST 學校主動詢問加入聯盟的可能性。',
+          completeness: 70
+        }
+      },
+      missing_info: [
+        { dimension: 'input', item: '活動總預算與來源', reason: '讓捐款人和贊助單位了解資金使用方式', question: '這次共識營的總預算大約是多少？主要來自哪些來源？' },
+        { dimension: 'outcome', item: '參與者滿意度量化數據', reason: '有具體數字更有說服力', question: '問卷的整體滿意度分數是多少分？' }
+      ],
+      photo_prompt: '建議提供：全體合照、工作坊進行中的實作照片、聯盟運動會的精彩瞬間、跨校小組共備的討論照'
+    },
+    chatHistory: [],
+    savedAt: '06/22 09:00'
+  };
+  localStorage.setItem('kist_records', JSON.stringify([demo]));
+}
+
+seedDemoIfEmpty();
 </script>
 </body>
 </html>

@@ -352,10 +352,23 @@ const PRESETS=[
 
 function init(){
   records=JSON.parse(localStorage.getItem(RK)||'[]');
+
+  // 從紀錄庫「產出內容」帶過來的單筆
   const pre=localStorage.getItem('kist_output_record');
   if(pre){ try{ const r=JSON.parse(pre); const i=records.findIndex(x=>x.name===r.name&&x.savedAt===r.savedAt); if(i>=0) selIdxs.add(i); }catch(e){} localStorage.removeItem('kist_output_record'); }
+
+  // 從紀錄庫「選取後產出」帶過來的多筆
+  const multiPre=localStorage.getItem('kist_output_records');
+  if(multiPre){ try{ const rs=JSON.parse(multiPre); rs.forEach(r=>{ const i=records.findIndex(x=>x.name===r.name&&x.savedAt===r.savedAt); if(i>=0) selIdxs.add(i); }); }catch(e){} localStorage.removeItem('kist_output_records'); }
+
   renderRecords(); renderPresets(); renderCustoms();
   updateS1Footer();
+
+  // 如果帶著選取的紀錄過來，且 URL 有 ?mode=step2，直接跳到第二步
+  const params=new URLSearchParams(window.location.search);
+  if(params.get('mode')==='step2' && selIdxs.size>0){
+    goS2();
+  }
 }
 
 // ── Step 1 ──
