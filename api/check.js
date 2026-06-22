@@ -4,6 +4,10 @@ export default async function handler(req, res) {
   }
 
   const apiKey = process.env.OPENAI_API_KEY;
+  
+  // 暫時加這行 debug
+  console.log('API KEY exists:', !!apiKey, 'length:', apiKey?.length);
+  
   if (!apiKey) {
     return res.status(500).json({ error: { message: '伺服器未設定 API Key，請聯絡管理員。' } });
   }
