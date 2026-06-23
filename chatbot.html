@@ -173,7 +173,13 @@ nav { display: flex; gap: .25rem; margin-left: auto; }
 .lstep.active { color: var(--ink); }
 .lstep.done { color: var(--teal); }
 
-.error-toast { display: none; position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); padding: .75rem 1.25rem; border-radius: 6px; font-size: .82rem; z-index: 200; max-width: 90vw; text-align: center; }
+/* ── PPTX POPUP ── */
+.pptx-popup { display: none; position: fixed; inset: 0; z-index: 300; background: rgba(26,23,20,.4); backdrop-filter: blur(3px); align-items: center; justify-content: center; }
+.pptx-popup.visible { display: flex; }
+.pptx-popup-card { background: var(--surface); border-radius: 10px; padding: 1.5rem; width: min(380px, 90vw); }
+.pptx-popup-title { font-size: .95rem; font-weight: 700; margin-bottom: .625rem; display: flex; align-items: center; gap: .5rem; }
+.pptx-popup-body { font-size: .82rem; color: var(--ink-light); line-height: 1.7; font-weight: 300; margin-bottom: 1.25rem; }
+.pptx-popup-btn { width: 100%; background: var(--purple); color: white; border: none; border-radius: 6px; padding: .65rem; font-family: var(--sans); font-size: .875rem; font-weight: 700; cursor: pointer; }
 .error-toast.visible { display: block; }
 .error-toast.err { background: var(--accent); color: white; }
 .error-toast.ok { background: var(--teal); color: white; }
@@ -261,7 +267,7 @@ nav { display: flex; gap: .25rem; margin-left: auto; }
       <div class="upload-zone" id="uploadZone"
         onclick="document.getElementById('fileInput').click()"
         ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
-        <input type="file" id="fileInput" accept=".xlsx,.xls,.pdf,.doc,.docx,.txt,.csv" multiple onchange="handleFiles(event)">
+        <input type="file" id="fileInput" accept=".xlsx,.xls,.pdf,.doc,.docx,.pptx,.txt,.csv" multiple onchange="handleFiles(event)">
         <div class="upload-zone-icon">📂</div>
         <div class="upload-zone-title">點擊選擇或拖曳素材至此</div>
         <div class="upload-zone-desc">可一次上傳多份，AI 統一讀取後整合分析</div>
@@ -269,6 +275,7 @@ nav { display: flex; gap: .25rem; margin-left: auto; }
           <span class="format-chip">.xlsx</span>
           <span class="format-chip">.pdf</span>
           <span class="format-chip">.docx</span>
+          <span class="format-chip">.pptx</span>
           <span class="format-chip">.csv</span>
           <span class="format-chip">.txt</span>
         </div>
@@ -324,6 +331,15 @@ nav { display: flex; gap: .25rem; margin-left: auto; }
   </div>
 </div>
 
+<!-- PPTX 提示 Popup -->
+<div class="pptx-popup" id="pptxPopup">
+  <div class="pptx-popup-card">
+    <div class="pptx-popup-title">📊 關於簡報檔的說明</div>
+    <div class="pptx-popup-body">簡報檔會擷取每張投影片的文字內容，但<strong>圖表、圖片和視覺元素不會被讀取</strong>。<br><br>如果你的簡報以文字說明為主（例如計畫書型簡報），效果會很好。如果主要是圖表和視覺設計，建議搭配文字素材一起上傳，效果更完整。</div>
+    <button class="pptx-popup-btn" onclick="document.getElementById('pptxPopup').classList.remove('visible')">了解，繼續上傳</button>
+  </div>
+</div>
+
 <div class="error-toast" id="toast"></div>
 
 <script>
@@ -362,6 +378,21 @@ async function processFile(file) {
     } else if (n.endsWith('.docx')) {
       const buf = await file.arrayBuffer();
       entry.text = (await mammoth.extractRawText({ arrayBuffer: buf })).value;
+    } else if (n.endsWith('.pptx')) {
+      // 顯示 popup 提示
+      document.getElementById('pptxPopup').classList.add('visible');
+      // 用 JSZip + 解析 pptx 內的 xml 文字
+      if (!window.JSZip) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js');
+      const buf = await file.arrayBuffer();
+      const zip = await JSZip.loadAsync(buf);
+      let slideTexts = [];
+      const slideFiles = Object.keys(zip.files).filter(f => f.match(/ppt\/slides\/slide[0-9]+\.xml$/)).sort();
+      for (const sf of slideFiles) {
+        const xml = await zip.files[sf].async('string');
+        const text = xml.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+        if (text) slideTexts.push(text);
+      }
+      entry.text = slideTexts.join('\n');
     } else if (n.endsWith('.pdf')) {
       pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
       const pdf = await pdfjsLib.getDocument({ data: await file.arrayBuffer() }).promise;
@@ -398,7 +429,7 @@ function removeFile(id) {
 function renderFiles() {
   const list = document.getElementById('fileList');
   list.innerHTML = files.map(f => {
-    const icon = f.name.endsWith('.pdf') ? '📄' : f.name.match(/\.xlsx?/) ? '📊' : f.name.match(/\.docx?/) ? '📝' : '📃';
+    const icon = f.name.endsWith('.pdf') ? '📄' : f.name.match(/\.xlsx?/) ? '📊' : f.name.match(/\.docx?/) ? '📝' : f.name.endsWith('.pptx') ? '📑' : '📃';
     const sz = f.size < 1048576 ? (f.size/1024).toFixed(1) + ' KB' : (f.size/1048576).toFixed(1) + ' MB';
     const stLabel = { ready: '已讀取', parsing: '解析中…', error: '讀取失敗' }[f.status];
     return `<div class="file-item">
