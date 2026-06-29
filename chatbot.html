@@ -20,6 +20,7 @@
   --mono: 'DM Mono', monospace;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 17px; }
 body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 400; line-height: 1.7; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
 header { background: var(--kist-blue); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px; flex-shrink: 0; }
@@ -242,10 +243,6 @@ nav { display: flex; gap: .25rem; margin-left: auto; }
           <span class="field-hint">單日專案只填開始日期即可</span>
         </div>
         <div class="field">
-          <label>地點</label>
-          <input type="text" id="projLocation" placeholder="例：新北市致理科技大學">
-        </div>
-        <div class="field">
           <label>雲端資料連結</label>
           <input type="url" id="projDocsUrl" placeholder="計畫書、課表、照片等 Google Drive 連結">
         </div>
@@ -461,7 +458,6 @@ async function startAnalysis() {
   const date = dateStart && dateEnd && dateStart !== dateEnd ? `${dateStart} 至 ${dateEnd}` : dateStart || dateEnd || '';
   const owner = document.getElementById('projOwner').value.trim();
   const note = document.getElementById('projNote').value.trim();
-  const location = document.getElementById('projLocation').value.trim();
   const docsUrl = document.getElementById('projDocsUrl').value.trim();
   const ready = files.filter(f => f.status === 'ready');
   if (!name || !ready.length) return;
@@ -474,7 +470,6 @@ async function startAnalysis() {
 基本資訊：
 - 專案名稱：${name}
 - 日期：${date || '未提供'}
-- 地點：${location || '未提供'}
 - 負責人：${owner || '未提供'}
 ${docsUrl ? `- 資料連結：${docsUrl}` : ''}
 ${note ? `- 使用者備注：${note}` : ''}
@@ -506,7 +501,7 @@ ${combined}
     if (!resp.ok) throw new Error(data?.error?.message || '連線錯誤');
     const text = data.content?.[0]?.text || '';
     ioiResult = JSON.parse(text.replace(/```json\n?|\n?```/g,'').trim());
-    record = { name, date, owner, location, docsUrl, note, files: ready.map(f => f.name) };
+    record = { name, date, owner, docsUrl, note, files: ready.map(f => f.name) };
     renderResult(ioiResult, { name, date, owner });
     initChat(ioiResult, name);
     showStep3();

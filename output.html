@@ -18,6 +18,7 @@
   --mono:'DM Mono',monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:17px;}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:400;line-height:1.7;min-height:100vh;display:flex;flex-direction:column;}
 
 /* HEADER */
@@ -242,6 +243,18 @@ header{background:var(--kist-blue);padding:0 2rem;display:flex;align-items:cente
         <div id="tabFree" style="display:none;">
           <div class="free-label">描述你想要的輸出</div>
           <textarea class="free-textarea" id="freePrompt" placeholder="例：寫一份給企業贊助方的 300 字成果摘要，語氣正式，強調學生改變…" oninput="updateGenBtn()"></textarea>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.625rem;margin-bottom:.75rem;">
+            <div>
+              <div class="free-label">字數（選填）</div>
+              <input type="text" id="freeWordCount" placeholder="例：300 字以內" style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:.55rem .875rem;font-family:var(--sans);font-size:.82rem;color:var(--ink);outline:none;transition:border-color .15s;">
+            </div>
+            <div>
+              <div class="free-label">文案目標（選填）</div>
+              <input type="text" id="freeGoal" placeholder="例：讓捐款人了解成效" style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:.55rem .875rem;font-family:var(--sans);font-size:.82rem;color:var(--ink);outline:none;transition:border-color .15s;">
+            </div>
+          </div>
+          <div class="free-label">範例提供（選填）</div>
+          <textarea class="free-textarea" id="freeExample" placeholder="貼上一個你認為寫得好的舊範例，AI 會參考它的風格和語氣…" style="min-height:80px;margin-bottom:0;"></textarea>
         </div>
       </div>
 
@@ -467,12 +480,15 @@ function updateGenBtn(){
 // ── Generate ──
 async function generate(){
   const free=document.getElementById('freePrompt').value.trim();
+  const freeWordCount=document.getElementById('freeWordCount')?.value.trim()||'';
+  const freeGoal=document.getElementById('freeGoal')?.value.trim()||'';
+  const freeExample=document.getElementById('freeExample')?.value.trim()||'';
   if(!selFmt&&!free) return;
 
   const selRecs=Array.from(selIdxs).map(i=>records[i]).filter(Boolean);
   const data=selRecs.map(r=>{
     const d=r.ioiResult?.dimensions||{};
-    return `【活動：${r.name}】日期：${r.date||''}　地點：${r.location||''}　負責人：${r.owner||''}
+    return `【專案：${r.name}】日期：${r.date||''}　負責人：${r.owner||''}
 整體摘要：${r.ioiResult?.summary||''}
 Input 投入：${d.input?.content||'（無資料）'}
 Output 產出：${d.output?.content||'（無資料）'}
@@ -482,8 +498,11 @@ Impact 影響力：${d.impact?.content||'（無資料）'}`;
 
   const fmtPrompt=selFmt?.prompt||'';
   const example=selFmt?.example?`\n\n以下是一個寫得好的參考範例，請參考它的風格和語氣：\n\n${selFmt.example}`:'';
-  const freeInstr=free?`\n\n用戶額外指示：${free}`:'';
-  const full=`${fmtPrompt}${example}${freeInstr}\n\n以下是專案 IOOI 資料：\n\n${data}\n\n請直接產出內容，不要加前言。使用繁體中文。`;
+  const freeInstr=free?`\n\n用戶指示：${free}`:'';
+  const wordInstr=freeWordCount?`\n字數要求：${freeWordCount}`:'';
+  const goalInstr=freeGoal?`\n文案目標：${freeGoal}`:'';
+  const exampleInstr=freeExample?`\n\n用戶提供的參考範例（請參考風格和語氣）：\n${freeExample}`:'';
+  const full=`${fmtPrompt}${example}${freeInstr}${wordInstr}${goalInstr}${exampleInstr}\n\n以下是專案 IOOI 資料：\n\n${data}\n\n請直接產出內容，不要加前言。使用繁體中文。`;
 
   document.getElementById('outPlaceholder').style.display='none';
   document.getElementById('outEditor').style.display='none';
