@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>設定 — 誠致教育基金會</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+Antique:wght@300;400;500;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+html { font-size: 17px; }
+:root {
+  --bg: #F7F4EF; --surface: #FFFFFF; --surface2: #F0EDE7;
+  --ink: #1A1714; --ink-light: #6B6560; --ink-faint: #B0AAA3;
+  --accent: #C4501A; --accent-light: #F5E8E2;
+  --border: #DDD8D0; --kist-blue: #1B3A6B;
+  --purple: #534AB7; --purple-light: #EEEDFE;
+  --teal: #0F6E56; --teal-light: #E1F5EE;
+  --amber: #854F0B; --amber-light: #FAEEDA;
+  --sans: 'Zen Kaku Gothic Antique', sans-serif;
+  --mono: 'DM Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 400; line-height: 1.7; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+/* ── HEADER ── */
+header { background: var(--kist-blue); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px; flex-shrink: 0; }
+.logo { display: flex; align-items: center; text-decoration: none; }
+.logo-mark { height: 28px; width: auto; }
+.header-right { display: flex; align-items: center; gap: .5rem; }
+.header-btn { font-size: .78rem; color: rgba(255,255,255,.55); text-decoration: none; padding: .375rem .75rem; border-radius: 4px; transition: all .15s; border: none; background: none; cursor: pointer; font-family: var(--sans); }
+.header-btn:hover { color: white; background: rgba(255,255,255,.1); }
+
+/* ── LAYOUT ── */
+.page-layout { display: grid; grid-template-columns: 260px 1fr; flex: 1; overflow: hidden; }
+
+/* ── LEFT SIDEBAR ── */
+.sidebar { background: var(--surface); border-right: 1px solid var(--border); overflow-y: auto; display: flex; flex-direction: column; }
+.sidebar-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.sidebar-header h2 { font-size: .95rem; font-weight: 700; margin-bottom: .15rem; }
+.sidebar-header p { font-size: .72rem; color: var(--ink-faint); font-weight: 300; }
+
+.sidebar-section { padding: .875rem 1rem .5rem; }
+.sidebar-section-label { font-family: var(--mono); font-size: .6rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); padding: 0 .5rem; margin-bottom: .375rem; }
+.sidebar-item { display: flex; align-items: center; gap: .625rem; padding: .55rem .75rem; border-radius: 6px; cursor: pointer; transition: all .15s; border: none; background: none; font-family: var(--sans); font-size: .82rem; color: var(--ink-light); width: 100%; text-align: left; font-weight: 400; }
+.sidebar-item:hover { background: var(--surface2); color: var(--ink); }
+.sidebar-item.active { background: var(--purple-light); color: var(--purple); font-weight: 500; }
+.sidebar-item-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); flex-shrink: 0; transition: background .15s; }
+.sidebar-item.active .sidebar-item-dot { background: var(--purple); }
+.sidebar-item-custom { background: var(--amber-light); color: var(--amber); }
+
+/* ── RIGHT EDITOR ── */
+.editor-panel { display: flex; flex-direction: column; overflow: hidden; background: var(--bg); }
+.editor-header { padding: 1.25rem 1.75rem; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+.editor-header-left h3 { font-size: 1rem; font-weight: 700; margin-bottom: .2rem; }
+.editor-header-left p { font-size: .75rem; color: var(--ink-faint); font-weight: 300; line-height: 1.6; max-width: 480px; }
+.editor-actions { display: flex; gap: .5rem; flex-shrink: 0; }
+.btn { font-family: var(--sans); font-size: .8rem; padding: .5rem 1rem; border-radius: 5px; cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--ink); transition: all .15s; }
+.btn:hover { background: var(--surface2); }
+.btn.primary { background: var(--purple); color: white; border-color: var(--purple); font-weight: 500; }
+.btn.primary:hover { opacity: .88; }
+.btn.danger { color: var(--accent); }
+.btn.danger:hover { background: var(--accent-light); border-color: var(--accent); }
+
+.editor-body { flex: 1; overflow-y: auto; padding: 1.5rem 1.75rem; }
+
+/* Prompt editor */
+.prompt-editor-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.prompt-editor-toolbar { padding: .625rem .875rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: .5rem; }
+.toolbar-label { font-family: var(--mono); font-size: .62rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-faint); }
+.prompt-textarea { width: 100%; min-height: 320px; padding: 1.25rem; font-family: var(--mono); font-size: .8rem; color: var(--ink); line-height: 1.75; border: none; outline: none; resize: vertical; background: var(--surface); }
+.prompt-textarea:focus { background: #FAFAF8; }
+
+/* Meta fields */
+.meta-fields { display: grid; grid-template-columns: 1fr 1fr; gap: .875rem; margin-bottom: 1.25rem; }
+.meta-field { display: flex; flex-direction: column; gap: .3rem; }
+.meta-field label { font-size: .72rem; font-weight: 500; color: var(--ink-light); }
+.meta-field input, .meta-field textarea { background: var(--surface); border: 1px solid var(--border); border-radius: 5px; padding: .55rem .825rem; font-family: var(--sans); font-size: .855rem; color: var(--ink); outline: none; transition: border-color .15s; width: 100%; }
+.meta-field input:focus, .meta-field textarea:focus { border-color: var(--purple); }
+.meta-field textarea { resize: vertical; min-height: 72px; line-height: 1.6; }
+.meta-field.full { grid-column: 1 / -1; }
+
+/* Info box */
+.info-box { background: var(--purple-light); border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; font-size: .8rem; color: var(--ink); line-height: 1.7; }
+.info-box strong { color: var(--purple); display: block; font-family: var(--mono); font-size: .62rem; text-transform: uppercase; letter-spacing: .08em; margin-bottom: .35rem; }
+
+/* Empty state */
+.empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; color: var(--ink-faint); padding: 3rem; }
+.empty-icon { font-size: 2.5rem; margin-bottom: 1rem; opacity: .3; }
+.empty-text { font-size: .875rem; font-weight: 300; }
+
+/* Toast */
+.toast { display: none; position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); padding: .7rem 1.25rem; border-radius: 6px; font-size: .82rem; z-index: 400; white-space: nowrap; }
+.toast.visible { display: block; }
+.toast.ok { background: var(--teal); color: white; }
+.toast.err { background: var(--accent); color: white; }
+
+@media (max-width: 768px) {
+  .page-layout { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  header { padding: 0 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="/"><img class="logo-mark" src="/kist_logo.png" alt="KIST"></a>
+  <div class="header-right">
+    <a class="header-btn" href="/">← 回首頁</a>
+  </div>
+</header>
+
+<div class="page-layout">
+
+  <!-- LEFT: 分類列表 -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h2>設定</h2>
+      <p>管理 AI Prompt 和自訂格式</p>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">紀錄專案成果</div>
+      <button class="sidebar-item" onclick="selectPrompt('analysis')">
+        <div class="sidebar-item-dot"></div>素材分析 Prompt
+      </button>
+      <button class="sidebar-item" onclick="selectPrompt('followup')">
+        <div class="sidebar-item-dot"></div>追問細節 Prompt
+      </button>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">產出內容・預設格式</div>
+      <button class="sidebar-item" onclick="selectPrompt('fmt_fb')">
+        <div class="sidebar-item-dot"></div>📘 FB 貼文
+      </button>
+      <button class="sidebar-item" onclick="selectPrompt('fmt_line')">
+        <div class="sidebar-item-dot"></div>💬 LINE 群組
+      </button>
+      <button class="sidebar-item" onclick="selectPrompt('fmt_email')">
+        <div class="sidebar-item-dot"></div>📧 Email
+      </button>
+      <button class="sidebar-item" onclick="selectPrompt('fmt_web')">
+        <div class="sidebar-item-dot"></div>🌐 官網文章
+      </button>
+      <button class="sidebar-item" onclick="selectPrompt('fmt_newsletter')">
+        <div class="sidebar-item-dot"></div>📰 電子報
+      </button>
+      <button class="sidebar-item" onclick="selectPrompt('fmt_impact')">
+        <div class="sidebar-item-dot"></div>📊 公益報告
+      </button>
+      <button class="sidebar-item" onclick="selectPrompt('fmt_donor')">
+        <div class="sidebar-item-dot"></div>🤝 捐款人報告
+      </button>
+      <button class="sidebar-item" onclick="selectPrompt('fmt_school')">
+        <div class="sidebar-item-dot"></div>🏫 學校成果報告書
+      </button>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">產出內容・自訂格式</div>
+      <div id="customFormatList"></div>
+      <button class="sidebar-item" onclick="newCustomFormat()" style="color:var(--purple);margin-top:.25rem;">
+        <div class="sidebar-item-dot" style="background:var(--purple);"></div>＋ 新增自訂格式
+      </button>
+    </div>
+  </div>
+
+  <!-- RIGHT: 編輯區 -->
+  <div class="editor-panel">
+    <div id="emptyState" class="empty-state">
+      <div class="empty-icon">⚙️</div>
+      <div class="empty-text">從左側選擇一個 Prompt 來查看或編輯</div>
+    </div>
+    <div id="editorContent" style="display:none;flex:1;overflow-y:auto;flex-direction:column;">
+      <div class="editor-header">
+        <div class="editor-header-left">
+          <h3 id="editorTitle">Prompt 名稱</h3>
+          <p id="editorDesc">說明文字</p>
+        </div>
+        <div class="editor-actions">
+          <button class="btn danger" id="deleteBtn" style="display:none;" onclick="deleteCustomFormat()">刪除</button>
+          <button class="btn" onclick="resetPrompt()">還原預設</button>
+          <button class="btn primary" onclick="savePrompt()">儲存</button>
+        </div>
+      </div>
+      <div style="padding:1.5rem 1.75rem;flex:1;overflow-y:auto;">
+        <!-- 自訂格式的額外欄位 -->
+        <div id="customMetaFields" style="display:none;">
+          <div class="info-box">
+            <strong>自訂格式說明</strong>
+            自訂格式會出現在「產出內容」的格式清單最上方。填寫格式名稱、用途說明，以及給 AI 的指示，還可以貼上一個舊範例讓 AI 參考風格。
+          </div>
+          <div class="meta-fields">
+            <div class="meta-field">
+              <label>格式名稱 *</label>
+              <input type="text" id="customName" placeholder="例：學校粉專貼文">
+            </div>
+            <div class="meta-field">
+              <label>用途說明</label>
+              <input type="text" id="customDesc" placeholder="例：發在學校臉書，給家長和社區看">
+            </div>
+            <div class="meta-field full">
+              <label>參考範例（選填）</label>
+              <textarea id="customExample" placeholder="貼上一個你認為寫得好的舊範例，AI 會參考它的風格和語氣…"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Prompt 編輯器 -->
+        <div class="prompt-editor-wrap">
+          <div class="prompt-editor-toolbar">
+            <span class="toolbar-label">給 AI 的指示（Prompt）</span>
+          </div>
+          <textarea class="prompt-textarea" id="promptTextarea" placeholder="在這裡輸入給 AI 的指示…"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const CK = 'kist_custom_formats';
+const PK = 'kist_prompts'; // 儲存自訂的 prompt 覆蓋值
+
+let currentKey = null;
+let isCustom = false;
+let currentCustomIdx = null;
+
+// ── 預設 Prompt ──────────────────────────────────────────
+const DEFAULT_PROMPTS = {
+  analysis: {
+    title: '素材分析 Prompt',
+    desc: '上傳素材後，AI 用這個 Prompt 將素材整理成 IOOI 框架內容。',
+    prompt: `你是誠致教育基金會的活動成果記錄助理，專精 IOOI 框架（Input 投入、Output 產出、Outcome 成果、Impact 影響力）。根據使用者上傳的素材，整理出一份完整的活動成果紀錄。只輸出純 JSON，不包含任何 markdown 語法。語言使用繁體中文。每個維度的內容要具體、有數字支撐。若素材中沒有某維度的資料，content 留空字串，completeness 設為 0。`
+  },
+  followup: {
+    title: '追問細節 Prompt',
+    desc: 'AI 分析完素材後，用這個 Prompt 繼續追問使用者補充缺少的資料。',
+    prompt: `你是誠致教育基金會的活動成果記錄助理。你正在協助使用者補充專案 IOOI 活動紀錄。請根據使用者的回答更新紀錄（在回覆中說明更新了什麼），並繼續追問下一個缺少的資料。每次只問一個問題。語氣親切口語。如果使用者說完成了，給一個總結。`
+  },
+  fmt_fb: {
+    title: 'FB 貼文',
+    desc: '活動報名、回顧或招募，給粉專追蹤者看。',
+    prompt: `你是誠致教育基金會的社群媒體撰稿人。請根據以下專案 IOOI 資料，撰寫一篇適合發布在 Facebook 粉專的貼文。語氣溫暖有人情味，可使用 emoji，約 300-400 字，結尾加 2-3 個 hashtag。讀者是關心教育的粉專追蹤者。`
+  },
+  fmt_line: {
+    title: 'LINE 群組',
+    desc: '給曾參與 KIST 活動的學伴、實習生等。',
+    prompt: `你是誠致教育基金會的活動推廣撰稿人。請根據以下專案 IOOI 資料，撰寫一則適合發送到 LINE 群組的訊息。語氣像朋友轉傳，簡潔有力，約 150-250 字。讀者是曾參與 KIST 相關活動的人。`
+  },
+  fmt_email: {
+    title: 'Email',
+    desc: '給訂閱電子報或參與過活動的讀者。',
+    prompt: `你是誠致教育基金會的電子報撰稿人。請根據以下專案 IOOI 資料，撰寫一封活動宣傳 Email 的正文（不含主旨）。語氣專業但不生硬，約 400-500 字，包含活動亮點、主要資訊、行動呼籲。`
+  },
+  fmt_web: {
+    title: '官網文章（KIST 大小事）',
+    desc: '給捐款人或對 KIST 有興趣的社會大眾。',
+    prompt: `你是誠致教育基金會的官網編輯。請根據以下專案 IOOI 資料，撰寫一篇適合在官網「KIST 大小事」發布的文章。語氣清楚易懂，約 600-800 字，有小標分段。遇到 KIST 術語（SEL、PBL、K Camp 等）第一次出現時加括號說明。讀者是捐款人和社會大眾。`
+  },
+  fmt_newsletter: {
+    title: '電子報',
+    desc: '給訂閱電子報的長期支持者。',
+    prompt: `你是誠致教育基金會的電子報編輯。請根據以下專案 IOOI 資料，撰寫一則電子報的專案成果報導。語氣有溫度有故事感，約 400-600 字，有導語和數據亮點。`
+  },
+  fmt_impact: {
+    title: '公益報告',
+    desc: '給捐款人和合作貴人看的成果報告。',
+    prompt: `你是誠致教育基金會的公益報告撰稿人。請根據以下專案 IOOI 資料，撰寫一段適合收錄在公益報告中的成果說明。語氣正式有說服力，約 500-700 字，依 IOOI 邏輯呈現，有數據支撐。遇到術語要加括號說明。讀者是捐款人和合作貴人。`
+  },
+  fmt_donor: {
+    title: '捐款人報告',
+    desc: '給大額捐款人的專案進展報告。',
+    prompt: `你是誠致教育基金會的捐款人關係撰稿人。請根據以下專案 IOOI 資料，撰寫一份給指定捐款人的專案進展報告段落。語氣正式感謝有責信感，約 600-800 字，說明資金用途、執行成果、對受益者的改變、後續計畫。遇到術語要解釋。讀者是大額捐款人，重視透明度和具體影響力。`
+  },
+  fmt_school: {
+    title: '學校成果報告書',
+    desc: '依 IOOI 框架，給贊助方的年度成果報告。',
+    prompt: `你是一位資深的 KIST 學年成果報告書撰稿顧問，精通 IOOI 評估框架。請根據以下專案資料，撰寫一份完整的 KIST 學校成果報告書段落。語氣正式有說服力，依 Input（投入）、Output（產出）、Outcome（成果）、Impact（影響力）四段呈現，各段 200-400 字。遇到術語第一次出現時加括號說明：KIST→KIST（KIPP Inspired Schools in Taiwan）、SEL→SEL（Social Emotional Learning，社會情緒學習）、PBL→PBL（Project-Based Learning，專題式學習）。讀者是贊助方、教育主管機關、政策倡議者。`
+  }
+};
+
+// ── 初始化 ──────────────────────────────────────────
+function init() {
+  renderCustomList();
+}
+
+function getCustomFormats() {
+  return JSON.parse(localStorage.getItem(CK) || '[]');
+}
+
+function getSavedPrompts() {
+  return JSON.parse(localStorage.getItem(PK) || '{}');
+}
+
+// ── 側邊欄自訂格式列表 ──────────────────────────────────
+function renderCustomList() {
+  const customs = getCustomFormats();
+  const list = document.getElementById('customFormatList');
+  list.innerHTML = customs.map((f, i) => `
+    <button class="sidebar-item ${currentCustomIdx === i && isCustom ? 'active' : ''}"
+      onclick="selectCustomFormat(${i})">
+      <div class="sidebar-item-dot" style="background:var(--amber);"></div>
+      ${f.name || '未命名格式'}
+    </button>`).join('');
+}
+
+// ── 選取預設 Prompt ──────────────────────────────────
+function selectPrompt(key) {
+  currentKey = key;
+  isCustom = false;
+  currentCustomIdx = null;
+
+  // 更新 sidebar active 狀態
+  document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+
+  const def = DEFAULT_PROMPTS[key];
+  const saved = getSavedPrompts();
+  const currentPrompt = saved[key] || def.prompt;
+
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('editorContent').style.display = 'flex';
+  document.getElementById('editorTitle').textContent = def.title;
+  document.getElementById('editorDesc').textContent = def.desc;
+  document.getElementById('promptTextarea').value = currentPrompt;
+  document.getElementById('customMetaFields').style.display = 'none';
+  document.getElementById('deleteBtn').style.display = 'none';
+}
+
+// ── 選取自訂格式 ──────────────────────────────────────
+function selectCustomFormat(idx) {
+  const customs = getCustomFormats();
+  const f = customs[idx];
+  if (!f) return;
+
+  currentKey = null;
+  isCustom = true;
+  currentCustomIdx = idx;
+
+  document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+  renderCustomList();
+
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('editorContent').style.display = 'flex';
+  document.getElementById('editorTitle').textContent = f.name || '未命名格式';
+  document.getElementById('editorDesc').textContent = f.desc || '自訂輸出格式';
+  document.getElementById('promptTextarea').value = f.prompt || '';
+  document.getElementById('customMetaFields').style.display = 'block';
+  document.getElementById('customName').value = f.name || '';
+  document.getElementById('customDesc').value = f.desc || '';
+  document.getElementById('customExample').value = f.example || '';
+  document.getElementById('deleteBtn').style.display = 'inline-block';
+}
+
+// ── 新增自訂格式 ──────────────────────────────────────
+function newCustomFormat() {
+  currentKey = null;
+  isCustom = true;
+  currentCustomIdx = null;
+
+  document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('editorContent').style.display = 'flex';
+  document.getElementById('editorTitle').textContent = '新增自訂格式';
+  document.getElementById('editorDesc').textContent = '填寫格式名稱和給 AI 的指示';
+  document.getElementById('promptTextarea').value = '';
+  document.getElementById('customMetaFields').style.display = 'block';
+  document.getElementById('customName').value = '';
+  document.getElementById('customDesc').value = '';
+  document.getElementById('customExample').value = '';
+  document.getElementById('deleteBtn').style.display = 'none';
+}
+
+// ── 儲存 ──────────────────────────────────────────────
+function savePrompt() {
+  if (isCustom) {
+    // 儲存自訂格式
+    const name = document.getElementById('customName').value.trim();
+    const desc = document.getElementById('customDesc').value.trim();
+    const example = document.getElementById('customExample').value.trim();
+    const prompt = document.getElementById('promptTextarea').value.trim();
+    if (!name || !prompt) { showToast('請填寫格式名稱和 AI 指示', 'err'); return; }
+
+    const customs = getCustomFormats();
+    const entry = { name, desc, prompt, example };
+    if (currentCustomIdx !== null) {
+      customs[currentCustomIdx] = entry;
+    } else {
+      customs.push(entry);
+      currentCustomIdx = customs.length - 1;
+    }
+    localStorage.setItem(CK, JSON.stringify(customs));
+    document.getElementById('editorTitle').textContent = name;
+    document.getElementById('deleteBtn').style.display = 'inline-block';
+    renderCustomList();
+    showToast('✓ 自訂格式已儲存', 'ok');
+  } else {
+    // 儲存預設 Prompt 的覆蓋值
+    const saved = getSavedPrompts();
+    saved[currentKey] = document.getElementById('promptTextarea').value;
+    localStorage.setItem(PK, JSON.stringify(saved));
+    showToast('✓ Prompt 已儲存', 'ok');
+  }
+}
+
+// ── 還原預設 ──────────────────────────────────────────
+function resetPrompt() {
+  if (isCustom) return;
+  if (!confirm('確定要還原成預設的 Prompt 嗎？你的修改會消失。')) return;
+  const def = DEFAULT_PROMPTS[currentKey];
+  document.getElementById('promptTextarea').value = def.prompt;
+  const saved = getSavedPrompts();
+  delete saved[currentKey];
+  localStorage.setItem(PK, JSON.stringify(saved));
+  showToast('✓ 已還原成預設', 'ok');
+}
+
+// ── 刪除自訂格式 ──────────────────────────────────────
+function deleteCustomFormat() {
+  if (!confirm('確定要刪除這個自訂格式嗎？')) return;
+  const customs = getCustomFormats();
+  customs.splice(currentCustomIdx, 1);
+  localStorage.setItem(CK, JSON.stringify(customs));
+  currentCustomIdx = null;
+  isCustom = false;
+  document.getElementById('editorContent').style.display = 'none';
+  document.getElementById('emptyState').style.display = 'flex';
+  renderCustomList();
+  showToast('已刪除', 'ok');
+}
+
+// ── Toast ──────────────────────────────────────────────
+function showToast(msg, type = 'ok') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `toast visible ${type}`;
+  setTimeout(() => el.classList.remove('visible'), 2500);
+}
+
+init();
+</script>
+</body>
+</html>
